@@ -531,6 +531,10 @@ func (ctxt *Context) RequestSampleFmt() AvSampleFormat {
 	return (AvSampleFormat)(ctxt.request_sample_fmt)
 }
 
+func (ctxt *CodecContext) SetRequestSampleFmt(fmt AvSampleFormat) {
+	ctxt.request_sample_fmt = C.AVSampleFormat(fmt)
+}
+
 func (ctxt *Context) SampleFmt() AvSampleFormat {
 	return (AvSampleFormat)(ctxt.sample_fmt)
 }
