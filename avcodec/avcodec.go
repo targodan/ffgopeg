@@ -22,7 +22,7 @@ import (
 
 type (
 	Codec                         C.struct_AVCodec
-	Context                       C.struct_AVCodecContext
+	CodecContext                  C.struct_AVCodecContext
 	Descriptor                    C.struct_AVCodecDescriptor
 	Parser                        C.struct_AVCodecParser
 	ParserContext                 C.struct_AVCodecParserContext
@@ -43,6 +43,7 @@ type (
 	AvSubtitleRect                C.struct_AVSubtitleRect
 	RcOverride                    C.struct_RcOverride
 	AvBufferRef                   C.struct_AVBufferRef
+    AvCodecParameters             C.struct_AVCodecParameters
 	AvAudioServiceType            C.enum_AVAudioServiceType
 	AvChromaLocation              C.enum_AVChromaLocation
 	CodecId                       C.enum_AVCodecID
@@ -77,8 +78,8 @@ func (c *Codec) AvGetProfileName(p int) string {
 }
 
 //Allocate an Context and set its fields to default values.
-func (c *Codec) AvcodecAllocContext3() *Context {
-	return (*Context)(C.avcodec_alloc_context3((*C.struct_AVCodec)(c)))
+func (c *Codec) AvcodecAllocContext3() *CodecContext {
+	return (*CodecContext)(C.avcodec_alloc_context3((*C.struct_AVCodec)(c)))
 }
 
 func (c *Codec) AvCodecIsEncoder() int {
@@ -87,6 +88,14 @@ func (c *Codec) AvCodecIsEncoder() int {
 
 func (c *Codec) AvCodecIsDecoder() int {
 	return int(C.av_codec_is_decoder((*C.struct_AVCodec)(c)))
+}
+
+func (c *Codec) Name() string {
+	return C.GoString(c.name)
+}
+
+func (c *Codec) LongName() string {
+	return C.GoString(c.long_name)
 }
 
 //Same behaviour av_fast_malloc but the buffer has additional FF_INPUT_BUFFER_PADDING_SIZE at the end which will always be 0.
@@ -180,7 +189,7 @@ func AvGetCodecTagString(b string, bf uintptr, c uint) uintptr {
 	return uintptr(C.av_get_codec_tag_string(C.CString(b), C.size_t(bf), C.uint(c)))
 }
 
-func AvcodecString(b string, bs int, ctxt *Context, e int) {
+func AvcodecString(b string, bs int, ctxt *CodecContext, e int) {
 	C.avcodec_string(C.CString(b), C.int(bs), (*C.struct_AVCodecContext)(ctxt), C.int(e))
 }
 
@@ -221,8 +230,8 @@ func (a *AvHWAccel) AvHwaccelNext() *AvHWAccel {
 }
 
 //Get the type of the given codec.
-func AvcodecGetType(c CodecId) MediaType {
-	return (MediaType)(C.avcodec_get_type((C.enum_AVCodecID)(c)))
+func AvcodecGetType(c CodecId) avutil.MediaType {
+	return (avutil.MediaType)(C.avcodec_get_type((C.enum_AVCodecID)(c)))
 }
 
 //Get the name of a codec.
@@ -243,3 +252,5 @@ func (d *Descriptor) AvcodecDescriptorNext() *Descriptor {
 func AvcodecDescriptorGetByName(n string) *Descriptor {
 	return (*Descriptor)(C.avcodec_descriptor_get_by_name(C.CString(n)))
 }
+
+func avcodec_parameters_to_context(codec *CodecContext, AvCodecPar)
