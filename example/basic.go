@@ -1,9 +1,9 @@
 package main
 
 import "C"
-import "github.com/giorgisio/goav/avutil"
-import "github.com/giorgisio/goav/avformat"
-import "github.com/giorgisio/goav/avfilter"
+import "github.com/targodan/goav/avutil"
+import "github.com/targodan/goav/avformat"
+import "github.com/targodan/goav/avfilter"
 import "log"
 
 /**

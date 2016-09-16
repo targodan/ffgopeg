@@ -8,7 +8,7 @@ package avformat
 import "C"
 import (
 	"unsafe"
-	"github.com/giorgisio/goav/avcodec"
+	"github.com/targodan/goav/avcodec"
 )
 
 func (avs *Stream) CodecContext() *avcodec.CodecContext  {

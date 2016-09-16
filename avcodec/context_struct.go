@@ -4,7 +4,7 @@
 package avcodec
 
 import (
-	"github.com/giorgisio/goav/avutil"
+	"github.com/targodan/goav/avutil"
 )
 
 func (ctxt *CodecContext) ActiveThreadType() int {
