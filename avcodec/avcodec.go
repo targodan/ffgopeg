@@ -17,6 +17,7 @@ package avcodec
 import "C"
 import (
 	"unsafe"
+
 	"github.com/targodan/goav/avutil"
 )
 
@@ -43,7 +44,7 @@ type (
 	AvSubtitleRect                C.struct_AVSubtitleRect
 	RcOverride                    C.struct_RcOverride
 	AvBufferRef                   C.struct_AVBufferRef
-    AvCodecParameters             C.struct_AVCodecParameters
+	AvCodecParameters             C.struct_AVCodecParameters
 	AvAudioServiceType            C.enum_AVAudioServiceType
 	AvChromaLocation              C.enum_AVChromaLocation
 	CodecId                       C.enum_AVCodecID
@@ -253,4 +254,6 @@ func AvcodecDescriptorGetByName(n string) *Descriptor {
 	return (*Descriptor)(C.avcodec_descriptor_get_by_name(C.CString(n)))
 }
 
-func avcodec_parameters_to_context(codec *CodecContext, AvCodecPar)
+func AvcodecParametersToContext(codec *CodecContext, par *AvCodecParameters) error {
+	avutil.CodeToError(C.avcodec_to_parameters((*C.AVCodecContext)(codec), (*C.AVCodecParameters)(par)))
+}
