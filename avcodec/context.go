@@ -11,9 +11,9 @@ import (
 )
 
 func (codecContext *CodecContext) Codec() *Codec {
-	if (codecContext.CodecIsOpen() == false) {
-		codec := C.avcodec_find_decoder(codecContext.codec_id);
-		if (codec == nil) {
+	if codecContext.CodecIsOpen() == false {
+		codec := C.avcodec_find_decoder(codecContext.codec_id)
+		if codec == nil {
 			panic("Codec not found")
 		}
 
@@ -147,7 +147,7 @@ func (ctxt *CodecContext) AvGetAudioFrameDuration(f int) int {
 }
 
 func (ctxt *CodecContext) CodecIsOpen() bool {
-	return ctxt.AvcodecIsOpen() == 1;
+	return ctxt.AvcodecIsOpen() == 1
 }
 
 // Deprecated: For backward compatibility, please use CodecIsOpen
