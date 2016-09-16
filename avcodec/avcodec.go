@@ -17,6 +17,7 @@ package avcodec
 import "C"
 import (
 	"unsafe"
+	"github.com/targodan/goav/avutil"
 )
 
 type (

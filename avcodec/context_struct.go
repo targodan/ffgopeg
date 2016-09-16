@@ -546,3 +546,7 @@ func (ctxt *Context) SkipIdct() AvDiscard {
 func (ctxt *Context) SkipLoopFilter() AvDiscard {
 	return (AvDiscard)(ctxt.skip_loop_filter)
 }
+
+func (ctxt *CodecContext) CodecPar() AvCodecParameters {
+	return (AvCodecParameters)(ctxt.codecpar)
+}
