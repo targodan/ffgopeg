@@ -3,15 +3,16 @@
 
 package avformat
 
-//#cgo pkg-config: libavformat
+//#cgo pkg-config: libavformat libavcodec
 //#include <libavformat/avformat.h>
 import "C"
 import (
 	"unsafe"
+
 	"github.com/targodan/goav/avcodec"
 )
 
-func (avs *Stream) CodecContext() *avcodec.CodecContext  {
+func (avs *Stream) CodecContext() *avcodec.CodecContext {
 	return (*avcodec.CodecContext)(unsafe.Pointer(avs.codec))
 }
 
@@ -230,4 +231,8 @@ func (avs *Stream) PtsReorderErrorCount() uint8 {
 
 func (avs *Stream) IndexEntriesAllocatedSize() uint {
 	return uint(avs.index_entries_allocated_size)
+}
+
+func (avs *Stream) CodecPar() *avcodec.AvCodecParameters {
+	return (*avcodec.AvCodecParameters)(unsafe.Pointer(avs.codecpar))
 }

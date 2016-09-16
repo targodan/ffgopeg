@@ -255,5 +255,5 @@ func AvcodecDescriptorGetByName(n string) *Descriptor {
 }
 
 func AvcodecParametersToContext(codec *CodecContext, par *AvCodecParameters) error {
-	avutil.CodeToError(C.avcodec_to_parameters((*C.AVCodecContext)(codec), (*C.AVCodecParameters)(par)))
+	return avutil.CodeToError(int(C.avcodec_parameters_to_context((*C.AVCodecContext)(codec), (*C.AVCodecParameters)(par))))
 }

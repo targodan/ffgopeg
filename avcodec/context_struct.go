@@ -3,6 +3,9 @@
 
 package avcodec
 
+//#cgo pkg-config: libavcodec
+//#include <libavcodec/avcodec.h>
+import "C"
 import (
 	"github.com/targodan/goav/avutil"
 )
@@ -536,7 +539,7 @@ func (ctxt *CodecContext) RequestSampleFmt() AvSampleFormat {
 }
 
 func (ctxt *CodecContext) SetRequestSampleFmt(fmt AvSampleFormat) {
-	ctxt.request_sample_fmt = C.AVSampleFormat(fmt)
+	ctxt.request_sample_fmt = C.enum_AVSampleFormat(fmt)
 }
 
 func (ctxt *CodecContext) SampleFmt() AvSampleFormat {
@@ -553,8 +556,4 @@ func (ctxt *CodecContext) SkipIdct() AvDiscard {
 
 func (ctxt *CodecContext) SkipLoopFilter() AvDiscard {
 	return (AvDiscard)(ctxt.skip_loop_filter)
-}
-
-func (ctxt *CodecContext) CodecPar() AvCodecParameters {
-	return (AvCodecParameters)(ctxt.codecpar)
 }
