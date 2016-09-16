@@ -20,7 +20,8 @@ package avformat
 import "C"
 import (
 	"unsafe"
-	"github.com/giorgisio/goav/avutil"
+
+	"github.com/targodan/goav/avutil"
 )
 
 type (
@@ -29,6 +30,7 @@ type (
 	OutputFormat               C.struct_AVOutputFormat
 	Context                    C.struct_AVFormatContext
 	Frame                      C.struct_AVFrame
+	CodecContext               C.struct_AVCodecContext
 	Dictionary                 C.struct_AVDictionary
 	DictionaryEntry            C.struct_AVDictionaryEntry
 	AvIndexEntry               C.struct_AVIndexEntry
@@ -49,6 +51,7 @@ type (
 	FFFrac                     C.struct_FFFrac
 	AvStreamParseType          C.enum_AVStreamParseType
 	AvDiscard                  C.enum_AVDiscard
+	MediaType                  C.enum_AVMediaType
 	AvDurationEstimationMethod C.enum_AVDurationEstimationMethod
 	AvPacketSideDataType       C.enum_AVPacketSideDataType
 	CodecId                    C.enum_AVCodecID

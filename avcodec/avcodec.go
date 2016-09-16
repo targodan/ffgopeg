@@ -17,7 +17,7 @@ package avcodec
 import "C"
 import (
 	"unsafe"
-	"github.com/giorgisio/goav/avutil"
+	"github.com/targodan/goav/avutil"
 )
 
 type (
@@ -28,6 +28,7 @@ type (
 	ParserContext                 C.struct_AVCodecParserContext
 	Dictionary                    C.struct_AVDictionary
 	Frame                         C.struct_AVFrame
+	MediaType                     C.enum_AVMediaType
 	Packet                        C.struct_AVPacket
 	BitStreamFilter               C.struct_AVBitStreamFilter
 	BitStreamFilterContext        C.struct_AVBitStreamFilterContext

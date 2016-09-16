@@ -8,7 +8,7 @@ package avformat
 import "C"
 import (
 	"github.com/giorgisio/goav/avcodec"
-	"github.com/giorgisio/goav/avutil"
+	"github.com/targodan/goav/avutil"
 	"unsafe"
 )
 
