@@ -3,13 +3,14 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"os"
+	"unsafe"
+
 	"github.com/targodan/goav/avcodec"
 	"github.com/targodan/goav/avformat"
 	"github.com/targodan/goav/avutil"
 	"github.com/targodan/goav/swscale"
-	"log"
-	"os"
-	"unsafe"
 )
 
 func main() {
@@ -18,8 +19,8 @@ func main() {
 
 	var (
 		ctxtFormat    *avformat.Context
-		ctxtSource    *avcodec.Context
-		ctxtDest      *avcodec.Context
+		ctxtSource    *avcodec.CodecContext
+		ctxtDest      *avcodec.CodecContext
 		videoCodec    *avcodec.Codec
 		videoFrame    *avutil.Frame
 		videoFrameRGB *avutil.Frame
