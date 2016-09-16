@@ -25,20 +25,20 @@ func (avs *Stream) Metadata() *Dictionary {
 	return (*Dictionary)(unsafe.Pointer(avs.metadata))
 }
 
-func (avs *Stream) IndexEntries() *AvIndexEntry {
-	return (*AvIndexEntry)(unsafe.Pointer(avs.index_entries))
+func (avs *Stream) IndexEntries() *IndexEntry {
+	return (*IndexEntry)(unsafe.Pointer(avs.index_entries))
 }
 
 func (avs *Stream) AttachedPic() Packet {
 	return Packet(avs.attached_pic)
 }
 
-func (avs *Stream) SideData() *AvPacketSideData {
-	return (*AvPacketSideData)(unsafe.Pointer(avs.side_data))
+func (avs *Stream) SideData() *PacketSideData {
+	return (*PacketSideData)(unsafe.Pointer(avs.side_data))
 }
 
-func (avs *Stream) ProbeData() AvProbeData {
-	return AvProbeData(avs.probe_data)
+func (avs *Stream) ProbeData() ProbeData {
+	return ProbeData(avs.probe_data)
 }
 
 func (avs *Stream) AvgFrameRate() Rational {
@@ -65,12 +65,12 @@ func (avs *Stream) TimeBase() Rational {
 // 	return C.GoString(avs.recommended_encoder_configuration)
 // }
 
-func (avs *Stream) Discard() AvDiscard {
-	return AvDiscard(avs.discard)
+func (avs *Stream) Discard() Discard {
+	return Discard(avs.discard)
 }
 
-func (avs *Stream) NeedParsing() AvStreamParseType {
-	return AvStreamParseType(avs.need_parsing)
+func (avs *Stream) NeedParsing() StreamParseType {
+	return StreamParseType(avs.need_parsing)
 }
 
 func (avs *Stream) CodecInfoNbFrames() int {
@@ -209,8 +209,8 @@ func (avs *Stream) Parser() *CodecParserContext {
 	return (*CodecParserContext)(unsafe.Pointer(avs.parser))
 }
 
-func (avs *Stream) LastInPacketBuffer() *AvPacketList {
-	return (*AvPacketList)(unsafe.Pointer(avs.last_in_packet_buffer))
+func (avs *Stream) LastInPacketBuffer() *PacketList {
+	return (*PacketList)(unsafe.Pointer(avs.last_in_packet_buffer))
 }
 
 // func (avs *Stream) PrivPts() *FFFrac {
@@ -233,6 +233,6 @@ func (avs *Stream) IndexEntriesAllocatedSize() uint {
 	return uint(avs.index_entries_allocated_size)
 }
 
-func (avs *Stream) CodecPar() *avcodec.AvCodecParameters {
-	return (*avcodec.AvCodecParameters)(unsafe.Pointer(avs.codecpar))
+func (avs *Stream) CodecPar() *avcodec.CodecParameters {
+	return (*avcodec.CodecParameters)(unsafe.Pointer(avs.codecpar))
 }

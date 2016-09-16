@@ -22,41 +22,41 @@ import (
 )
 
 type (
-	Codec                         C.struct_AVCodec
-	CodecContext                  C.struct_AVCodecContext
-	Descriptor                    C.struct_AVCodecDescriptor
-	Parser                        C.struct_AVCodecParser
-	ParserContext                 C.struct_AVCodecParserContext
-	Dictionary                    C.struct_AVDictionary
-	Frame                         C.struct_AVFrame
-	MediaType                     C.enum_AVMediaType
-	Packet                        C.struct_AVPacket
-	BitStreamFilter               C.struct_AVBitStreamFilter
-	BitStreamFilterContext        C.struct_AVBitStreamFilterContext
-	Rational                      C.struct_AVRational
-	Class                         C.struct_AVClass
-	AvHWAccel                     C.struct_AVHWAccel
-	AvPacketSideData              C.struct_AVPacketSideData
-	AvPanScan                     C.struct_AVPanScan
-	Picture                       C.struct_AVPicture
-	AvProfile                     C.struct_AVProfile
-	AvSubtitle                    C.struct_AVSubtitle
-	AvSubtitleRect                C.struct_AVSubtitleRect
-	RcOverride                    C.struct_RcOverride
-	AvBufferRef                   C.struct_AVBufferRef
-	AvCodecParameters             C.struct_AVCodecParameters
-	AvAudioServiceType            C.enum_AVAudioServiceType
-	AvChromaLocation              C.enum_AVChromaLocation
-	CodecId                       C.enum_AVCodecID
-	AvColorPrimaries              C.enum_AVColorPrimaries
-	AvColorRange                  C.enum_AVColorRange
-	AvColorSpace                  C.enum_AVColorSpace
-	AvColorTransferCharacteristic C.enum_AVColorTransferCharacteristic
-	AvDiscard                     C.enum_AVDiscard
-	AvFieldOrder                  C.enum_AVFieldOrder
-	AvPacketSideDataType          C.enum_AVPacketSideDataType
-	PixelFormat                   C.enum_AVPixelFormat
-	AvSampleFormat                C.enum_AVSampleFormat
+	Codec                       C.struct_AVCodec
+	CodecContext                C.struct_AVCodecContext
+	CodecDescriptor             C.struct_AVCodecDescriptor
+	CodecParser                 C.struct_AVCodecParser
+	CodecParserContext          C.struct_AVCodecParserContext
+	Dictionary                  C.struct_AVDictionary
+	Frame                       C.struct_AVFrame
+	MediaType                   C.enum_AVMediaType
+	Packet                      C.struct_AVPacket
+	BitStreamFilter             C.struct_AVBitStreamFilter
+	BitStreamFilterContext      C.struct_AVBitStreamFilterContext
+	Rational                    C.struct_AVRational
+	Class                       C.struct_AVClass
+	HWAccel                     C.struct_AVHWAccel
+	PacketSideData              C.struct_AVPacketSideData
+	PanScan                     C.struct_AVPanScan
+	Picture                     C.struct_AVPicture
+	Profile                     C.struct_AVProfile
+	Subtitle                    C.struct_AVSubtitle
+	SubtitleRect                C.struct_AVSubtitleRect
+	RcOverride                  C.struct_RcOverride
+	BufferRef                   C.struct_AVBufferRef
+	CodecParameters             C.struct_AVCodecParameters
+	AudioServiceType            C.enum_AVAudioServiceType
+	ChromaLocation              C.enum_AVChromaLocation
+	CodecId                     C.enum_AVCodecID
+	ColorPrimaries              C.enum_AVColorPrimaries
+	ColorRange                  C.enum_AVColorRange
+	ColorSpace                  C.enum_AVColorSpace
+	ColorTransferCharacteristic C.enum_AVColorTransferCharacteristic
+	Discard                     C.enum_AVDiscard
+	FieldOrder                  C.enum_AVFieldOrder
+	PacketSideDataType          C.enum_AVPacketSideDataType
+	PixelFormat                 C.enum_AVPixelFormat
+	SampleFormat                C.enum_AVSampleFormat
 )
 
 func (c *Codec) AvCodecGetMaxLowres() int {
@@ -135,13 +135,13 @@ func AvcodecGetFrameClass() *Class {
 	return (*Class)(C.avcodec_get_frame_class())
 }
 
-//Get the Class for AvSubtitleRect.
+//Get the Class for SubtitleRect.
 func AvcodecGetSubtitleRectClass() *Class {
 	return (*Class)(C.avcodec_get_subtitle_rect_class())
 }
 
 //Free all allocated data in the given subtitle struct.
-func AvsubtitleFree(s *AvSubtitle) {
+func AvsubtitleFree(s *Subtitle) {
 	C.avsubtitle_free((*C.struct_AVSubtitle)(s))
 }
 
@@ -165,14 +165,14 @@ func AvcodecFindDecoderByName(n string) *Codec {
 	return (*Codec)(C.avcodec_find_decoder_by_name(C.CString(n)))
 }
 
-//Converts AvChromaLocation to swscale x/y chroma position.
-func AvcodecEnumToChromaPos(x, y *int, l AvChromaLocation) int {
+//Converts ChromaLocation to swscale x/y chroma position.
+func AvcodecEnumToChromaPos(x, y *int, l ChromaLocation) int {
 	return int(C.avcodec_enum_to_chroma_pos((*C.int)(unsafe.Pointer(x)), (*C.int)(unsafe.Pointer(y)), (C.enum_AVChromaLocation)(l)))
 }
 
-//Converts swscale x/y chroma position to AvChromaLocation.
-func AvcodecChromaPosToEnum(x, y int) AvChromaLocation {
-	return (AvChromaLocation)(C.avcodec_chroma_pos_to_enum(C.int(x), C.int(y)))
+//Converts swscale x/y chroma position to ChromaLocation.
+func AvcodecChromaPosToEnum(x, y int) ChromaLocation {
+	return (ChromaLocation)(C.avcodec_chroma_pos_to_enum(C.int(x), C.int(y)))
 }
 
 //Find a registered encoder with a matching codec ID.
@@ -195,7 +195,7 @@ func AvcodecString(b string, bs int, ctxt *CodecContext, e int) {
 }
 
 //Fill Frame audio data and linesize pointers.
-func AvcodecFillAudioFrame(f *Frame, c int, s AvSampleFormat, b *uint8, bs, a int) int {
+func AvcodecFillAudioFrame(f *Frame, c int, s SampleFormat, b *uint8, bs, a int) int {
 	return int(C.avcodec_fill_audio_frame((*C.struct_AVFrame)(f), C.int(c), (C.enum_AVSampleFormat)(s), (*C.uint8_t)(b), C.int(bs), C.int(a)))
 }
 
@@ -205,7 +205,7 @@ func AvGetBitsPerSample(c CodecId) int {
 }
 
 //Return the PCM codec associated with a sample format.
-func AvGetPcmCodec(f AvSampleFormat, b int) CodecId {
+func AvGetPcmCodec(f SampleFormat, b int) CodecId {
 	return (CodecId)(C.av_get_pcm_codec((C.enum_AVSampleFormat)(f), C.int(b)))
 }
 
@@ -226,8 +226,8 @@ func AvXiphlacing(s *string, v uint) uint {
 
 //If hwaccel is NULL, returns the first registered hardware accelerator, if hwaccel is non-NULL,
 //returns the next registered hardware accelerator after hwaccel, or NULL if hwaccel is the last one.
-func (a *AvHWAccel) AvHwaccelNext() *AvHWAccel {
-	return (*AvHWAccel)(C.av_hwaccel_next((*C.struct_AVHWAccel)(a)))
+func (a *HWAccel) AvHwaccelNext() *HWAccel {
+	return (*HWAccel)(C.av_hwaccel_next((*C.struct_AVHWAccel)(a)))
 }
 
 //Get the type of the given codec.
@@ -241,19 +241,19 @@ func AvcodecGetName(d CodecId) string {
 }
 
 //const Descriptor *avcodec_descriptor_get (enum CodecId id)
-func AvcodecDescriptorGet(id CodecId) *Descriptor {
-	return (*Descriptor)(C.avcodec_descriptor_get((C.enum_AVCodecID)(id)))
+func AvcodecDescriptorGet(id CodecId) *CodecDescriptor {
+	return (*CodecDescriptor)(C.avcodec_descriptor_get((C.enum_AVCodecID)(id)))
 }
 
 //Iterate over all codec descriptors known to libavcodec.
-func (d *Descriptor) AvcodecDescriptorNext() *Descriptor {
-	return (*Descriptor)(C.avcodec_descriptor_next((*C.struct_AVCodecDescriptor)(d)))
+func (d *CodecDescriptor) AvcodecDescriptorNext() *CodecDescriptor {
+	return (*CodecDescriptor)(C.avcodec_descriptor_next((*C.struct_AVCodecDescriptor)(d)))
 }
 
-func AvcodecDescriptorGetByName(n string) *Descriptor {
-	return (*Descriptor)(C.avcodec_descriptor_get_by_name(C.CString(n)))
+func AvcodecDescriptorGetByName(n string) *CodecDescriptor {
+	return (*CodecDescriptor)(C.avcodec_descriptor_get_by_name(C.CString(n)))
 }
 
-func AvcodecParametersToContext(codec *CodecContext, par *AvCodecParameters) error {
+func AvcodecParametersToContext(codec *CodecContext, par *CodecParameters) error {
 	return avutil.CodeToError(int(C.avcodec_parameters_to_context((*C.AVCodecContext)(codec), (*C.AVCodecParameters)(par))))
 }

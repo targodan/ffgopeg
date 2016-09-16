@@ -12,10 +12,10 @@ package swresample
 import "C"
 
 type (
-	Context        C.struct_SwrContext
-	Frame          C.struct_AVFrame
-	Class          C.struct_AVClass
-	AvSampleFormat C.enum_AVSampleFormat
+	Context      C.struct_SwrContext
+	Frame        C.struct_AVFrame
+	Class        C.struct_AVClass
+	SampleFormat C.enum_AVSampleFormat
 )
 
 //Get the Class for Context.

@@ -3,8 +3,8 @@
 
 package avcodec
 
-func (p *Packet) Buf() *AvBufferRef {
-	return (*AvBufferRef)(p.buf)
+func (p *Packet) Buf() *BufferRef {
+	return (*BufferRef)(p.buf)
 }
 func (p *Packet) Duration() int {
 	return int(p.duration)

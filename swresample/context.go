@@ -23,7 +23,7 @@ func (s *Context) SwrIsInitialized() int {
 }
 
 //Allocate Context if needed and set/reset common parameters.
-func (s *Context) SwrAllocSetOpts(ocl int64, osf AvSampleFormat, osr int, icl int64, isf AvSampleFormat, isr, lo, lc int) *Context {
+func (s *Context) SwrAllocSetOpts(ocl int64, osf SampleFormat, osr int, icl int64, isf SampleFormat, isr, lo, lc int) *Context {
 	return (*Context)(C.swr_alloc_set_opts((*C.struct_SwrContext)(s), C.int64_t(ocl), (C.enum_AVSampleFormat)(osf), C.int(osr), C.int64_t(icl), (C.enum_AVSampleFormat)(isf), C.int(isr), C.int(lo), unsafe.Pointer(&lc)))
 }
 

@@ -31,11 +31,11 @@ func (ctxt *CodecContext) AvCodecSetPktTimebase(r Rational) {
 	C.av_codec_set_pkt_timebase((*C.struct_AVCodecContext)(ctxt), (C.struct_AVRational)(r))
 }
 
-func (ctxt *CodecContext) AvCodecGetCodecDescriptor() *Descriptor {
-	return (*Descriptor)(C.av_codec_get_codec_descriptor((*C.struct_AVCodecContext)(ctxt)))
+func (ctxt *CodecContext) AvCodecGetCodecDescriptor() *CodecDescriptor {
+	return (*CodecDescriptor)(C.av_codec_get_codec_descriptor((*C.struct_AVCodecContext)(ctxt)))
 }
 
-func (ctxt *CodecContext) AvCodecSetCodecDescriptor(d *Descriptor) {
+func (ctxt *CodecContext) AvCodecSetCodecDescriptor(d *CodecDescriptor) {
 	C.av_codec_set_codec_descriptor((*C.struct_AVCodecContext)(ctxt), (*C.struct_AVCodecDescriptor)(d))
 }
 
@@ -114,7 +114,7 @@ func (ctxt *CodecContext) AvcodecDecodeVideo2(p *Frame, g *int, a *Packet) int {
 }
 
 //Decode a subtitle message.
-func (ctxt *CodecContext) AvcodecDecodeSubtitle2(s *AvSubtitle, g *int, a *Packet) int {
+func (ctxt *CodecContext) AvcodecDecodeSubtitle2(s *Subtitle, g *int, a *Packet) int {
 	return int(C.avcodec_decode_subtitle2((*C.struct_AVCodecContext)(ctxt), (*C.struct_AVSubtitle)(s), (*C.int)(unsafe.Pointer(g)), (*C.struct_AVPacket)(a)))
 }
 
@@ -128,7 +128,7 @@ func (ctxt *CodecContext) AvcodecEncodeVideo2(p *Packet, f *Frame, gp *int) int 
 	return int(C.avcodec_encode_video2((*C.struct_AVCodecContext)(ctxt), (*C.struct_AVPacket)(p), (*C.struct_AVFrame)(f), (*C.int)(unsafe.Pointer(gp))))
 }
 
-func (ctxt *CodecContext) AvcodecEncodeSubtitle(b *uint8, bs int, s *AvSubtitle) int {
+func (ctxt *CodecContext) AvcodecEncodeSubtitle(b *uint8, bs int, s *Subtitle) int {
 	return int(C.avcodec_encode_subtitle((*C.struct_AVCodecContext)(ctxt), (*C.uint8_t)(b), C.int(bs), (*C.struct_AVSubtitle)(s)))
 }
 
@@ -156,26 +156,26 @@ func (ctxt *CodecContext) AvcodecIsOpen() int {
 }
 
 //Parse a packet.
-func (ctxt *CodecContext) AvParserParse2(ctxtp *ParserContext, p **uint8, ps *int, b *uint8, bs int, pt, dt, po int64) int {
+func (ctxt *CodecContext) AvParserParse2(ctxtp *CodecParserContext, p **uint8, ps *int, b *uint8, bs int, pt, dt, po int64) int {
 	return int(C.av_parser_parse2((*C.struct_AVCodecParserContext)(ctxtp), (*C.struct_AVCodecContext)(ctxt), (**C.uint8_t)(unsafe.Pointer(p)), (*C.int)(unsafe.Pointer(ps)), (*C.uint8_t)(b), C.int(bs), (C.int64_t)(pt), (C.int64_t)(dt), (C.int64_t)(po)))
 }
 
-func (ctxt *CodecContext) AvParserChange(ctxtp *ParserContext, pb **uint8, pbs *int, b *uint8, bs, k int) int {
+func (ctxt *CodecContext) AvParserChange(ctxtp *CodecParserContext, pb **uint8, pbs *int, b *uint8, bs, k int) int {
 	return int(C.av_parser_change((*C.struct_AVCodecParserContext)(ctxtp), (*C.struct_AVCodecContext)(ctxt), (**C.uint8_t)(unsafe.Pointer(pb)), (*C.int)(unsafe.Pointer(pbs)), (*C.uint8_t)(b), C.int(bs), C.int(k)))
 }
 
-func AvParserInit(c int) *ParserContext {
-	return (*ParserContext)(C.av_parser_init(C.int(c)))
+func AvParserInit(c int) *CodecParserContext {
+	return (*CodecParserContext)(C.av_parser_init(C.int(c)))
 }
 
-func AvParserClose(ctxtp *ParserContext) {
+func AvParserClose(ctxtp *CodecParserContext) {
 	C.av_parser_close((*C.struct_AVCodecParserContext)(ctxtp))
 }
 
-func (p *Parser) AvParserNext() *Parser {
-	return (*Parser)(C.av_parser_next((*C.struct_AVCodecParser)(p)))
+func (p *CodecParser) AvParserNext() *CodecParser {
+	return (*CodecParser)(C.av_parser_next((*C.struct_AVCodecParser)(p)))
 }
 
-func (p *Parser) AvRegisterCodecParser() {
+func (p *CodecParser) AvRegisterCodecParser() {
 	C.av_register_codec_parser((*C.struct_AVCodecParser)(p))
 }

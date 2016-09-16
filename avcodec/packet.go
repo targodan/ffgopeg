@@ -60,17 +60,17 @@ func (p *Packet) AvFreePacket() {
 }
 
 //Allocate new information of a packet.
-func (p *Packet) AvPacketNewSideData(t AvPacketSideDataType, s int) *uint8 {
+func (p *Packet) AvPacketNewSideData(t PacketSideDataType, s int) *uint8 {
 	return (*uint8)(C.av_packet_new_side_data((*C.struct_AVPacket)(p), (C.enum_AVPacketSideDataType)(t), C.int(s)))
 }
 
 //Shrink the already allocated side data buffer.
-func (p *Packet) AvPacketShrinkSideData(t AvPacketSideDataType, s int) int {
+func (p *Packet) AvPacketShrinkSideData(t PacketSideDataType, s int) int {
 	return int(C.av_packet_shrink_side_data((*C.struct_AVPacket)(p), (C.enum_AVPacketSideDataType)(t), C.int(s)))
 }
 
 //Get side information from packet.
-func (p *Packet) AvPacketGetSideData(t AvPacketSideDataType, s *int) *uint8 {
+func (p *Packet) AvPacketGetSideData(t PacketSideDataType, s *int) *uint8 {
 	return (*uint8)(C.av_packet_get_side_data((*C.struct_AVPacket)(p), (C.enum_AVPacketSideDataType)(t), (*C.int)(unsafe.Pointer(s))))
 }
 

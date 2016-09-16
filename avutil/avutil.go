@@ -16,13 +16,13 @@ import (
 )
 
 type (
-	Options       C.struct_AVOptions
-	Dictionary    C.struct_AVDictionary
-	AvTree        C.struct_AVTree
-	Rational      C.struct_AVRational
-	MediaType     C.enum_AVMediaType
-	AvPictureType C.enum_AVPictureType
-	File          C.FILE
+	Options     C.struct_AVOptions
+	Dictionary  C.struct_AVDictionary
+	Tree        C.struct_AVTree
+	Rational    C.struct_AVRational
+	MediaType   C.enum_AVMediaType
+	PictureType C.enum_AVPictureType
+	File        C.FILE
 )
 
 //Return the LIBAvUTIL_VERSION_INT constant.
@@ -46,7 +46,7 @@ func AvGetMediaTypeString(mt MediaType) string {
 }
 
 //Return a single letter to describe the given picture type pict_type.
-func AvGetPictureTypeChar(pt AvPictureType) string {
+func AvGetPictureTypeChar(pt PictureType) string {
 	return string(C.av_get_picture_type_char((C.enum_AVPictureType)(pt)))
 }
 

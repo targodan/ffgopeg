@@ -490,16 +490,16 @@ func (ctxt *CodecContext) WorkaroundBugs() int {
 	return int(ctxt.workaround_bugs)
 }
 
-func (ctxt *CodecContext) AudioServiceType() AvAudioServiceType {
-	return (AvAudioServiceType)(ctxt.audio_service_type)
+func (ctxt *CodecContext) AudioServiceType() AudioServiceType {
+	return (AudioServiceType)(ctxt.audio_service_type)
 }
 
-func (ctxt *CodecContext) ChromaSampleLocation() AvChromaLocation {
-	return (AvChromaLocation)(ctxt.chroma_sample_location)
+func (ctxt *CodecContext) ChromaSampleLocation() ChromaLocation {
+	return (ChromaLocation)(ctxt.chroma_sample_location)
 }
 
-func (ctxt *CodecContext) CodecDescriptor() *Descriptor {
-	return (*Descriptor)(ctxt.codec_descriptor)
+func (ctxt *CodecContext) CodecDescriptor() *CodecDescriptor {
+	return (*CodecDescriptor)(ctxt.codec_descriptor)
 }
 
 func (ctxt *CodecContext) CodecId() CodecId {
@@ -510,50 +510,50 @@ func (ctxt *CodecContext) CodecType() avutil.MediaType {
 	return (avutil.MediaType)(ctxt.codec_type)
 }
 
-func (ctxt *CodecContext) ColorPrimaries() AvColorPrimaries {
-	return (AvColorPrimaries)(ctxt.color_primaries)
+func (ctxt *CodecContext) ColorPrimaries() ColorPrimaries {
+	return (ColorPrimaries)(ctxt.color_primaries)
 }
 
-func (ctxt *CodecContext) ColorRange() AvColorRange {
-	return (AvColorRange)(ctxt.color_range)
+func (ctxt *CodecContext) ColorRange() ColorRange {
+	return (ColorRange)(ctxt.color_range)
 }
 
-func (ctxt *CodecContext) ColorTrc() AvColorTransferCharacteristic {
-	return (AvColorTransferCharacteristic)(ctxt.color_trc)
+func (ctxt *CodecContext) ColorTrc() ColorTransferCharacteristic {
+	return (ColorTransferCharacteristic)(ctxt.color_trc)
 }
 
-func (ctxt *CodecContext) Colorspace() AvColorSpace {
-	return (AvColorSpace)(ctxt.colorspace)
+func (ctxt *CodecContext) Colorspace() ColorSpace {
+	return (ColorSpace)(ctxt.colorspace)
 }
 
-func (ctxt *CodecContext) FieldOrder() AvFieldOrder {
-	return (AvFieldOrder)(ctxt.field_order)
+func (ctxt *CodecContext) FieldOrder() FieldOrder {
+	return (FieldOrder)(ctxt.field_order)
 }
 
 func (ctxt *CodecContext) PixFmt() PixelFormat {
 	return (PixelFormat)(ctxt.pix_fmt)
 }
 
-func (ctxt *CodecContext) RequestSampleFmt() AvSampleFormat {
-	return (AvSampleFormat)(ctxt.request_sample_fmt)
+func (ctxt *CodecContext) RequestSampleFmt() SampleFormat {
+	return (SampleFormat)(ctxt.request_sample_fmt)
 }
 
-func (ctxt *CodecContext) SetRequestSampleFmt(fmt AvSampleFormat) {
+func (ctxt *CodecContext) SetRequestSampleFmt(fmt SampleFormat) {
 	ctxt.request_sample_fmt = C.enum_AVSampleFormat(fmt)
 }
 
-func (ctxt *CodecContext) SampleFmt() AvSampleFormat {
-	return (AvSampleFormat)(ctxt.sample_fmt)
+func (ctxt *CodecContext) SampleFmt() SampleFormat {
+	return (SampleFormat)(ctxt.sample_fmt)
 }
 
-func (ctxt *CodecContext) SkipFrame() AvDiscard {
-	return (AvDiscard)(ctxt.skip_frame)
+func (ctxt *CodecContext) SkipFrame() Discard {
+	return (Discard)(ctxt.skip_frame)
 }
 
-func (ctxt *CodecContext) SkipIdct() AvDiscard {
-	return (AvDiscard)(ctxt.skip_idct)
+func (ctxt *CodecContext) SkipIdct() Discard {
+	return (Discard)(ctxt.skip_idct)
 }
 
-func (ctxt *CodecContext) SkipLoopFilter() AvDiscard {
-	return (AvDiscard)(ctxt.skip_loop_filter)
+func (ctxt *CodecContext) SkipLoopFilter() Discard {
+	return (Discard)(ctxt.skip_loop_filter)
 }
