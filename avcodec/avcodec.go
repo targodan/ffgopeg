@@ -1,8 +1,8 @@
 // Use of this source code is governed by a MIT license that can be found in the LICENSE file.
 // Giorgis (habtom@giorgis.io)
+// Corbatto (luca@corbatto.de)
 
-//Package avcodec contains the codecs (decoders and encoders) provided by the libavcodec library
-//Provides some generic global options, which can be set on all the encoders and decoders.
+// Package avcodec contains the codecs (decoders and encoders) provided by the libavcodec library
 package avcodec
 
 //#cgo pkg-config: libavformat libavcodec libavutil libswresample
@@ -58,12 +58,6 @@ type (
 	SampleFormat                C.enum_AVSampleFormat
 )
 
-// MaxLowres returns the maximum lowres supported by the decoder.
-// C-Function: av_codec_get_max_lowres
-func (c *Codec) MaxLowres() int {
-	return int(C.av_codec_get_max_lowres((*C.struct_AVCodec)(c)))
-}
-
 // nextRegisteredCodec returns the codec registered after the given codec, or the first one if nil is given.
 // C-Function: av_codec_next
 func nextRegisteredCodec(c *Codec) *Codec {
@@ -100,38 +94,6 @@ func RegisteredCodecs() <-chan *Codec {
 // C-Function: avcodec_register
 func RegisterCodec(c *Codec) {
 	C.avcodec_register((*C.struct_AVCodec)(c))
-}
-
-// ProfileName returns a name for the specified profile, if available.
-// C-Function: av_get_profile_name
-func (c *Codec) ProfileName(p int) string {
-	return C.GoString(C.av_get_profile_name((*C.struct_AVCodec)(c), C.int(p)))
-}
-
-// NewCodecContext allocates a Context and set its fields to default values.
-// C-Function: avcodec_alloc_context3
-func NewCodecContext(c *Codec) *CodecContext {
-	return (*CodecContext)(C.avcodec_alloc_context3((*C.struct_AVCodec)(c)))
-}
-
-// IsEncoder returns true if the codec is an encoder.
-func (c *Codec) IsEncoder() bool {
-	return int(C.av_codec_is_encoder((*C.struct_AVCodec)(c))) != 0
-}
-
-// IsDecoder returns true if the codec is an decoder.
-func (c *Codec) IsDecoder() bool {
-	return int(C.av_codec_is_decoder((*C.struct_AVCodec)(c))) != 0
-}
-
-// Name returns the name of the codec.
-func (c *Codec) Name() string {
-	return C.GoString(c.name)
-}
-
-// LongName returns the long, descriptive name of the codec.
-func (c *Codec) LongName() string {
-	return C.GoString(c.long_name)
 }
 
 // FastPaddedMalloc allocates a buffer, reusing the given one if large enough.
@@ -202,18 +164,6 @@ func UnpackDictionary(d *uint8, s int, dt **Dictionary) error {
 	return avutil.CodeToError(int(C.av_packet_unpack_dictionary((*C.uint8_t)(d), C.int(s), (**C.struct_AVDictionary)(unsafe.Pointer(dt)))))
 }
 
-// FindDecoder finds a registered decoder with a matching codec ID.
-// C-Function: avcodec_find_decoder
-func FindDecoder(id CodecId) *Codec {
-	return (*Codec)(C.avcodec_find_decoder((C.enum_AVCodecID)(id)))
-}
-
-// FindDecoderByName finds a registered decoder with the specified name.
-// C-Function: avcodec_find_decoder_by_name
-func FindDecoderByName(n string) *Codec {
-	return (*Codec)(C.avcodec_find_decoder_by_name(C.CString(n)))
-}
-
 // ToChromaPos converts the ChromaLocation to swscale x/y chroma position.
 // C-Function: avcodec_enum_to_chroma_pos
 func (l ChromaLocation) ToChromaPos() (x, y int, err error) {
@@ -225,18 +175,6 @@ func (l ChromaLocation) ToChromaPos() (x, y int, err error) {
 // C-Function: avcodec_chroma_pos_to_enum
 func ChromaPosToEnum(x, y int) ChromaLocation {
 	return (ChromaLocation)(C.avcodec_chroma_pos_to_enum(C.int(x), C.int(y)))
-}
-
-// FindEncoder finds a registered encoder with a matching codec ID.
-// C-Function: avcodec_find_encoder
-func FindEncoder(id CodecId) *Codec {
-	return (*Codec)(C.avcodec_find_encoder((C.enum_AVCodecID)(id)))
-}
-
-// FindEncoderByName finds a registered encoder with the specified name.
-// C-Function: avcodec_find_encoder_by_name
-func FindEncoderByName(c string) *Codec {
-	return (*Codec)(C.avcodec_find_encoder_by_name(C.CString(c)))
 }
 
 // GetCodecTagString returns a string representing the codec tag codec_tag.
@@ -264,22 +202,10 @@ func (f *Frame) FillAudioFrame(c int, s SampleFormat, b *uint8, bs, a int) int {
 	return int(C.avcodec_fill_audio_frame((*C.struct_AVFrame)(f), C.int(c), (C.enum_AVSampleFormat)(s), (*C.uint8_t)(b), C.int(bs), C.int(a)))
 }
 
-// BitsPerSample returns codec bits per sample.
-// C-Function: av_get_bits_per_sample
-func (c CodecId) BitsPerSample() int {
-	return int(C.av_get_bits_per_sample((C.enum_AVCodecID)(c)))
-}
-
 // PcmCodec returns the PCM codec associated with the sample format.
 // C-Function: av_get_pcm_codec
 func (f SampleFormat) PcmCodec(b int) CodecId {
 	return (CodecId)(C.av_get_pcm_codec((C.enum_AVSampleFormat)(f), C.int(b)))
-}
-
-// ExactBitsPerSample returns codec bits per sample.
-// C-Function: av_get_exact_bits_per_sample
-func (c CodecId) ExactBitsPerSample() int {
-	return int(C.av_get_exact_bits_per_sample((C.enum_AVCodecID)(c)))
 }
 
 // FastPaddedMallocz allocates a buffer, reusing the given one if large enough and initializes the data with 0.
@@ -328,26 +254,6 @@ func RegisteredHWAccels() <-chan *HWAccel {
 	return ch
 }
 
-// Type returns the type of the codec.
-// C-Function: avcodec_get_type
-func (c CodecId) Type() avutil.MediaType {
-	return (avutil.MediaType)(C.avcodec_get_type((C.enum_AVCodecID)(c)))
-}
-
-// Name returns the name of the codec.
-// C-Function: avcodec_get_name
-func (c CodecId) Name() string {
-	return C.GoString(C.avcodec_get_name((C.enum_AVCodecID)(c)))
-}
-
-// Descriptor returns the CodecDescriptor of the codec.
-// C-Function: avcodec_descriptor_get
-func (c CodecId) Descriptor() *CodecDescriptor {
-	return (*CodecDescriptor)(C.avcodec_descriptor_get((C.enum_AVCodecID)(c)))
-}
-
-//Iterate over all codec descriptors known to libavcodec.
-
 // nextDescriptor returns the CodecDescriptor registered after the given CodecDescriptor, or the first one if nil is given.
 // C-Function: avcodec_descriptor_next
 func nextDescriptor(d *CodecDescriptor) *CodecDescriptor {
@@ -383,9 +289,4 @@ func RegisteredCodecDescriptors() <-chan *CodecDescriptor {
 // GetDescriptorByName returns the CodecDescriptor identified by the given name.
 func GetDescriptorByName(n string) *CodecDescriptor {
 	return (*CodecDescriptor)(C.avcodec_descriptor_get_by_name(C.CString(n)))
-}
-
-// FromParameters fills the previously initializes CodecContext with the given parameters.
-func (codec *CodecContext) FromParameters(par *CodecParameters) error {
-	return avutil.CodeToError(int(C.avcodec_parameters_to_context((*C.AVCodecContext)(codec), (*C.AVCodecParameters)(par))))
 }

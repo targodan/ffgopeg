@@ -1,5 +1,6 @@
 // Use of this source code is governed by a MIT license that can be found in the LICENSE file.
 // Giorgis (habtom@giorgis.io)
+// Corbatto (luca@corbatto.de)
 
 package avcodec
 
@@ -8,19 +9,21 @@ package avcodec
 import "C"
 import (
 	"unsafe"
+
+	"github.com/targodan/goav/avutil"
 )
 
-func (codecContext *CodecContext) Codec() *Codec {
-	if codecContext.IsOpen() == false {
-		codec := C.avcodec_find_decoder(codecContext.codec_id)
+func (ctxt *CodecContext) Codec() *Codec {
+	if ctxt.IsOpen() == false {
+		codec := C.avcodec_find_decoder(ctxt.codec_id)
 		if codec == nil {
 			panic("Codec not found")
 		}
 
-		C.avcodec_open2((*C.struct_AVCodecContext)(codecContext), codec, nil)
+		C.avcodec_open2((*C.struct_AVCodecContext)(ctxt), codec, nil)
 	}
 
-	return (*Codec)(codecContext.codec)
+	return (*Codec)(ctxt.codec)
 }
 
 func (ctxt *CodecContext) GetPktTimebase() Rational {
@@ -173,4 +176,9 @@ func (p *CodecParser) ParserNext() *CodecParser {
 
 func (p *CodecParser) RegisterCodecParser() {
 	C.av_register_codec_parser((*C.struct_AVCodecParser)(p))
+}
+
+// FromParameters fills the previously initializes CodecContext with the given parameters.
+func (ctxt *CodecContext) FromParameters(par *CodecParameters) error {
+	return avutil.CodeToError(int(C.avcodec_parameters_to_context((*C.AVCodecContext)(ctxt), (*C.AVCodecParameters)(par))))
 }
