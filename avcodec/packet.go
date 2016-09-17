@@ -11,61 +11,60 @@ import (
 )
 
 //Initialize optional fields of a packet with default values.
-func (p *Packet) AvInitPacket() {
+func (p *Packet) Init() {
 	C.av_init_packet((*C.struct_AVPacket)(p))
 }
 
 //Allocate the payload of a packet and initialize its fields with default values.
-func (p *Packet) AvNewPacket(s int) int {
+func (p *Packet) NewPacket(s int) int {
 	return int(C.av_new_packet((*C.struct_AVPacket)(p), C.int(s)))
 }
 
 //Reduce packet size, correctly zeroing padding.
-func (p *Packet) AvShrinkPacket(s int) {
+func (p *Packet) ShrinkPacket(s int) {
 	C.av_shrink_packet((*C.struct_AVPacket)(p), C.int(s))
 }
 
 //Increase packet size, correctly zeroing padding.
-func (p *Packet) AvGrowPacket(s int) int {
+func (p *Packet) GrowPacket(s int) int {
 	return int(C.av_grow_packet((*C.struct_AVPacket)(p), C.int(s)))
 }
 
 //Initialize a reference-counted packet from av_malloc()ed data.
-func (p *Packet) AvPacketFromData(d *uint8, s int) int {
+func (p *Packet) PacketFromData(d *uint8, s int) int {
 	return int(C.av_packet_from_data((*C.struct_AVPacket)(p), (*C.uint8_t)(d), C.int(s)))
 
 }
 
-func (p *Packet) AvDupPacket() int {
+func (p *Packet) DupPacket() int {
 	return int(C.av_dup_packet((*C.struct_AVPacket)(p)))
 
 }
 
 //Copy packet, including contents.
-func (p *Packet) AvCopyPacket(r *Packet) int {
+func (p *Packet) CopyPacket(r *Packet) int {
 	return int(C.av_copy_packet((*C.struct_AVPacket)(p), (*C.struct_AVPacket)(r)))
 
 }
 
 //Copy packet side data.
-func (p *Packet) AvCopyPacketSideData(r *Packet) int {
+func (p *Packet) CopyPacketSideData(r *Packet) int {
 	return int(C.av_copy_packet_side_data((*C.struct_AVPacket)(p), (*C.struct_AVPacket)(r)))
 
 }
 
 //Free a packet.
-func (p *Packet) AvFreePacket() {
+func (p *Packet) FreePacket() {
 	C.av_free_packet((*C.struct_AVPacket)(p))
-
 }
 
 //Allocate new information of a packet.
-func (p *Packet) AvPacketNewSideData(t PacketSideDataType, s int) *uint8 {
+func (p *Packet) PacketNewSideData(t PacketSideDataType, s int) *uint8 {
 	return (*uint8)(C.av_packet_new_side_data((*C.struct_AVPacket)(p), (C.enum_AVPacketSideDataType)(t), C.int(s)))
 }
 
 //Shrink the already allocated side data buffer.
-func (p *Packet) AvPacketShrinkSideData(t PacketSideDataType, s int) int {
+func (p *Packet) PacketShrinkSideData(t PacketSideDataType, s int) int {
 	return int(C.av_packet_shrink_side_data((*C.struct_AVPacket)(p), (C.enum_AVPacketSideDataType)(t), C.int(s)))
 }
 
