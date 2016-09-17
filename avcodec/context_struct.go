@@ -10,69 +10,163 @@ import (
 	"github.com/targodan/goav/avutil"
 )
 
+// ActiveThreadType returns which multithreading methods are used by the codec.
+// C-Attribute: active_thread_type
 func (ctxt *CodecContext) ActiveThreadType() int {
 	return int(ctxt.active_thread_type)
 }
 
-func (ctxt *CodecContext) BFrameStrategy() int {
-	return int(ctxt.b_frame_strategy)
+// BQuantFactor returns the qscale factor between IP and B-frames.
+// C-Attribute: b_quant_factor
+func (ctxt *CodecContext) BQuantFactor() float32 {
+	return float32(ctxt.b_quant_factor)
 }
 
-func (ctxt *CodecContext) BQuantFactor() float64 {
-	return float64(ctxt.b_quant_factor)
+// SetBQuantFactor sets the qscale factor between IP and B-frames.
+// If > 0 then the last P-frame quantizer will be used (q = lastp_q*factor+offset).
+// If < 0 then normal ratecontrol will be done (q = -normal_q*factor+offset)
+// C-Attribute: b_quant_factor
+func (ctxt *CodecContext) SetBQuantFactor(v float32) {
+	ctxt.b_quant_factor = C.float(v)
 }
 
-func (ctxt *CodecContext) BQuantOffset() float64 {
-	return float64(ctxt.b_quant_offset)
+// BQuantOffset return the qscale offset between IP and B-frames.
+// C-Attribute: b_quant_offset
+func (ctxt *CodecContext) BQuantOffset() float32 {
+	return float32(ctxt.b_quant_offset)
 }
 
-func (ctxt *CodecContext) BSensitivity() int {
-	return int(ctxt.b_sensitivity)
+// SetBQuantOffset return the qscale offset between IP and B-frames.
+// C-Attribute: b_quant_offset
+func (ctxt *CodecContext) SetBQuantOffset(v float32) {
+	ctxt.b_quant_offset = C.float(v)
 }
 
+// BidirRefine returns something undocumented...
+// C-Attribute: bidir_refine
 func (ctxt *CodecContext) BidirRefine() int {
 	return int(ctxt.bidir_refine)
 }
 
+// SetBidirRefine sets something undocumented...
+// C-Attribute: bidir_refine
+func (ctxt *CodecContext) SetBidirRefine(v int) {
+	ctxt.bidir_refine = C.int(v)
+}
+
+// BitRate returns the average bit rate.
+// C-Attribute: bit_rate
 func (ctxt *CodecContext) BitRate() int {
 	return int(ctxt.bit_rate)
 }
 
+// SetBitRate sets the average bit rate.
+// C-Attribute: bit_rate
+func (ctxt *CodecContext) SetBitRate(v int) {
+	ctxt.bit_rate = C.int64_t(v)
+}
+
+// BitRateTolerance returns the number of bits the bitstream is allowed to diverge from the reference.
+// C-Attribute: bit_rate_tolerance
 func (ctxt *CodecContext) BitRateTolerance() int {
 	return int(ctxt.bit_rate_tolerance)
 }
 
+// SetBitRateTolerance sets the number of bits the bitstream is allowed to diverge from the reference.
+// The reference can be CBR (for CBR pass 1) or VBR (for VBR pass 2)
+// C-Attribute: bit_rate_tolerance
+func (ctxt *CodecContext) SetBitRateTolerance(v int) {
+	ctxt.bit_rate_tolerance = C.int(v)
+}
+
+// BitsPerCodedSample returns the bits per sample/pixel from the demuxer (needed for huffyuv).
+// C-Attribute: bits_per_coded_sample
 func (ctxt *CodecContext) BitsPerCodedSample() int {
 	return int(ctxt.bits_per_coded_sample)
 }
 
+// SetBitsPerCodedSample set the bits per sample/pixel from the demuxer (needed for huffyuv).
+// C-Attribute: bits_per_coded_sample
+func (ctxt *CodecContext) SetBitsPerCodedSample(v int) {
+	ctxt.bits_per_coded_sample = C.int(v)
+}
+
+// BitsPerRawSample returns the bits per sample/pixel of internal libavcodec pixel/sample format.
+// C-Attribute: bits_per_raw_sample
 func (ctxt *CodecContext) BitsPerRawSample() int {
 	return int(ctxt.bits_per_raw_sample)
 }
 
+// SetBitsPerRawSample sets the bits per sample/pixel of internal libavcodec pixel/sample format.
+// C-Attribute: bits_per_raw_sample
+func (ctxt *CodecContext) SetBitsPerRawSample(v int) {
+	ctxt.bits_per_raw_sample = C.int(v)
+}
+
+// BlockAlign returns the number of bytes per packet if constant and known or 0.
+// Used by some WAV based audio codecs.
+// C-Attribute: block_align
 func (ctxt *CodecContext) BlockAlign() int {
 	return int(ctxt.block_align)
 }
 
-func (ctxt *CodecContext) BrdScale() int {
-	return int(ctxt.brd_scale)
-}
-
+// Channels returns the number of audio channels.
+// C-Attribute: channels
 func (ctxt *CodecContext) Channels() int {
 	return int(ctxt.channels)
 }
 
-func (ctxt *CodecContext) Chromaoffset() int {
-	return int(ctxt.chromaoffset)
-}
-
+// CodedHeight returns the bitstream height.
+// C-Attribute: coded_height
 func (ctxt *CodecContext) CodedHeight() int {
 	return int(ctxt.coded_height)
 }
 
+// SetCodedHeight sets the bitstream height.
+// C-Attribute: coded_height
+func (ctxt *CodecContext) SetCodedHeight(v int) {
+	ctxt.coded_height = C.int(v)
+}
+
+// CodedWidth returns the bitstream width.
+// It may be different from the raw width. When the decoded frame is cropped before being output or lowres is enabled.
+// C-Attribute: coded_width
 func (ctxt *CodecContext) CodedWidth() int {
 	return int(ctxt.coded_width)
 }
+
+// SetCodedWidth sets the bitstream width.
+// It may be different from the raw width. When the decoded frame is cropped before being output or lowres is enabled.
+// C-Attribute: coded_width
+func (ctxt *CodecContext) SetCodedWidth(v int) {
+	ctxt.coded_width = C.int(v)
+}
+
+// Height returns the raw image height.
+// C-Attribute: height
+func (ctxt *CodecContext) Height() int {
+	return int(ctxt.height)
+}
+
+// SetHeight sets the raw image height.
+// C-Attribute: coded_height
+func (ctxt *CodecContext) SetHeight(v int) {
+	ctxt.height = C.int(v)
+}
+
+// Width returns the raw image width.
+// C-Attribute: width
+func (ctxt *CodecContext) Width() int {
+	return int(ctxt.width)
+}
+
+// SetWidth sets the raw image width.
+// C-Attribute: width
+func (ctxt *CodecContext) SetWidth(v int) {
+	ctxt.width = C.int(v)
+}
+
+// TODO: Continue here
 
 func (ctxt *CodecContext) CoderType() int {
 	return int(ctxt.coder_type)
@@ -176,10 +270,6 @@ func (ctxt *CodecContext) HasBFrames() int {
 
 func (ctxt *CodecContext) HeaderBits() int {
 	return int(ctxt.header_bits)
-}
-
-func (ctxt *CodecContext) Height() int {
-	return int(ctxt.height)
 }
 
 func (ctxt *CodecContext) ICount() int {
@@ -480,10 +570,6 @@ func (ctxt *CodecContext) TicksPerFrame() int {
 
 func (ctxt *CodecContext) Trellis() int {
 	return int(ctxt.trellis)
-}
-
-func (ctxt *CodecContext) Width() int {
-	return int(ctxt.width)
 }
 
 func (ctxt *CodecContext) WorkaroundBugs() int {
