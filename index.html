@@ -8,6 +8,8 @@
         background-color: white;
         color: black;
 
+        overflow-y: scroll;
+
         text-align: center;
     }
 
@@ -28,7 +30,7 @@
         margin-top: 2.5em;
         margin-left: auto;
         margin-right: auto;
-        max-width: 50%;
+        width: 50%;
         text-align: left;
     }
 
@@ -117,7 +119,7 @@
         if(!foundSomething) {
             var result = $resultContainer.clone();
             result.addClass("failure");
-            result.text("Could not find any results. Sorry.");
+            result.html("<p>Could not find any results.</p><p>Either what you are looking for is deprecated or not yet supported. Please consider opening an <a href=\"https://github.com/targodan/goav/issues\">issue</a>.</p>");
             $('#results').append(result);
         }
 
@@ -160,6 +162,9 @@
 <body>
     <h1>FFmpeg to goav</h1>
     <input id="search" class="preview" type="text" />
+    <noscript>
+        Sorry pal, this only works with JavaScript enabled.
+    </noscript>
     <div id="searching"></div>
     <div id="results">
     </div>
