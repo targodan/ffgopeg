@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        font-size: 14pt;
+        background-color: white;
+        color: black;
+
+        text-align: center;
+    }
+
+    input {
+        width: 450px;
+        font-size: 1em;
+        padding: 0.3em;
+    }
+
+    #searching {
+        display: none;
+        margin-top: 1em;
+        margin-bottom: 1em;
+    }
+
+    #results {
+        font-size: 12pt;
+        margin-top: 2.5em;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 50%;
+        text-align: left;
+    }
+
+    pre {
+        background-color: #c7c7c7;
+        border-radius: 0.1em;
+        padding: 0.5em;
+    }
+
+    .result {
+        margin-top: 2em;
+    }
+
+    .preview {
+        color: #bababa;
+    }
+
+    .failure {
+        color: darkred;
+    }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="data.js"></script>
+    <script>
+    ABORT_SEARCH = false;
+    SEARCH_IS_ACTIVE = false;
+    var previewText = "Enter an ffmpeg function or struct member...";
+    var $resultContainer = $("<div class=\"result\"><h2></h2></div>");
+
+    searchingIndex = 1;
+    setInterval(function() {
+        var text = "Searching";
+        var i = 0;
+        for(; i < searchingIndex % 4; ++i) {
+            text += ".";
+        }
+        for(; i < 3; ++i) {
+            text += "&nbsp;";
+        }
+        $('#searching').html(text);
+        ++searchingIndex;
+    }, 800);
+
+    function setSelectionRange(input, selectionStart, selectionEnd) {
+        if(input.setSelectionRange) {
+            input.focus();
+            input.setSelectionRange(selectionStart, selectionEnd);
+        } else if(input.createTextRange) {
+            var range = input.createTextRange();
+            range.collapse(true);
+            range.moveEnd('character', selectionEnd);
+            range.moveStart('character', selectionStart);
+            range.select();
+        }
+    }
+
+    function clearResults() {
+        $('#results').children().detach();
+    }
+
+    function searchAndDisplay(searchtext) {
+        while(SEARCH_IS_ACTIVE) {}
+        SEARCH_IS_ACTIVE = true;
+        $('#searching').show();
+
+        var foundSomething = false;
+        for(var i = 0; i < DATA.length; ++i) {
+            if(ABORT_SEARCH) {
+                ABORT_SEARCH = false;
+                SEARCH_IS_ACTIVE = false;
+                $('#searching').hide();
+                return;
+            }
+
+            if(DATA[i].ffmpeg.toUpperCase().indexOf(searchtext.toUpperCase()) !== -1) {
+                foundSomething = true;
+                for(var j = 0; j < DATA[i].goRep.length; ++j) {
+                    var result = $resultContainer.clone();
+                    result.children("h2").text(DATA[i].ffmpeg + " ➡️ "+DATA[i].goRep[j].name);
+                    result.append(DATA[i].goRep[j].doc);
+                    $('#results').append(result);
+                }
+            }
+        }
+
+        if(!foundSomething) {
+            var result = $resultContainer.clone();
+            result.addClass("failure");
+            result.text("Could not find any results. Sorry.");
+            $('#results').append(result);
+        }
+
+        $('#searching').hide();
+        SEARCH_IS_ACTIVE = false;
+    }
+
+    $(document).ready(function() {
+        var $search = $('#search');
+        $search.val(previewText);
+        setSelectionRange($search[0], 0, 0);
+        $search.on('click', function() {
+            if($search.val() === previewText) {
+                setSelectionRange($search[0], 0, 0);
+            }
+        });
+        $search.on('keydown', function() {
+            if($search.val() === previewText) {
+                $search.val("");
+                $search.removeClass("preview");
+            }
+        });
+        $search.on('input', function() {
+            if($search.val().trim() === "") {
+                $search.val(previewText);
+                setSelectionRange($search[0], 0, 0);
+                $search.addClass("preview");
+            } else if($search.val() !== previewText) {
+                if(SEARCH_IS_ACTIVE) {
+                    ABORT_SEARCH = true;
+                }
+                clearResults();
+                var searchtext = $search.val();
+                setTimeout(function() { searchAndDisplay(searchtext); }, 0);
+            }
+        });
+    });
+    </script>
+</head>
+<body>
+    <h1>FFmpeg to goav</h1>
+    <input id="search" class="preview" type="text" />
+    <div id="searching"></div>
+    <div id="results">
+    </div>
+</body>
+</html>
