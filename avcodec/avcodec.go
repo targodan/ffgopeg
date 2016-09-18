@@ -71,9 +71,9 @@ func nextRegisteredCodec(c *Codec) *Codec {
 //
 // Usage:
 //
-// for codec := range avcodec.RegisteredCodecs() {
-//     // ...
-// }
+//     for codec := range avcodec.RegisteredCodecs() {
+//         // ...
+//     }
 func RegisteredCodecs() <-chan *Codec {
 	ch := make(chan *Codec)
 
@@ -252,11 +252,11 @@ func nextHWAccel(a *HWAccel) *HWAccel {
 //
 // C-Function: av_hwaccel_next
 //
-// Useage:
+// Usage:
 //
-// for hwa := range avcodec.RegisteredHWAccels() {
-//     // ...
-// }
+//     for hwa := range avcodec.RegisteredHWAccels() {
+//         // ...
+//     }
 func RegisteredHWAccels() <-chan *HWAccel {
 	ch := make(chan *HWAccel)
 
@@ -286,11 +286,11 @@ func nextDescriptor(d *CodecDescriptor) *CodecDescriptor {
 //
 // C-Function: avcodec_descriptor_next
 //
-// Useage:
+// Usage:
 //
-// for cc := range avcodec.RegisteredCodecDescriptors() {
-//     // ...
-// }
+//     for cc := range avcodec.RegisteredCodecDescriptors() {
+//         // ...
+//     }
 func RegisteredCodecDescriptors() <-chan *CodecDescriptor {
 	ch := make(chan *CodecDescriptor)
 

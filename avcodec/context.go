@@ -207,11 +207,11 @@ func nextParser(p *CodecParser) *CodecParser {
 // RegisteredCodecParsers returns a channel which can be used to iterate over the registered CodecParser.
 // C-Function: av_parser_next
 //
-// Useage:
+// Usage:
 //
-// for cc := range avcodec.RegisteredCodecDescriptors() {
-//     // ...
-// }
+//     for cc := range avcodec.RegisteredCodecDescriptors() {
+//         // ...
+//     }
 func RegisteredCodecParsers() <-chan *CodecParser {
 	ch := make(chan *CodecParser)
 
