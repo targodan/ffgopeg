@@ -12,14 +12,14 @@ import (
 
 // ActiveThreadType returns which multithreading methods are used by the codec.
 //
-// C-Attribute: active_thread_type
+// C-Field: AVCodecContext::active_thread_type
 func (ctxt *CodecContext) ActiveThreadType() int {
 	return int(ctxt.active_thread_type)
 }
 
 // BQuantFactor returns the qscale factor between IP and B-frames.
 //
-// C-Attribute: b_quant_factor
+// C-Field: AVCodecContext::b_quant_factor
 func (ctxt *CodecContext) BQuantFactor() float32 {
 	return float32(ctxt.b_quant_factor)
 }
@@ -28,56 +28,56 @@ func (ctxt *CodecContext) BQuantFactor() float32 {
 // If > 0 then the last P-frame quantizer will be used (q = lastp_q*factor+offset).
 // If < 0 then normal ratecontrol will be done (q = -normal_q*factor+offset)
 //
-// C-Attribute: b_quant_factor
+// C-Field: AVCodecContext::b_quant_factor
 func (ctxt *CodecContext) SetBQuantFactor(v float32) {
 	ctxt.b_quant_factor = C.float(v)
 }
 
 // BQuantOffset return the qscale offset between IP and B-frames.
 //
-// C-Attribute: b_quant_offset
+// C-Field: AVCodecContext::b_quant_offset
 func (ctxt *CodecContext) BQuantOffset() float32 {
 	return float32(ctxt.b_quant_offset)
 }
 
 // SetBQuantOffset return the qscale offset between IP and B-frames.
 //
-// C-Attribute: b_quant_offset
+// C-Field: AVCodecContext::b_quant_offset
 func (ctxt *CodecContext) SetBQuantOffset(v float32) {
 	ctxt.b_quant_offset = C.float(v)
 }
 
 // BidirRefine returns something undocumented...
 //
-// C-Attribute: bidir_refine
+// C-Field: AVCodecContext::bidir_refine
 func (ctxt *CodecContext) BidirRefine() int {
 	return int(ctxt.bidir_refine)
 }
 
 // SetBidirRefine sets something undocumented...
 //
-// C-Attribute: bidir_refine
+// C-Field: AVCodecContext::bidir_refine
 func (ctxt *CodecContext) SetBidirRefine(v int) {
 	ctxt.bidir_refine = C.int(v)
 }
 
 // BitRate returns the average bit rate.
 //
-// C-Attribute: bit_rate
+// C-Field: AVCodecContext::bit_rate
 func (ctxt *CodecContext) BitRate() int {
 	return int(ctxt.bit_rate)
 }
 
 // SetBitRate sets the average bit rate.
 //
-// C-Attribute: bit_rate
+// C-Field: AVCodecContext::bit_rate
 func (ctxt *CodecContext) SetBitRate(v int) {
 	ctxt.bit_rate = C.int64_t(v)
 }
 
 // BitRateTolerance returns the number of bits the bitstream is allowed to diverge from the reference.
 //
-// C-Attribute: bit_rate_tolerance
+// C-Field: AVCodecContext::bit_rate_tolerance
 func (ctxt *CodecContext) BitRateTolerance() int {
 	return int(ctxt.bit_rate_tolerance)
 }
@@ -85,35 +85,35 @@ func (ctxt *CodecContext) BitRateTolerance() int {
 // SetBitRateTolerance sets the number of bits the bitstream is allowed to diverge from the reference.
 // The reference can be CBR (for CBR pass 1) or VBR (for VBR pass 2)
 //
-// C-Attribute: bit_rate_tolerance
+// C-Field: AVCodecContext::bit_rate_tolerance
 func (ctxt *CodecContext) SetBitRateTolerance(v int) {
 	ctxt.bit_rate_tolerance = C.int(v)
 }
 
 // BitsPerCodedSample returns the bits per sample/pixel from the demuxer (needed for huffyuv).
 //
-// C-Attribute: bits_per_coded_sample
+// C-Field: AVCodecContext::bits_per_coded_sample
 func (ctxt *CodecContext) BitsPerCodedSample() int {
 	return int(ctxt.bits_per_coded_sample)
 }
 
 // SetBitsPerCodedSample set the bits per sample/pixel from the demuxer (needed for huffyuv).
 //
-// C-Attribute: bits_per_coded_sample
+// C-Field: AVCodecContext::bits_per_coded_sample
 func (ctxt *CodecContext) SetBitsPerCodedSample(v int) {
 	ctxt.bits_per_coded_sample = C.int(v)
 }
 
 // BitsPerRawSample returns the bits per sample/pixel of internal libavcodec pixel/sample format.
 //
-// C-Attribute: bits_per_raw_sample
+// C-Field: AVCodecContext::bits_per_raw_sample
 func (ctxt *CodecContext) BitsPerRawSample() int {
 	return int(ctxt.bits_per_raw_sample)
 }
 
 // SetBitsPerRawSample sets the bits per sample/pixel of internal libavcodec pixel/sample format.
 //
-// C-Attribute: bits_per_raw_sample
+// C-Field: AVCodecContext::bits_per_raw_sample
 func (ctxt *CodecContext) SetBitsPerRawSample(v int) {
 	ctxt.bits_per_raw_sample = C.int(v)
 }
@@ -121,28 +121,28 @@ func (ctxt *CodecContext) SetBitsPerRawSample(v int) {
 // BlockAlign returns the number of bytes per packet if constant and known or 0.
 // Used by some WAV based audio codecs.
 //
-// C-Attribute: block_align
+// C-Field: AVCodecContext::block_align
 func (ctxt *CodecContext) BlockAlign() int {
 	return int(ctxt.block_align)
 }
 
 // Channels returns the number of audio channels.
 //
-// C-Attribute: channels
+// C-Field: AVCodecContext::channels
 func (ctxt *CodecContext) Channels() int {
 	return int(ctxt.channels)
 }
 
 // CodedHeight returns the bitstream height.
 //
-// C-Attribute: coded_height
+// C-Field: AVCodecContext::coded_height
 func (ctxt *CodecContext) CodedHeight() int {
 	return int(ctxt.coded_height)
 }
 
 // SetCodedHeight sets the bitstream height.
 //
-// C-Attribute: coded_height
+// C-Field: AVCodecContext::coded_height
 func (ctxt *CodecContext) SetCodedHeight(v int) {
 	ctxt.coded_height = C.int(v)
 }
@@ -150,7 +150,7 @@ func (ctxt *CodecContext) SetCodedHeight(v int) {
 // CodedWidth returns the bitstream width.
 // It may be different from the raw width. When the decoded frame is cropped before being output or lowres is enabled.
 //
-// C-Attribute: coded_width
+// C-Field: AVCodecContext::coded_width
 func (ctxt *CodecContext) CodedWidth() int {
 	return int(ctxt.coded_width)
 }
@@ -158,105 +158,105 @@ func (ctxt *CodecContext) CodedWidth() int {
 // SetCodedWidth sets the bitstream width.
 // It may be different from the raw width. When the decoded frame is cropped before being output or lowres is enabled.
 //
-// C-Attribute: coded_width
+// C-Field: AVCodecContext::coded_width
 func (ctxt *CodecContext) SetCodedWidth(v int) {
 	ctxt.coded_width = C.int(v)
 }
 
 // Height returns the raw image height.
 //
-// C-Attribute: height
+// C-Field: AVCodecContext::height
 func (ctxt *CodecContext) Height() int {
 	return int(ctxt.height)
 }
 
 // SetHeight sets the raw image height.
 //
-// C-Attribute: coded_height
+// C-Field: AVCodecContext::coded_height
 func (ctxt *CodecContext) SetHeight(v int) {
 	ctxt.height = C.int(v)
 }
 
 // Width returns the raw image width.
 //
-// C-Attribute: width
+// C-Field: AVCodecContext::width
 func (ctxt *CodecContext) Width() int {
 	return int(ctxt.width)
 }
 
 // SetWidth sets the raw image width.
 //
-// C-Attribute: width
+// C-Field: AVCodecContext::width
 func (ctxt *CodecContext) SetWidth(v int) {
 	ctxt.width = C.int(v)
 }
 
 // CompressionLevel returns the compression level.
 //
-// C-Attribute: compression_level
+// C-Field: AVCodecContext::compression_level
 func (ctxt *CodecContext) CompressionLevel() int {
 	return int(ctxt.compression_level)
 }
 
 // SetCompressionLevel sets the compression level.
 //
-// C-Attribute: compression_level
+// C-Field: AVCodecContext::compression_level
 func (ctxt *CodecContext) SetCompressionLevel(v int) {
 	ctxt.compression_level = C.int(v)
 }
 
 // Cutoff returns the audio cutoff bandwidth (0 means "automatic")
 //
-// C-Attribute: cutoff
+// C-Field: AVCodecContext::cutoff
 func (ctxt *CodecContext) Cutoff() int {
 	return int(ctxt.cutoff)
 }
 
 // SetCutoff sets the audio cutoff bandwidth (0 means "automatic")
 //
-// C-Attribute: cutoff
+// C-Field: AVCodecContext::cutoff
 func (ctxt *CodecContext) SetCutoff(v int) {
 	ctxt.cutoff = C.int(v)
 }
 
 // DarkMasking returns the darkness masking (0 means "disabled")
 //
-// C-Attribute: dark_masking
+// C-Field: AVCodecContext::dark_masking
 func (ctxt *CodecContext) DarkMasking() float32 {
 	return float32(ctxt.dark_masking)
 }
 
 // SetDarkMasking sets the darkness masking (0 means "disabled")
 //
-// C-Attribute: dark_masking
+// C-Field: AVCodecContext::dark_masking
 func (ctxt *CodecContext) SetDarkMasking(v float32) {
 	ctxt.dark_masking = C.float(v)
 }
 
 // DctAlgo returns the DCT algorithm, see FF_DCT_*.
 //
-// C-Attribute: dct_algo
+// C-Field: AVCodecContext::dct_algo
 func (ctxt *CodecContext) DctAlgo() int {
 	return int(ctxt.dct_algo)
 }
 
 // SetDctAlgo sets the DCT algorithm, see FF_DCT_*.
 //
-// C-Attribute: dct_algo
+// C-Field: AVCodecContext::dct_algo
 func (ctxt *CodecContext) SetDctAlgo(v int) {
 	ctxt.dct_algo = C.int(v)
 }
 
 // Debug returns... the documentation only says "debug"
 //
-// C-Attribute: debug
+// C-Field: AVCodecContext::debug
 func (ctxt *CodecContext) Debug() int {
 	return int(ctxt.debug)
 }
 
 // SetDebug sets... the documentation only says "debug"
 //
-// C-Attribute: debug
+// C-Field: AVCodecContext::debug
 func (ctxt *CodecContext) SetDebug(v int) {
 	ctxt.debug = C.int(v)
 }
@@ -264,7 +264,7 @@ func (ctxt *CodecContext) SetDebug(v int) {
 // DebugMv returns... the documentation only says "debug"
 // Code outside libavcodec should access this field using AVOptions.
 //
-// C-Attribute: debug_mv
+// C-Field: AVCodecContext::debug_mv
 func (ctxt *CodecContext) DebugMv() int {
 	return int(ctxt.debug_mv)
 }
@@ -272,7 +272,7 @@ func (ctxt *CodecContext) DebugMv() int {
 // SetDebugMv sets... the documentation only says "debug"
 // Code outside libavcodec should access this field using AVOptions.
 //
-// C-Attribute: debug_mv
+// C-Field: AVCodecContext::debug_mv
 func (ctxt *CodecContext) SetDebugMv(v int) {
 	ctxt.debug_mv = C.int(v)
 }
@@ -287,7 +287,7 @@ func (ctxt *CodecContext) SetDebugMv(v int) {
 //
 // For decoding, this is the number of samples the decoder needs to output before the decoder's output is valid. When seeking, you should start decoding this many samples prior to your desired seek point.
 //
-// C-Attribute: delay
+// C-Field: AVCodecContext::delay
 func (ctxt *CodecContext) Delay() int {
 	return int(ctxt.delay)
 }
@@ -302,21 +302,21 @@ func (ctxt *CodecContext) Delay() int {
 //
 // For decoding, this is the number of samples the decoder needs to output before the decoder's output is valid. When seeking, you should start decoding this many samples prior to your desired seek point.
 //
-// C-Attribute: delay
+// C-Field: AVCodecContext::delay
 func (ctxt *CodecContext) SetDelay(v int) {
 	ctxt.delay = C.int(v)
 }
 
 // DiaSize returns ME diamod size and shape.
 //
-// C-Attribute: dia_size
+// C-Field: AVCodecContext::dia_size
 func (ctxt *CodecContext) DiaSize() int {
 	return int(ctxt.dia_size)
 }
 
 // SetDiaSize sets ME diamod size and shape.
 //
-// C-Attribute: dia_size
+// C-Field: AVCodecContext::dia_size
 func (ctxt *CodecContext) SetDiaSize(v int) {
 	ctxt.dia_size = C.int(v)
 }
@@ -324,7 +324,7 @@ func (ctxt *CodecContext) SetDiaSize(v int) {
 // ErrRecognition returns the error recognition.
 // It may misdetect some more or less valid parts as errors.
 //
-// C-Attribute: err_recognition
+// C-Field: AVCodecContext::err_recognition
 func (ctxt *CodecContext) ErrRecognition() int {
 	return int(ctxt.err_recognition)
 }
@@ -332,56 +332,56 @@ func (ctxt *CodecContext) ErrRecognition() int {
 // SetErrRecognition sets the error recognition.
 // It may misdetect some more or less valid parts as errors.
 //
-// C-Attribute: err_recognition
+// C-Field: AVCodecContext::err_recognition
 func (ctxt *CodecContext) SetErrRecognition(v int) {
 	ctxt.err_recognition = C.int(v)
 }
 
 // ErrorConcealment returns error concealment flags.
 //
-// C-Attribute: error_concealment
+// C-Field: AVCodecContext::error_concealment
 func (ctxt *CodecContext) ErrorConcealment() int {
 	return int(ctxt.error_concealment)
 }
 
 // SetErrorConcealment sets error concealment flags.
 //
-// C-Attribute: error_concealment
+// C-Field: AVCodecContext::error_concealment
 func (ctxt *CodecContext) SetErrorConcealment(v int) {
 	ctxt.error_concealment = C.int(v)
 }
 
 // ExtradataSize returns the extradata size.
 //
-// C-Attribute: extradata_size
+// C-Field: AVCodecContext::extradata_size
 func (ctxt *CodecContext) ExtradataSize() int {
 	return int(ctxt.extradata_size)
 }
 
 // Flags returns the flags AV_CODEC_FLAG_*.
 //
-// C-Attribute: flags
+// C-Field: AVCodecContext::flags
 func (ctxt *CodecContext) Flags() int {
 	return int(ctxt.flags)
 }
 
 // SetFlags set the flags AV_CODEC_FLAG_*.
 //
-// C-Attribute: flags
+// C-Field: AVCodecContext::flags
 func (ctxt *CodecContext) SetFlags() int {
 	return int(ctxt.flags)
 }
 
 // Flags2 returns the flags AV_CODEC_FLAG2_*.
 //
-// C-Attribute: flags2
+// C-Field: AVCodecContext::flags2
 func (ctxt *CodecContext) Flags2() int {
 	return int(ctxt.flags2)
 }
 
 // SetFlags2 sets the flags AV_CODEC_FLAG2_*.
 //
-// C-Attribute: flags2
+// C-Field: AVCodecContext::flags2
 func (ctxt *CodecContext) SetFlags2(v int) {
 	ctxt.flags2 = C.int(v)
 }
@@ -391,7 +391,7 @@ func (ctxt *CodecContext) SetFlags2(v int) {
 // Decoding: Total number of frames returned from the decoder so far.
 // Encoding: Total number of frames passed to the encoder so far.
 //
-// C-Attribute: frame_number
+// C-Field: AVCodecContext::frame_number
 func (ctxt *CodecContext) FrameNumber() int {
 	return int(ctxt.frame_number)
 }
@@ -401,7 +401,7 @@ func (ctxt *CodecContext) FrameNumber() int {
 // Encoding: Set by libavcodec in avcodec_open2(). Each submitted frame except the last must contain exactly frame_size samples per channel. May be 0 when the codec has AV_CODEC_CAP_VARIABLE_FRAME_SIZE set, then the frame size is not restricted.
 // Decoding: May be set by some decoders to indicate constant frame size.
 //
-// C-Attribute: frame_size
+// C-Field: AVCodecContext::frame_size
 func (ctxt *CodecContext) FrameSize() int {
 	return int(ctxt.frame_size)
 }
@@ -420,14 +420,14 @@ func (ctxt *CodecContext) SetGlobalQuality(v int) {
 
 // GopSize returns the number of pictures in a group of pictures, or 0 for intra_only.
 //
-// C-Attribute: gop_size
+// C-Field: AVCodecContext::gop_size
 func (ctxt *CodecContext) GopSize() int {
 	return int(ctxt.gop_size)
 }
 
 // SetGopSize sets the number of pictures in a group of pictures, or 0 for intra_only.
 //
-// C-Attribute: gop_size
+// C-Field: AVCodecContext::gop_size
 func (ctxt *CodecContext) SetGopSize(v int) {
 	ctxt.gop_size = C.int(v)
 }
@@ -436,7 +436,7 @@ func (ctxt *CodecContext) SetGopSize(v int) {
 //
 // For MPEG-2 it is 1 IPB or 0 low delay IP.
 //
-// C-Attribute: has_b_frames
+// C-Field: AVCodecContext::has_b_frames
 func (ctxt *CodecContext) HasBFrames() int {
 	return int(ctxt.has_b_frames)
 }
@@ -445,7 +445,7 @@ func (ctxt *CodecContext) HasBFrames() int {
 // If > 0 then the last P-frame quantizer will be used (q = lastp_q * factor + offset).
 // If < 0 then normal ratecontrol will be done (q = -normal_q * factor + offset).
 //
-// C-Attribute: i_quant_factor
+// C-Field: AVCodecContext::i_quant_factor
 func (ctxt *CodecContext) IQuantFactor() float32 {
 	return float32(ctxt.i_quant_factor)
 }
@@ -454,63 +454,63 @@ func (ctxt *CodecContext) IQuantFactor() float32 {
 // If > 0 then the last P-frame quantizer will be used (q = lastp_q * factor + offset).
 // If < 0 then normal ratecontrol will be done (q = -normal_q * factor + offset).
 //
-// C-Attribute: i_quant_factor
+// C-Field: AVCodecContext::i_quant_factor
 func (ctxt *CodecContext) SetIQuantFactor(v float32) {
 	ctxt.i_quant_factor = C.float(v)
 }
 
 // IQuantOffset returns the qscale offset between P and I-frames.
 //
-// C-Attribute: i_quant_offset
+// C-Field: AVCodecContext::i_quant_offset
 func (ctxt *CodecContext) IQuantOffset() float32 {
 	return float32(ctxt.i_quant_offset)
 }
 
 // SetIQuantOffset sets the qscale offset between P and I-frames.
 //
-// C-Attribute: i_quant_offset
+// C-Field: AVCodecContext::i_quant_offset
 func (ctxt *CodecContext) SetIQuantOffset(v float32) {
 	ctxt.i_quant_offset = C.float(v)
 }
 
 // IdctAlgo returns the IDCT algorithm, see FF_IDCT_*.
 //
-// C-Attribute: idct_algo
+// C-Field: AVCodecContext::idct_algo
 func (ctxt *CodecContext) IdctAlgo() int {
 	return int(ctxt.idct_algo)
 }
 
 // SetIdctAlgo sets the IDCT algorithm, see FF_IDCT_*.
 //
-// C-Attribute: idct_algo
+// C-Field: AVCodecContext::idct_algo
 func (ctxt *CodecContext) SetIdctAlgo(v int) {
 	ctxt.idct_algo = C.int(v)
 }
 
 // IldctCmp returns the interlaced DCT comparison function.
 //
-// C-Attribute: ildct_cmp
+// C-Field: AVCodecContext::ildct_cmp
 func (ctxt *CodecContext) IldctCmp() int {
 	return int(ctxt.ildct_cmp)
 }
 
 // SetIldctCmp sets the interlaced DCT comparison function.
 //
-// C-Attribute: ildct_cmp
+// C-Field: AVCodecContext::ildct_cmp
 func (ctxt *CodecContext) SetIldctCmp(v int) {
 	ctxt.ildct_cmp = C.int(v)
 }
 
 // IntraDcPrecision returns the precision of the intra DC coefficient - 8.
 //
-// C-Attribute: intra_dc_precision
+// C-Field: AVCodecContext::intra_dc_precision
 func (ctxt *CodecContext) IntraDcPrecision() int {
 	return int(ctxt.intra_dc_precision)
 }
 
 // SetIntraDcPrecision sets the precision of the intra DC coefficient - 8.
 //
-// C-Attribute: intra_dc_precision
+// C-Field: AVCodecContext::intra_dc_precision
 func (ctxt *CodecContext) SetIntraDcPrecision(v int) {
 	ctxt.intra_dc_precision = C.int(v)
 }

@@ -5,35 +5,35 @@ package avcodec
 
 // CodecType returns the general type of the encoded data.
 //
-// C-Attribute: codec_type
+// C-Field: AVCodecParameters::codec_type
 func (c CodecParameters) CodecType() MediaType {
 	return MediaType(c.codec_type)
 }
 
 // CodecID returns the id of the codec.
 //
-// C-Attribute: codec_id
+// C-Field: AVCodecParameters::codec_id
 func (c CodecParameters) CodecID() CodecId {
 	return CodecId(c.codec_id)
 }
 
 // CodecTag returns additional information about the codec (corrensponds to the AVI FOURCC).
 //
-// C-Attribute: codec_tag
+// C-Field: AVCodecParameters::codec_tag
 func (c CodecParameters) CodecTag() uint32 {
 	return uint32(c.codec_tag)
 }
 
 // Format returns the pixel/sample format of video/audio data.
 //
-// C-Attribute: format
+// C-Field: AVCodecParameters::format
 func (c CodecParameters) Format() int {
 	return int(c.format)
 }
 
 // BitRate returns the average bitrate of the encoded data (in bits per second).
 //
-// C-Attribute: bit_rate
+// C-Field: AVCodecParameters::bit_rate
 func (c CodecParameters) BitRate() int64 {
 	return int64(c.bit_rate)
 }
@@ -44,7 +44,7 @@ func (c CodecParameters) BitRate() int64 {
 //
 // This could be for example 4 for ADPCM For PCM formats this matches bits_per_raw_sample. Can be 0
 //
-// C-Attribute: bits_per_coded_sample
+// C-Field: AVCodecParameters::bits_per_coded_sample
 func (c CodecParameters) BitsPerCodedSample() int {
 	return int(c.bits_per_coded_sample)
 }
@@ -55,35 +55,35 @@ func (c CodecParameters) BitsPerCodedSample() int {
 //
 // For ADPCM this might be 12 or 16 or similar Can be 0
 //
-// C-Attribute: bits_per_raw_sample
+// C-Field: AVCodecParameters::bits_per_raw_sample
 func (c CodecParameters) BitsPerRawSample() int {
 	return int(c.bits_per_raw_sample)
 }
 
 // Profile returns the codec-specific bitstream restrictions that the stream conforms to.
 //
-// C-Attribute: profile
+// C-Field: AVCodecParameters::profile
 func (c CodecParameters) Profile() int {
 	return int(c.profile)
 }
 
 // Level returns something undocumented...
 //
-// C-Attribute: level
+// C-Field: AVCodecParameters::level
 func (c CodecParameters) Level() int {
 	return int(c.level)
 }
 
 // Width returns the width of the video frame in pixels.
 //
-// C-Attribute: width
+// C-Field: AVCodecParameters::width
 func (c CodecParameters) Width() int {
 	return int(c.width)
 }
 
 // Height returns the height of the video frame in pixels.
 //
-// C-Attribute: height
+// C-Field: AVCodecParameters::height
 func (c CodecParameters) Height() int {
 	return int(c.height)
 }
@@ -92,56 +92,56 @@ func (c CodecParameters) Height() int {
 //
 // When the aspect ratio is unknown / undefined, the numerator should be set to 0 (the denominator may have any value).
 //
-// C-Attribute: sample_aspect_ratio
+// C-Field: AVCodecParameters::sample_aspect_ratio
 func (c CodecParameters) SampleAspectRatio() Rational {
 	return Rational(c.sample_aspect_ratio)
 }
 
 // FieldOrder returns the order of the fields in interlaced video.
 //
-// C-Attribute: field_order
+// C-Field: AVCodecParameters::field_order
 func (c CodecParameters) FieldOrder() FieldOrder {
 	return FieldOrder(c.field_order)
 }
 
 // ColorRange returns additional colorspace characteristics.
 //
-// C-Attribute: color_range
+// C-Field: AVCodecParameters::color_range
 func (c CodecParameters) ColorRange() ColorRange {
 	return ColorRange(c.color_range)
 }
 
 // ColorPrimaries returns something undocumented...
 //
-// C-Attribute: color_primaries
+// C-Field: AVCodecParameters::color_primaries
 func (c CodecParameters) ColorPrimaries() ColorPrimaries {
 	return ColorPrimaries(c.color_primaries)
 }
 
 // ColorTrc returns something undocumented...
 //
-// C-Attribute: color_trc
+// C-Field: AVCodecParameters::color_trc
 func (c CodecParameters) ColorTrc() ColorTransferCharacteristic {
 	return ColorTransferCharacteristic(c.color_trc)
 }
 
 // ColorSpace returns something undocumented...
 //
-// C-Attribute: color_space
+// C-Field: AVCodecParameters::color_space
 func (c CodecParameters) ColorSpace() ColorSpace {
 	return ColorSpace(c.color_space)
 }
 
 // ChromaLocation returns something undocumented...
 //
-// C-Attribute: chroma_location
+// C-Field: AVCodecParameters::chroma_location
 func (c CodecParameters) ChromaLocation() ChromaLocation {
 	return ChromaLocation(c.chroma_location)
 }
 
 // VideoDelay returns the number of delayed frames.
 //
-// C-Attribute: video_delay
+// C-Field: AVCodecParameters::video_delay
 func (c CodecParameters) VideoDelay() int {
 	return int(c.video_delay)
 }
@@ -149,21 +149,21 @@ func (c CodecParameters) VideoDelay() int {
 // ChannelLayout returns the channel layout bitmask.
 // May be 0 if the channel layout is unknown or unspecified, otherwise the number of bits set bmust be equal to the channels field.
 //
-// C-Attribute: channel_layout
+// C-Field: AVCodecParameters::channel_layout
 func (c CodecParameters) ChannelLayout() uint64 {
 	return uint64(c.channel_layout)
 }
 
 // Channels return the number of audio channels.
 //
-// C-Attribute: channels
+// C-Field: AVCodecParameters::channels
 func (c CodecParameters) Channels() int {
 	return int(c.channels)
 }
 
 // SampleRate returns the number of audio samples per second.
 //
-// C-Attribute: sample_rate
+// C-Field: AVCodecParameters::sample_rate
 func (c CodecParameters) SampleRate() int {
 	return int(c.sample_rate)
 }
@@ -172,7 +172,7 @@ func (c CodecParameters) SampleRate() int {
 //
 // Corresponds to nBlockAlign in WAVEFORMATEX.
 //
-// C-Attribute: block_align
+// C-Field: AVCodecParameters::block_align
 func (c CodecParameters) BlockAlign() int {
 	return int(c.block_align)
 }
@@ -180,28 +180,28 @@ func (c CodecParameters) BlockAlign() int {
 // FrameSize returns the audio frame size, if known.
 // Required by some formats to be static.
 //
-// C-Attribute: frame_size
+// C-Field: AVCodecParameters::frame_size
 func (c CodecParameters) FrameSize() int {
 	return int(c.frame_size)
 }
 
 // InitialPadding returns the amount of padding (in samples) inserted by the encoder at the beginning of the audio. I.e. this number of leading decoded samples must be discarded by the caller to get the original audio without leading padding.
 //
-// C-Attribute: initial_padding
+// C-Field: AVCodecParameters::initial_padding
 func (c CodecParameters) InitialPadding() int {
 	return int(c.initial_padding)
 }
 
 // TrailingPadding returns the amount of padding (in samples) appended by the encoder to the end of the audio. I.e. this number of decoded samples must be discarded by the caller from the end of the stream to get the original audio without any trailing padding.
 //
-// C-Attribute: trailing_padding
+// C-Field: AVCodecParameters::trailing_padding
 func (c CodecParameters) TrailingPadding() int {
 	return int(c.trailing_padding)
 }
 
 // SeekPreroll returns the number of sample to skip after a discontinuity.
 //
-// C-Attribute: seek_preroll
+// C-Field: AVCodecParameters::seek_preroll
 func (c CodecParameters) SeekPreroll() int {
 	return int(c.seek_preroll)
 }
