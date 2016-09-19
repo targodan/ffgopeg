@@ -43,13 +43,15 @@ func (ctxt *CodecContext) SetCodecDescriptor(d *CodecDescriptor) {
 	C.av_codec_set_codec_descriptor((*C.struct_AVCodecContext)(ctxt), (*C.struct_AVCodecDescriptor)(d))
 }
 
-// Lowres returns something undocumented.
+// Lowres returns the low resolution decoding.
+// 1 equals 1/2 size. 2 equals 1/4 size.
 // C-Function: av_codec_get_lowres
 func (ctxt *CodecContext) Lowres() int {
 	return int(C.av_codec_get_lowres((*C.struct_AVCodecContext)(ctxt)))
 }
 
-// SetLowres sets something undocumented.
+// SetLowres sets the low resolution decoding.
+// 1 equals 1/2 size. 2 equals 1/4 size.
 // C-Function: av_codec_set_lowres
 func (ctxt *CodecContext) SetLowres(i int) {
 	C.av_codec_set_lowres((*C.struct_AVCodecContext)(ctxt), C.int(i))
