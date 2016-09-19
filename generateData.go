@@ -30,7 +30,7 @@ type GoRepresentation struct {
 var cRepMatcher *regexp.Regexp
 
 func init() {
-	cRepMatcher = regexp.MustCompile("C-(?:Function|Attribute|Method|Member): ([a-zA-Z0-9_]+)")
+	cRepMatcher = regexp.MustCompile("C-(?:Function|Attribute|Method|Member|Field): ([a-zA-Z0-9_.:->]+)")
 }
 
 func extractCRepresentation(str string) (string, bool) {
