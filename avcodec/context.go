@@ -149,8 +149,8 @@ func (ctxt *CodecContext) EncodeSubtitle(b *uint8, bs int, s *Subtitle) int {
 
 // DefaultGetFormat is undocumented...
 // C-Function: avcodec_default_get_format
-func (ctxt *CodecContext) DefaultGetFormat(f *PixelFormat) PixelFormat {
-	return (PixelFormat)(C.avcodec_default_get_format((*C.struct_AVCodecContext)(ctxt), (*C.enum_AVPixelFormat)(f)))
+func (ctxt *CodecContext) DefaultGetFormat(f *avutil.PixelFormat) avutil.PixelFormat {
+	return (avutil.PixelFormat)(C.avcodec_default_get_format((*C.struct_AVCodecContext)(ctxt), (*C.enum_AVPixelFormat)(f)))
 }
 
 // FlushBuffers resets the internal decoder state / flush internal buffers.

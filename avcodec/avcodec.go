@@ -54,7 +54,6 @@ type (
 	Discard                     C.enum_AVDiscard
 	FieldOrder                  C.enum_AVFieldOrder
 	PacketSideDataType          C.enum_AVPacketSideDataType
-	PixelFormat                 C.enum_AVPixelFormat
 	SampleFormat                C.enum_AVSampleFormat
 )
 

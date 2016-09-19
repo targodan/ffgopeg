@@ -1,5 +1,6 @@
 // Use of this source code is governed by a MIT license that can be found in the LICENSE file.
 // Giorgis (habtom@giorgis.io)
+// Corbatto (luca@corbatto.de)
 
 package avcodec
 
@@ -1351,14 +1352,14 @@ func (ctxt *CodecContext) SetFieldOrder(v FieldOrder) {
 // PixFmt returns the pixel format, see AV_PIX_FMT_xxx.
 //
 // C-Field: AVCodecContext::pix_fmt
-func (ctxt *CodecContext) PixFmt() PixelFormat {
-	return (PixelFormat)(ctxt.pix_fmt)
+func (ctxt *CodecContext) PixFmt() avutil.PixelFormat {
+	return (avutil.PixelFormat)(ctxt.pix_fmt)
 }
 
 // SetPixFmt sets the pixel format, see AV_PIX_FMT_xxx.
 //
 // C-Field: AVCodecContext::pix_fmt
-func (ctxt *CodecContext) SetPixFmt(v PixelFormat) {
+func (ctxt *CodecContext) SetPixFmt(v avutil.PixelFormat) {
 	ctxt.pix_fmt = C.enum_AVPixelFormat(v)
 }
 
