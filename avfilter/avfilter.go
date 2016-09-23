@@ -1,5 +1,6 @@
 // Use of this source code is governed by a MIT license that can be found in the LICENSE file.
 // Giorgis (habtom@giorgis.io)
+// Corbatto (luca@corbatto.de)
 
 //Package avfilter contains methods that deal with ffmpeg filters
 //filters in the same linear chain are separated by commas, and distinct linear chains of filters are separated by semicolons.
@@ -13,6 +14,8 @@ package avfilter
 import "C"
 import (
 	"unsafe"
+
+	"github.com/targodan/goav/avutil"
 )
 
 type (
@@ -27,102 +30,156 @@ type (
 	MediaType     C.enum_AVMediaType
 )
 
-//Return the LIBAvFILTER_VERSION_INT constant.
-func AvfilterVersion() uint {
+// Version returns the LIBAVFILTER_VERSION_INT constant.
+//
+// C-Function: avfilter_version
+func Version() uint {
 	return uint(C.avfilter_version())
 }
 
-//Return the libavfilter build-time configuration.
-func AvfilterConfiguration() string {
+// Configuration returns the libavfilter build-time configuration.
+//
+// C-Function: avfilter_configuration
+func Configuration() string {
 	return C.GoString(C.avfilter_configuration())
 }
 
-//Return the libavfilter license.
-func AvfilterLicense() string {
+// License returns the libavfilter license.
+//
+// C-Function: avfilter_license
+func License() string {
 	return C.GoString(C.avfilter_license())
 }
 
-//Get the number of elements in a NULL-terminated array of FilterPads (e.g.
-func AvfilterFilterPadCount(p *FilterPad) int {
-	return int(C.avfilter_pad_count((*C.struct_AVFilterPad)(p)))
+// FilterPadCount gets the number of elements in a NULL-terminated array of FilterPads (e.g.
+//
+// C-Function: avfilter_pad_count
+func FilterPadCount() ([]*FilterPad, error) {
+	var p *FilterPad
+	err := avutil.CodeToError(int(C.avfilter_pad_count((*C.struct_AVFilterPad)(p))))
+	arr := (*[1 << 30]*FilterPad)(unsafe.Pointer(p))
+	var len int
+	// Determine length
+	for i, v := range arr {
+		if v == nil {
+			len = i
+			break
+		}
+	}
+	return arr[:len:len], err
 }
 
-//Get the name of an FilterPad.
-func AvfilterFilterPadGetName(p *FilterPad, pi int) string {
-	return C.GoString(C.avfilter_pad_get_name((*C.struct_AVFilterPad)(p), C.int(pi)))
+// Name returns the name of a FilterPad.
+//
+// C-Function: avfilter_pad_get_name
+func (p *FilterPad) Name() string {
+	return C.GoString(C.avfilter_pad_get_name((*C.struct_AVFilterPad)(p), C.int(0)))
 }
 
-//Get the type of an FilterPad.
-func AvfilterFilterPadGetType(p *FilterPad, pi int) MediaType {
-	return (MediaType)(C.avfilter_pad_get_type((*C.struct_AVFilterPad)(p), C.int(pi)))
+// Type returns the type of an FilterPad.
+//
+// C-Function: avfilter_pad_get_type
+func (p *FilterPad) Type() MediaType {
+	return (MediaType)(C.avfilter_pad_get_type((*C.struct_AVFilterPad)(p), C.int(0)))
 }
 
-//FilterLink two filters together.
-func AvfilterFilterLink(s *FilterContext, sp uint, d *FilterContext, dp uint) int {
-	return int(C.avfilter_link((*C.struct_AVFilterContext)(s), C.uint(sp), (*C.struct_AVFilterContext)(d), C.uint(dp)))
+// Link links two filters together.
+//
+// C-Function: avfilter_link
+func Link(s *FilterContext, sp uint, d *FilterContext, dp uint) error {
+	return avutil.CodeToError(int(C.avfilter_link((*C.struct_AVFilterContext)(s), C.uint(sp), (*C.struct_AVFilterContext)(d), C.uint(dp))))
 }
 
 //Free the link in *link, and set its pointer to NULL.
-func AvfilterFilterLinkFree(l **FilterLink) {
-	C.avfilter_link_free((**C.struct_AVFilterLink)(unsafe.Pointer(l)))
+//
+// C-Function: avfilter_link_free
+func (l *FilterLink) Free() {
+	C.avfilter_link_free((**C.struct_AVFilterLink)(unsafe.Pointer(&l)))
 }
 
-//Get the number of channels of a link.
-func AvfilterFilterLinkGetChannels(l *FilterLink) int {
+// Channels returns the number of channels of a link.
+//
+// C-Function:
+func (l *FilterLink) Channels() int {
 	return int(C.avfilter_link_get_channels((*C.struct_AVFilterLink)(l)))
 }
 
-//Set the closed field of a link.
-func AvfilterFilterLinkSetClosed(l *FilterLink, c int) {
-	C.avfilter_link_set_closed((*C.struct_AVFilterLink)(l), C.int(c))
+// ConfigLinks negotiates the media format, dimensions, etc of all inputs to a filter.
+//
+// C-Function: avfilter_config_links
+func (f *FilterContext) ConfigLinks() error {
+	return avutil.CodeToError(int(C.avfilter_config_links((*C.struct_AVFilterContext)(f))))
 }
 
-//Negotiate the media format, dimensions, etc of all inputs to a filter.
-func AvfilterConfigFilterLinks(f *FilterContext) int {
-	return int(C.avfilter_config_links((*C.struct_AVFilterContext)(f)))
+// ProcessCommand makes the filter instance process a command.
+//
+// C-Function: avfilter_process_command
+func (f *FilterContext) ProcessCommand(cmd, arg string, fl int) (string, error) {
+	const buffsize = 128
+	var buf [buffsize]byte
+	err := avutil.CodeToError(int(C.avfilter_process_command((*C.struct_AVFilterContext)(f), C.CString(cmd), C.CString(arg), (*C.char)(unsafe.Pointer(&buf[0])), C.int(buffsize), C.int(fl))))
+	return string(buf[:]), err
 }
 
-//Make the filter instance process a command.
-func AvfilterProcessCommand(f *FilterContext, cmd, arg, res string, l, fl int) int {
-	return int(C.avfilter_process_command((*C.struct_AVFilterContext)(f), C.CString(cmd), C.CString(arg), C.CString(res), C.int(l), C.int(fl)))
-}
-
-//Initialize the filter system.
-func AvfilterRegisterAll() {
+// RegisterAll initializes the filter system.
+//
+// C-Function: avfilter_register_all
+func RegisterAll() {
 	C.avfilter_register_all()
 }
 
-//Initialize a filter with the supplied parameters.
-func (ctx *FilterContext) AvfilterInitStr(args string) int {
-	return int(C.avfilter_init_str((*C.struct_AVFilterContext)(ctx), C.CString(args)))
+// NewFilterContext initializes a new filter with the supplied parameters.
+//
+// C-Function: avfilter_init_str
+func NewFilterContext(args string) (*FilterContext, error) {
+	var f *FilterContext
+	err := avutil.CodeToError(int(C.avfilter_init_str((*C.struct_AVFilterContext)(f), C.CString(args))))
+	return f, err
 }
 
-//Initialize a filter with the supplied dictionary of options.
-func (ctx *FilterContext) AvfilterInitDict(o **Dictionary) int {
-	return int(C.avfilter_init_dict((*C.struct_AVFilterContext)(ctx), (**C.struct_AVDictionary)(unsafe.Pointer(o))))
+// NewFilterContextDict initializes a filter with the supplied dictionary of options.
+//
+// C-Function: avfilter_init_dict
+func NewFilterContextDict(o *Dictionary) (*FilterContext, error) {
+	var f *FilterContext
+	err := avutil.CodeToError(int(C.avfilter_init_dict((*C.struct_AVFilterContext)(f), (**C.struct_AVDictionary)(unsafe.Pointer(&o)))))
+	return f, err
 }
 
-//Free a filter context.
-func (ctx *FilterContext) AvfilterFree() {
+// Free frees a filter context.
+//
+// C-Function: avfilter_free
+func (ctx *FilterContext) Free() {
 	C.avfilter_free((*C.struct_AVFilterContext)(ctx))
 }
 
-//Insert a filter in the middle of an existing link.
-func AvfilterInsertFilter(l *FilterLink, f *FilterContext, fsi, fdi uint) int {
-	return int(C.avfilter_insert_filter((*C.struct_AVFilterLink)(l), (*C.struct_AVFilterContext)(f), C.uint(fsi), C.uint(fdi)))
+// InsertFilter insterts a filter in the middle of an existing link.
+//
+// C-Function: avfilter_insert_filter
+func (l *FilterLink) InsertFilter(f *FilterContext, fsi, fdi uint) error {
+	return avutil.CodeToError(int(C.avfilter_insert_filter((*C.struct_AVFilterLink)(l), (*C.struct_AVFilterContext)(f), C.uint(fsi), C.uint(fdi))))
 }
 
-//avfilter_get_class
-func AvfilterGetClass() *Class {
+// GetClass returns the Class.
+//
+// C-Function: avfilter_get_class
+func GetClass() *Class {
 	return (*Class)(C.avfilter_get_class())
 }
 
-//Allocate a single FilterInOut entry.
-func AvfilterInoutAlloc() *FilterInOut {
+// NewFilterInOut allocates a single FilterInOut entry.
+//
+// C-Function: avfilter_inout_alloc
+func NewFilterInOut() *FilterInOut {
 	return (*FilterInOut)(C.avfilter_inout_alloc())
 }
 
-//Free the supplied list of FilterInOut and set *inout to NULL.
-func AvfilterInoutFree(i *FilterInOut) {
-	C.avfilter_inout_free((**C.struct_AVFilterInOut)(unsafe.Pointer(i)))
+// Free frees the supplied list of FilterInOut and set *inout to NULL.
+//
+// C-Function: avfilter_inout_free
+func (i *FilterInOut) Free() {
+	var tmp [2]*FilterInOut
+	tmp[0] = i
+	tmp[1] = nil
+	C.avfilter_inout_free((**C.struct_AVFilterInOut)(unsafe.Pointer(&tmp[0])))
 }
