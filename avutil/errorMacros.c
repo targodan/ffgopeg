@@ -1,3 +1,6 @@
+// Use of this source code is governed by a MIT license that can be found in the LICENSE file.
+// Corbatto (luca@corbatto.de)
+
 #include <libavutil/avutil.h>
 #include <stdlib.h>
 #include "errorMacros.h"
@@ -33,3 +36,5 @@ const int macro_AVERROR_HTTP_NOT_FOUND = AVERROR_HTTP_NOT_FOUND;
 const int macro_AVERROR_HTTP_OTHER_4XX = AVERROR_HTTP_OTHER_4XX;
 const int macro_AVERROR_HTTP_SERVER_ERROR = AVERROR_HTTP_SERVER_ERROR;
 const int macro_AV_ERROR_MAX_STRING_SIZE = AV_ERROR_MAX_STRING_SIZE;
+
+const int macro_EAGAIN = EAGAIN;

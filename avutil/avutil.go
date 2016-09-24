@@ -1,5 +1,6 @@
 // Use of this source code is governed by a MIT license that can be found in the LICENSE file.
 // Giorgis (habtom@giorgis.io)
+// Corbatto (luca@corbatto.de)
 
 // Package avutil is a utility library to aid portable multimedia programming.
 // It contains safe portable string functions, random number generators, data structures,

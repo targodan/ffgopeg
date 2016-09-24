@@ -1,3 +1,6 @@
+// Use of this source code is governed by a MIT license that can be found in the LICENSE file.
+// Corbatto (luca@corbatto.de)
+
 #ifndef ERROR_MACROS_H
 #define ERROR_MACROS_H
 
@@ -30,5 +33,7 @@ extern const int macro_AVERROR_HTTP_NOT_FOUND;
 extern const int macro_AVERROR_HTTP_OTHER_4XX;
 extern const int macro_AVERROR_HTTP_SERVER_ERROR;
 extern const int macro_AV_ERROR_MAX_STRING_SIZE;
+
+extern const int macro_EAGAIN;
 
 #endif

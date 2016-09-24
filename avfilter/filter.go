@@ -21,8 +21,8 @@ func GetFilterByName(n string) *Filter {
 // Register registers a filter.
 //
 // C-Function: avfilter_register
-func (f *Filter) Register() error {
-	return avutil.CodeToError(int(C.avfilter_register((*C.struct_AVFilter)(f))))
+func (f *Filter) Register() avutil.ReturnCode {
+	return avutil.NewReturnCode(int(C.avfilter_register((*C.struct_AVFilter)(f))))
 }
 
 func filterNext(f *Filter) *Filter {

@@ -15,8 +15,8 @@ import (
 
 // Open initializes the CodecContext to use the given Codec.
 // C-Function: avcodec_open2
-func (ctxt *CodecContext) Open(codec *Codec, d **Dictionary) error {
-	return avutil.CodeToError(int(C.avcodec_open2((*C.struct_AVCodecContext)(ctxt), (*C.struct_AVCodec)(codec), (**C.struct_AVDictionary)(unsafe.Pointer(d)))))
+func (ctxt *CodecContext) Open(codec *Codec, d **Dictionary) avutil.ReturnCode {
+	return avutil.NewReturnCode(int(C.avcodec_open2((*C.struct_AVCodecContext)(ctxt), (*C.struct_AVCodec)(codec), (**C.struct_AVDictionary)(unsafe.Pointer(d)))))
 }
 
 // PktTimebase returns the packet timebase.
@@ -109,26 +109,26 @@ func (ctxt *CodecContext) AlignDimensions2(w, h *int, l []int) {
 
 // SendPacket sends a packet as input to the decoder.
 // C-Function: avcodec_send_packet
-func (ctxt *CodecContext) SendPacket(pkt *Packet) error {
-	return avutil.CodeToError(int(C.avcodec_send_packet((*C.struct_AVCodecContext)(ctxt), (*C.struct_AVPacket)(pkt))))
+func (ctxt *CodecContext) SendPacket(pkt *Packet) avutil.ReturnCode {
+	return avutil.NewReturnCode(int(C.avcodec_send_packet((*C.struct_AVCodecContext)(ctxt), (*C.struct_AVPacket)(pkt))))
 }
 
 // ReceiveFrame receives a frame as output from the decoder.
 // C-Function: avcodec_receive_frame
-func (ctxt *CodecContext) ReceiveFrame(frame *Frame) error {
-	return avutil.CodeToError(int(C.avcodec_receive_frame((*C.struct_AVCodecContext)(ctxt), (*C.struct_AVFrame)(frame))))
+func (ctxt *CodecContext) ReceiveFrame(frame *Frame) avutil.ReturnCode {
+	return avutil.NewReturnCode(int(C.avcodec_receive_frame((*C.struct_AVCodecContext)(ctxt), (*C.struct_AVFrame)(frame))))
 }
 
 // SendFrame sends a frame as input to the encoder.
 // C-Function: avcodec_send_frame
-func (ctxt *CodecContext) SendFrame(frame *Frame) error {
-	return avutil.CodeToError(int(C.avcodec_send_frame((*C.struct_AVCodecContext)(ctxt), (*C.struct_AVFrame)(frame))))
+func (ctxt *CodecContext) SendFrame(frame *Frame) avutil.ReturnCode {
+	return avutil.NewReturnCode(int(C.avcodec_send_frame((*C.struct_AVCodecContext)(ctxt), (*C.struct_AVFrame)(frame))))
 }
 
 // ReceivePacket receives a packet as output from the decoder.
 // C-Function: avcodec_receive_packet
-func (ctxt *CodecContext) ReceivePacket(pkt *Packet) error {
-	return avutil.CodeToError(int(C.avcodec_receive_packet((*C.struct_AVCodecContext)(ctxt), (*C.struct_AVPacket)(pkt))))
+func (ctxt *CodecContext) ReceivePacket(pkt *Packet) avutil.ReturnCode {
+	return avutil.NewReturnCode(int(C.avcodec_receive_packet((*C.struct_AVCodecContext)(ctxt), (*C.struct_AVPacket)(pkt))))
 }
 
 // DecodeSubtitle decodes a subtitle message.
@@ -238,6 +238,6 @@ func RegisterCodecParser(p *CodecParser) {
 }
 
 // FromParameters fills the previously initializes CodecContext with the given parameters.
-func (ctxt *CodecContext) FromParameters(par *CodecParameters) error {
-	return avutil.CodeToError(int(C.avcodec_parameters_to_context((*C.AVCodecContext)(ctxt), (*C.AVCodecParameters)(par))))
+func (ctxt *CodecContext) FromParameters(par *CodecParameters) avutil.ReturnCode {
+	return avutil.NewReturnCode(int(C.avcodec_parameters_to_context((*C.AVCodecContext)(ctxt), (*C.AVCodecParameters)(par))))
 }

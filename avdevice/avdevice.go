@@ -63,15 +63,15 @@ func RegisterAll() {
 // AppToDevControlMessage sends control message from application to device.
 //
 // C-Function: avdevice_app_to_dev_control_message
-func AppToDevControlMessage(s *FormatContext, m AppToDevMessageType, data []interface{}) error {
-	return avutil.CodeToError(int(C.avdevice_app_to_dev_control_message((*C.struct_AVFormatContext)(s), (C.enum_AVAppToDevMessageType)(m), unsafe.Pointer(&data[0]), C.size_t(len(data)))))
+func AppToDevControlMessage(s *FormatContext, m AppToDevMessageType, data []interface{}) avutil.ReturnCode {
+	return avutil.NewReturnCode(int(C.avdevice_app_to_dev_control_message((*C.struct_AVFormatContext)(s), (C.enum_AVAppToDevMessageType)(m), unsafe.Pointer(&data[0]), C.size_t(len(data)))))
 }
 
 // DevToAppControlMessage sends control message from device to application.
 //
 // C-Function: avdevice_dev_to_app_control_message
-func DevToAppControlMessage(fcxt *FormatContext, m DevToAppMessageType, data []interface{}) error {
-	return avutil.CodeToError(int(C.avdevice_dev_to_app_control_message((*C.struct_AVFormatContext)(fcxt), (C.enum_AVDevToAppMessageType)(m), unsafe.Pointer(&data[0]), C.size_t(len(data)))))
+func DevToAppControlMessage(fcxt *FormatContext, m DevToAppMessageType, data []interface{}) avutil.ReturnCode {
+	return avutil.NewReturnCode(int(C.avdevice_dev_to_app_control_message((*C.struct_AVFormatContext)(fcxt), (C.enum_AVDevToAppMessageType)(m), unsafe.Pointer(&data[0]), C.size_t(len(data)))))
 }
 
 // CapabilitiesCreate initializes capabilities probing API based on AvOption API.
@@ -79,8 +79,8 @@ func DevToAppControlMessage(fcxt *FormatContext, m DevToAppMessageType, data []i
 // CapabilitiesFree() must be called when query capabilities API is not used anymore.
 //
 // C-Function: avdevice_capabilities_create
-func CapabilitiesCreate(c **DeviceCapabilitiesQuery, s *FormatContext, d **Dictionary) error {
-	return avutil.CodeToError(int(C.avdevice_capabilities_create((**C.struct_AVDeviceCapabilitiesQuery)(unsafe.Pointer(c)), (*C.struct_AVFormatContext)(s), (**C.struct_AVDictionary)(unsafe.Pointer(d)))))
+func CapabilitiesCreate(c **DeviceCapabilitiesQuery, s *FormatContext, d **Dictionary) avutil.ReturnCode {
+	return avutil.NewReturnCode(int(C.avdevice_capabilities_create((**C.struct_AVDeviceCapabilitiesQuery)(unsafe.Pointer(c)), (*C.struct_AVFormatContext)(s), (**C.struct_AVDictionary)(unsafe.Pointer(d)))))
 }
 
 // CapabilitiesFree frees resources created by CapabilitiesCreate()
@@ -93,9 +93,9 @@ func CapabilitiesFree(c **DeviceCapabilitiesQuery, s *FormatContext) {
 // ListDevices lists devices.
 //
 // C-Function: avdevice_list_devices
-func ListDevices(s *FormatContext) (*DeviceInfoList, error) {
+func ListDevices(s *FormatContext) (*DeviceInfoList, avutil.ReturnCode) {
 	var dl *DeviceInfoList
-	err := avutil.CodeToError(int(C.avdevice_list_devices((*C.struct_AVFormatContext)(s), (**C.struct_AVDeviceInfoList)(unsafe.Pointer(&dl)))))
+	err := avutil.NewReturnCode(int(C.avdevice_list_devices((*C.struct_AVFormatContext)(s), (**C.struct_AVDeviceInfoList)(unsafe.Pointer(&dl)))))
 	return dl, err
 }
 

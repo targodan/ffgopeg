@@ -47,9 +47,9 @@ func (g *FilterGraph) SetAutoConvert(flags uint) {
 // GraphConfig checks validity and configure all the links and formats in the graph.
 //
 // C-Function: avfilter_graph_config
-func (g *FilterGraph) GraphConfig() (interface{}, error) {
+func (g *FilterGraph) GraphConfig() (interface{}, avutil.ReturnCode) {
 	var logCtx interface{}
-	err := avutil.CodeToError(int(C.avfilter_graph_config((*C.struct_AVFilterGraph)(g), unsafe.Pointer(&logCtx))))
+	err := avutil.NewReturnCode(int(C.avfilter_graph_config((*C.struct_AVFilterGraph)(g), unsafe.Pointer(&logCtx))))
 	return logCtx, err
 }
 
@@ -63,36 +63,36 @@ func (g *FilterGraph) Free() {
 // Parse adds a graph described by a string to a graph.
 //
 // C-Function: avfilter_graph_parse
-func (g *FilterGraph) Parse(f string, i, o *FilterInOut, l int) error {
-	return avutil.CodeToError(int(C.avfilter_graph_parse((*C.struct_AVFilterGraph)(g), C.CString(f), (*C.struct_AVFilterInOut)(i), (*C.struct_AVFilterInOut)(o), unsafe.Pointer(&l))))
+func (g *FilterGraph) Parse(f string, i, o *FilterInOut, l int) avutil.ReturnCode {
+	return avutil.NewReturnCode(int(C.avfilter_graph_parse((*C.struct_AVFilterGraph)(g), C.CString(f), (*C.struct_AVFilterInOut)(i), (*C.struct_AVFilterInOut)(o), unsafe.Pointer(&l))))
 }
 
 // ParsePtr adds a graph described by a string to a graph.
 //
 // C-Function: avfilter_graph_parse_ptr
-func (g *FilterGraph) ParsePtr(f string, i, o **FilterInOut, l int) error {
-	return avutil.CodeToError(int(C.avfilter_graph_parse_ptr((*C.struct_AVFilterGraph)(g), C.CString(f), (**C.struct_AVFilterInOut)(unsafe.Pointer(i)), (**C.struct_AVFilterInOut)(unsafe.Pointer(o)), unsafe.Pointer(&l))))
+func (g *FilterGraph) ParsePtr(f string, i, o **FilterInOut, l int) avutil.ReturnCode {
+	return avutil.NewReturnCode(int(C.avfilter_graph_parse_ptr((*C.struct_AVFilterGraph)(g), C.CString(f), (**C.struct_AVFilterInOut)(unsafe.Pointer(i)), (**C.struct_AVFilterInOut)(unsafe.Pointer(o)), unsafe.Pointer(&l))))
 }
 
 // Parse2 adds a graph described by a string to a graph.
 //
 // C-Function: avfilter_graph_parse2
-func (g *FilterGraph) Parse2(f string, i, o **FilterInOut) error {
-	return avutil.CodeToError(int(C.avfilter_graph_parse2((*C.struct_AVFilterGraph)(g), C.CString(f), (**C.struct_AVFilterInOut)(unsafe.Pointer(i)), (**C.struct_AVFilterInOut)(unsafe.Pointer(o)))))
+func (g *FilterGraph) Parse2(f string, i, o **FilterInOut) avutil.ReturnCode {
+	return avutil.NewReturnCode(int(C.avfilter_graph_parse2((*C.struct_AVFilterGraph)(g), C.CString(f), (**C.struct_AVFilterInOut)(unsafe.Pointer(i)), (**C.struct_AVFilterInOut)(unsafe.Pointer(o)))))
 }
 
 // SendCommand sends a command to one or more filter instances.
 //
 // C-Function: avfilter_graph_send_command
-func (g *FilterGraph) SendCommand(t, cmd, arg, res string, resl, f int) error {
-	return avutil.CodeToError(int(C.avfilter_graph_send_command((*C.struct_AVFilterGraph)(g), C.CString(t), C.CString(cmd), C.CString(arg), C.CString(res), C.int(resl), C.int(f))))
+func (g *FilterGraph) SendCommand(t, cmd, arg, res string, resl, f int) avutil.ReturnCode {
+	return avutil.NewReturnCode(int(C.avfilter_graph_send_command((*C.struct_AVFilterGraph)(g), C.CString(t), C.CString(cmd), C.CString(arg), C.CString(res), C.int(resl), C.int(f))))
 }
 
 // QueueCommand queues a command for one or more filter instances.
 //
 // C-Function: avfilter_graph_queue_command
-func (g *FilterGraph) QueueCommand(t, cmd, arg string, f int, ts C.double) error {
-	return avutil.CodeToError(int(C.avfilter_graph_queue_command((*C.struct_AVFilterGraph)(g), C.CString(t), C.CString(cmd), C.CString(arg), C.int(f), ts)))
+func (g *FilterGraph) QueueCommand(t, cmd, arg string, f int, ts C.double) avutil.ReturnCode {
+	return avutil.NewReturnCode(int(C.avfilter_graph_queue_command((*C.struct_AVFilterGraph)(g), C.CString(t), C.CString(cmd), C.CString(arg), C.int(f), ts)))
 }
 
 // Dump dumps a graph into a human-readable string representation.
@@ -105,13 +105,13 @@ func (g *FilterGraph) Dump(options string) string {
 // RequestOldestlink requests a frame on the oldest sink
 //
 // C-Function: avfilter_graph_request_oldest
-func (g *FilterGraph) RequestOldestlink() error {
-	return avutil.CodeToError(int(C.avfilter_graph_request_oldest((*C.struct_AVFilterGraph)(g))))
+func (g *FilterGraph) RequestOldestlink() avutil.ReturnCode {
+	return avutil.NewReturnCode(int(C.avfilter_graph_request_oldest((*C.struct_AVFilterGraph)(g))))
 }
 
 // CreateFilter creates and add a filter instance into an existing graph.
 //
 // C-Function: avfilter_graph_create_filter
-func (g *FilterGraph) CreateFilter(cx **FilterContext, f *Filter, n, a string, o int) error {
-	return avutil.CodeToError(int(C.avfilter_graph_create_filter((**C.struct_AVFilterContext)(unsafe.Pointer(cx)), (*C.struct_AVFilter)(f), C.CString(n), C.CString(a), unsafe.Pointer(&o), (*C.struct_AVFilterGraph)(g))))
+func (g *FilterGraph) CreateFilter(cx **FilterContext, f *Filter, n, a string, o int) avutil.ReturnCode {
+	return avutil.NewReturnCode(int(C.avfilter_graph_create_filter((**C.struct_AVFilterContext)(unsafe.Pointer(cx)), (*C.struct_AVFilter)(f), C.CString(n), C.CString(a), unsafe.Pointer(&o), (*C.struct_AVFilterGraph)(g))))
 }

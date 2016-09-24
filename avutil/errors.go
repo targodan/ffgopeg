@@ -1,19 +1,12 @@
 // Use of this source code is governed by a MIT license that can be found in the LICENSE file.
-// Giorgis (habtom@giorgis.io)
+// Corbatto (luca@corbatto.de)
 
-// Package avutil is a utility library to aid portable multimedia programming.
-// It contains safe portable string functions, random number generators, data structures,
-// additional mathematics functions, cryptography and multimedia related functionality.
-// Some generic features and utilities provided by the libavutil library
 package avutil
 
 //#include <libavutil/error.h>
 //#include "errorMacros.h"
 import "C"
-import (
-	"fmt"
-	"unsafe"
-)
+import "unsafe"
 
 func AVERROR_BSF_NOT_FOUND() int      { return int(C.macro_AVERROR_BSF_NOT_FOUND) }
 func AVERROR_BUG() int                { return int(C.macro_AVERROR_BUG) }
@@ -43,7 +36,12 @@ func AVERROR_HTTP_OTHER_4XX() int     { return int(C.macro_AVERROR_HTTP_OTHER_4X
 func AVERROR_HTTP_SERVER_ERROR() int  { return int(C.macro_AVERROR_HTTP_SERVER_ERROR) }
 func AV_ERROR_MAX_STRING_SIZE() int   { return int(C.macro_AV_ERROR_MAX_STRING_SIZE) }
 
-func AvStrerror(errnum int) string {
+func AVERROR_EAGAIN() int { return AvError(int(C.macro_EAGAIN)) }
+
+// Strerror returns a descriptive string of the given return code.
+//
+// C-Function: av_strerror
+func Strerror(errnum int) string {
 	buf := make([]C.char, AV_ERROR_MAX_STRING_SIZE())
 	if C.av_strerror(C.int(errnum), (*C.char)(unsafe.Pointer(&buf[0])), C.size_t(len(buf))) != 0 {
 		return "UNKNOWN_ERROR"
@@ -51,14 +49,9 @@ func AvStrerror(errnum int) string {
 	return C.GoString((*C.char)(unsafe.Pointer(&buf[0])))
 }
 
+// AvError is a wrapper for the macro AVERROR().
+//
+// C-Macro: AVERROR
 func AvError(code int) int {
 	return int(C.macro_AVERROR(C.int(code)))
-}
-
-func CodeToError(code int) error {
-	if code == 0 {
-		return nil
-	}
-
-	return fmt.Errorf("%s (%d)", AvStrerror(code), code)
 }

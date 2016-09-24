@@ -54,9 +54,9 @@ func License() string {
 // FilterPadCount gets the number of elements in a NULL-terminated array of FilterPads (e.g.
 //
 // C-Function: avfilter_pad_count
-func FilterPadCount() ([]*FilterPad, error) {
+func FilterPadCount() ([]*FilterPad, avutil.ReturnCode) {
 	var p *FilterPad
-	err := avutil.CodeToError(int(C.avfilter_pad_count((*C.struct_AVFilterPad)(p))))
+	err := avutil.NewReturnCode(int(C.avfilter_pad_count((*C.struct_AVFilterPad)(p))))
 	arr := (*[1 << 30]*FilterPad)(unsafe.Pointer(p))
 	var len int
 	// Determine length
@@ -86,8 +86,8 @@ func (p *FilterPad) Type() MediaType {
 // Link links two filters together.
 //
 // C-Function: avfilter_link
-func Link(s *FilterContext, sp uint, d *FilterContext, dp uint) error {
-	return avutil.CodeToError(int(C.avfilter_link((*C.struct_AVFilterContext)(s), C.uint(sp), (*C.struct_AVFilterContext)(d), C.uint(dp))))
+func Link(s *FilterContext, sp uint, d *FilterContext, dp uint) avutil.ReturnCode {
+	return avutil.NewReturnCode(int(C.avfilter_link((*C.struct_AVFilterContext)(s), C.uint(sp), (*C.struct_AVFilterContext)(d), C.uint(dp))))
 }
 
 //Free the link in *link, and set its pointer to NULL.
@@ -107,17 +107,17 @@ func (l *FilterLink) Channels() int {
 // ConfigLinks negotiates the media format, dimensions, etc of all inputs to a filter.
 //
 // C-Function: avfilter_config_links
-func (f *FilterContext) ConfigLinks() error {
-	return avutil.CodeToError(int(C.avfilter_config_links((*C.struct_AVFilterContext)(f))))
+func (f *FilterContext) ConfigLinks() avutil.ReturnCode {
+	return avutil.NewReturnCode(int(C.avfilter_config_links((*C.struct_AVFilterContext)(f))))
 }
 
 // ProcessCommand makes the filter instance process a command.
 //
 // C-Function: avfilter_process_command
-func (f *FilterContext) ProcessCommand(cmd, arg string, fl int) (string, error) {
+func (f *FilterContext) ProcessCommand(cmd, arg string, fl int) (string, avutil.ReturnCode) {
 	const buffsize = 128
 	var buf [buffsize]byte
-	err := avutil.CodeToError(int(C.avfilter_process_command((*C.struct_AVFilterContext)(f), C.CString(cmd), C.CString(arg), (*C.char)(unsafe.Pointer(&buf[0])), C.int(buffsize), C.int(fl))))
+	err := avutil.NewReturnCode(int(C.avfilter_process_command((*C.struct_AVFilterContext)(f), C.CString(cmd), C.CString(arg), (*C.char)(unsafe.Pointer(&buf[0])), C.int(buffsize), C.int(fl))))
 	return string(buf[:]), err
 }
 
@@ -131,18 +131,18 @@ func RegisterAll() {
 // NewFilterContext initializes a new filter with the supplied parameters.
 //
 // C-Function: avfilter_init_str
-func NewFilterContext(args string) (*FilterContext, error) {
+func NewFilterContext(args string) (*FilterContext, avutil.ReturnCode) {
 	var f *FilterContext
-	err := avutil.CodeToError(int(C.avfilter_init_str((*C.struct_AVFilterContext)(f), C.CString(args))))
+	err := avutil.NewReturnCode(int(C.avfilter_init_str((*C.struct_AVFilterContext)(f), C.CString(args))))
 	return f, err
 }
 
 // NewFilterContextDict initializes a filter with the supplied dictionary of options.
 //
 // C-Function: avfilter_init_dict
-func NewFilterContextDict(o *Dictionary) (*FilterContext, error) {
+func NewFilterContextDict(o *Dictionary) (*FilterContext, avutil.ReturnCode) {
 	var f *FilterContext
-	err := avutil.CodeToError(int(C.avfilter_init_dict((*C.struct_AVFilterContext)(f), (**C.struct_AVDictionary)(unsafe.Pointer(&o)))))
+	err := avutil.NewReturnCode(int(C.avfilter_init_dict((*C.struct_AVFilterContext)(f), (**C.struct_AVDictionary)(unsafe.Pointer(&o)))))
 	return f, err
 }
 
@@ -156,8 +156,8 @@ func (ctx *FilterContext) Free() {
 // InsertFilter insterts a filter in the middle of an existing link.
 //
 // C-Function: avfilter_insert_filter
-func (l *FilterLink) InsertFilter(f *FilterContext, fsi, fdi uint) error {
-	return avutil.CodeToError(int(C.avfilter_insert_filter((*C.struct_AVFilterLink)(l), (*C.struct_AVFilterContext)(f), C.uint(fsi), C.uint(fdi))))
+func (l *FilterLink) InsertFilter(f *FilterContext, fsi, fdi uint) avutil.ReturnCode {
+	return avutil.NewReturnCode(int(C.avfilter_insert_filter((*C.struct_AVFilterLink)(l), (*C.struct_AVFilterContext)(f), C.uint(fsi), C.uint(fdi))))
 }
 
 // GetClass returns the Class.

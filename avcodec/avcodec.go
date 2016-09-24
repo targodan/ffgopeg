@@ -172,15 +172,15 @@ func (d *Dictionary) Pack(s *int) *uint8 {
 // UnpackDictionary unpacks a dictionary from side_data.
 //
 // C-Function: av_packet_unpack_dictionary
-func UnpackDictionary(d *uint8, s int, dt **Dictionary) error {
-	return avutil.CodeToError(int(C.av_packet_unpack_dictionary((*C.uint8_t)(d), C.int(s), (**C.struct_AVDictionary)(unsafe.Pointer(dt)))))
+func UnpackDictionary(d *uint8, s int, dt **Dictionary) avutil.ReturnCode {
+	return avutil.NewReturnCode(int(C.av_packet_unpack_dictionary((*C.uint8_t)(d), C.int(s), (**C.struct_AVDictionary)(unsafe.Pointer(dt)))))
 }
 
 // ToChromaPos converts the ChromaLocation to swscale x/y chroma position.
 //
 // C-Function: avcodec_enum_to_chroma_pos
 func (l ChromaLocation) ToChromaPos() (x, y int, err error) {
-	err = avutil.CodeToError(int(C.avcodec_enum_to_chroma_pos((*C.int)(unsafe.Pointer(&x)), (*C.int)(unsafe.Pointer(&y)), (C.enum_AVChromaLocation)(l))))
+	err = avutil.NewReturnCode(int(C.avcodec_enum_to_chroma_pos((*C.int)(unsafe.Pointer(&x)), (*C.int)(unsafe.Pointer(&y)), (C.enum_AVChromaLocation)(l))))
 	return
 }
 
