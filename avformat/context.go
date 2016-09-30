@@ -1,5 +1,6 @@
 // Use of this source code is governed by a MIT license that can be found in the LICENSE file.
 // Giorgis (habtom@giorgis.io)
+// Corbatto (luca@corbatto.de)
 
 package avformat
 
@@ -9,207 +10,330 @@ import "C"
 import (
 	"unsafe"
 
-	"github.com/targodan/goav/avcodec"
 	"github.com/targodan/goav/avutil"
 )
 
-func (s *FormatContext) AvFormatGetProbeScore() int {
+// ProbeScore returns the probe score.
+//
+// C-Function: av_format_get_probe_score
+func (s *FormatContext) ProbeScore() int {
 	return int(C.av_format_get_probe_score((*C.struct_AVFormatContext)(s)))
 }
 
-func (s *FormatContext) AvFormatGetVideoCodec() *Codec {
+// VideoCodec returns the VideoCodec.
+//
+// C-Function: av_format_get_video_codec
+func (s *FormatContext) VideoCodec() *Codec {
 	return (*Codec)(C.av_format_get_video_codec((*C.struct_AVFormatContext)(s)))
 }
 
-func (s *FormatContext) AvFormatSetVideoCodec(c *Codec) {
+// SetVideoCodec sets the video codec.
+//
+// C-Function: av_format_set_video_codec
+func (s *FormatContext) SetVideoCodec(c *Codec) {
 	C.av_format_set_video_codec((*C.struct_AVFormatContext)(s), (*C.struct_AVCodec)(c))
 }
 
-func (s *FormatContext) AvFormatGetAudioCodec() *Codec {
+// AudioCodec returns the audio codec.
+//
+// C-Function: av_format_get_audio_codec
+func (s *FormatContext) AudioCodec() *Codec {
 	return (*Codec)(C.av_format_get_audio_codec((*C.struct_AVFormatContext)(s)))
 }
 
-func (s *FormatContext) AvFormatSetAudioCodec(c *Codec) {
+// SetAudioCodec sets the audio codec.
+//
+// C-Function: av_format_set_audio_codec
+func (s *FormatContext) SetAudioCodec(c *Codec) {
 	C.av_format_set_audio_codec((*C.struct_AVFormatContext)(s), (*C.struct_AVCodec)(c))
 }
 
-func (s *FormatContext) AvFormatGetSubtitleCodec() *Codec {
+// SubtitleCodec returns the subtitle codec.
+//
+// C-Function: av_format_get_subtitle_codec
+func (s *FormatContext) SubtitleCodec() *Codec {
 	return (*Codec)(C.av_format_get_subtitle_codec((*C.struct_AVFormatContext)(s)))
 }
 
-func (s *FormatContext) AvFormatSetSubtitleCodec(c *Codec) {
+// SetSubtitleCodec sets the subtitle codec.
+//
+// C-Function: av_format_set_subtitle_codec
+func (s *FormatContext) SetSubtitleCodec(c *Codec) {
 	C.av_format_set_subtitle_codec((*C.struct_AVFormatContext)(s), (*C.struct_AVCodec)(c))
 }
 
-func (s *FormatContext) AvFormatGetMetadataHeaderPadding() int {
+// MetadataHeaderPadding returns metadata header padding size.
+//
+// C-Function: av_format_get_metadata_header_padding
+func (s *FormatContext) MetadataHeaderPadding() int {
 	return int(C.av_format_get_metadata_header_padding((*C.struct_AVFormatContext)(s)))
 }
 
-func (s *FormatContext) AvFormatSetMetadataHeaderPadding(c int) {
+// SetMetadataHeaderPadding sets metadata header padding size.
+//
+// C-Function: av_format_set_metadata_header_padding
+func (s *FormatContext) SetMetadataHeaderPadding(c int) {
 	C.av_format_set_metadata_header_padding((*C.struct_AVFormatContext)(s), C.int(c))
 }
 
-func (s *FormatContext) AvFormatGetOpaque() {
-	C.av_format_get_opaque((*C.struct_AVFormatContext)(s))
-}
+// Opaque returns... opaqueness???
+//
+// C-Function: av_format_get_opaque
+// func (s *FormatContext) Opaque() *byte {
+// 	return (*byte)(unsafe.Pointer(C.av_format_get_opaque((*C.struct_AVFormatContext)(s))))
+// }
+//
+//
+// C-Function: av_format_set_opaque
+// func (s *FormatContext) AvFormatSetOpaque(o int) {
+// 	C.av_format_set_opaque((*C.struct_AVFormatContext)(s), unsafe.Pointer(&o))
+// }
 
-func (s *FormatContext) AvFormatSetOpaque(o int) {
-	C.av_format_set_opaque((*C.struct_AVFormatContext)(s), unsafe.Pointer(&o))
-}
-
-//This function will cause global side data to be injected in the next packet of each stream as well as after any subsequent seek.
-func (s *FormatContext) AvFormatInjectGlobalSideData() {
+// InjectGlobalSideData will cause global side data to be injected in the next packet of each stream as well as after any subsequent seek.
+//
+// C-Function: av_format_inject_global_side_data
+func (s *FormatContext) InjectGlobalSideData() {
 	C.av_format_inject_global_side_data((*C.struct_AVFormatContext)(s))
 }
 
-//Returns the method used to set ctx->duration.
-func (s *FormatContext) AvFmtCtxGetDurationEstimationMethod() DurationEstimationMethod {
+// DurationEstimationMethod returns the method used to set ctx->duration.
+//
+// C-Function: av_fmt_ctx_get_duration_estimation_method
+func (s *FormatContext) DurationEstimationMethod() DurationEstimationMethod {
 	return (DurationEstimationMethod)(C.av_fmt_ctx_get_duration_estimation_method((*C.struct_AVFormatContext)(s)))
 }
 
-//Free an Context and all its streams.
-func (s *FormatContext) AvformatFreeContext() {
+// Free frees the Context and all its streams.
+//
+// C-Function: avformat_free_context
+func (s *FormatContext) Free() {
 	C.avformat_free_context((*C.struct_AVFormatContext)(s))
 }
 
-//Add a new stream to a media file.
-func (s *FormatContext) AvformatNewStream(c *Codec) *Stream {
+// NewStream adds a new stream to a media file.
+//
+// C-Function: avformat_new_stream
+func (s *FormatContext) NewStream(c *Codec) *Stream {
 	return (*Stream)(C.avformat_new_stream((*C.struct_AVFormatContext)(s), (*C.struct_AVCodec)(c)))
 }
 
-func (s *FormatContext) AvNewProgram(id int) *Program {
+// NewProgram creates a new Program.
+//
+// C-Function: av_new_program
+func (s *FormatContext) NewProgram(id int) *Program {
 	return (*Program)(C.av_new_program((*C.struct_AVFormatContext)(s), C.int(id)))
 }
 
 //Read packets of a media file to get stream information.
-func (s *FormatContext) AvformatFindStreamInfo(d **Dictionary) error {
-	return avutil.CodeToError(int(C.avformat_find_stream_info((*C.struct_AVFormatContext)(s), (**C.struct_AVDictionary)(unsafe.Pointer(d)))))
+//
+// C-Function: avformat_find_stream_info
+func (s *FormatContext) AvformatFindStreamInfo(d **Dictionary) avutil.ReturnCode {
+	return avutil.NewReturnCode(int(C.avformat_find_stream_info((*C.struct_AVFormatContext)(s), (**C.struct_AVDictionary)(unsafe.Pointer(d)))))
 }
 
-//Find the programs which belong to a given stream.
-func (s *FormatContext) AvFindProgramFromStream(l *Program, su int) *Program {
+func (s *FormatContext) findProgramFromStream(l *Program, su int) *Program {
 	return (*Program)(C.av_find_program_from_stream((*C.struct_AVFormatContext)(s), (*C.struct_AVProgram)(l), C.int(su)))
 }
 
-//Find the "best" stream in the file.
-func AvFindBestStream(ic *FormatContext, t avutil.MediaType, ws, rs int, c **Codec, f int) int {
+// IterateProgramsFromStream returns a channel which can be used to iterate over the Programs from the given Stream.
+//
+// Usage:
+//
+//     for i, prog := range fmtCtxt.IterateProgramsFromStream(0) {
+//         // ...
+//     }
+//
+// C-Function: av_find_program_from_stream
+func (s *FormatContext) IterateProgramsFromStream(streamIndex int) <-chan *Program {
+	ch := make(chan *Program)
+	v := s.findProgramFromStream(nil, streamIndex)
+	go func() {
+		for v != nil {
+			ch <- v
+			v = s.findProgramFromStream(v, streamIndex)
+		}
+		close(ch)
+	}()
+
+	return ch
+}
+
+// FindBestStream finds the "best" stream in the file.
+//
+// C-Function: av_find_best_stream
+func FindBestStream(ic *FormatContext, t avutil.MediaType, ws, rs int, c **Codec, f int) int {
 	return int(C.av_find_best_stream((*C.struct_AVFormatContext)(ic), (C.enum_AVMediaType)(t), C.int(ws), C.int(rs), (**C.struct_AVCodec)(unsafe.Pointer(c)), C.int(f)))
 }
 
-//Return the next frame of a stream.
-func (s *FormatContext) AvReadFrame(pkt *avcodec.Packet) int {
-	return int(C.av_read_frame((*C.struct_AVFormatContext)(unsafe.Pointer(s)), (*C.struct_AVPacket)(unsafe.Pointer(pkt))))
+// Return the next frame of a stream.
+//
+// C-Function: Packet
+// func (s *FormatContext) AvReadFrame(pkt *avcodec.Packet) int {
+// 	return int(C.av_read_frame((*C.struct_AVFormatContext)(unsafe.Pointer(s)), (*C.struct_AVPacket)(unsafe.Pointer(pkt))))
+// }
+
+// SeekFrame seeks to the keyframe at timestamp.
+//
+// C-Function: av_seek_frame
+func (s *FormatContext) SeekFrame(stream int, timestamp int64, flags int) avutil.ReturnCode {
+	return avutil.NewReturnCode(int(C.av_seek_frame((*C.struct_AVFormatContext)(s), C.int(stream), C.int64_t(timestamp), C.int(flags))))
 }
 
-//Seek to the keyframe at timestamp.
-func (s *FormatContext) AvSeekFrame(st int, t int64, f int) int {
-	return int(C.av_seek_frame((*C.struct_AVFormatContext)(s), C.int(st), C.int64_t(t), C.int(f)))
+// SeekFile seeks to timestamp.
+//
+// C-Function: avformat_seek_file
+func (s *FormatContext) SeekFile(stream int, minTS, timestamp, maxTS int64, flags int) int {
+	return int(C.avformat_seek_file((*C.struct_AVFormatContext)(s), C.int(stream), C.int64_t(minTS), C.int64_t(timestamp), C.int64_t(maxTS), C.int(flags)))
 }
 
-//Seek to timestamp ts.
-func (s *FormatContext) AvformatSeekFile(si int, mit, ts, mat int64, f int) int {
-	return int(C.avformat_seek_file((*C.struct_AVFormatContext)(s), C.int(si), C.int64_t(mit), C.int64_t(ts), C.int64_t(mat), C.int(f)))
-}
-
-//Start playing a network-based stream (e.g.
-func (s *FormatContext) AvReadPlay() int {
+// ReadPlay starts playing a network-based stream (e.g.
+//
+// C-Function: av_read_play
+func (s *FormatContext) ReadPlay() int {
 	return int(C.av_read_play((*C.struct_AVFormatContext)(s)))
 }
 
-//Pause a network-based stream (e.g.
-func (s *FormatContext) AvReadPause() int {
+// ReadPause pauses a network-based stream (e.g.
+//
+// C-Function: av_read_pause
+func (s *FormatContext) ReadPause() int {
 	return int(C.av_read_pause((*C.struct_AVFormatContext)(s)))
 }
 
-//Close an opened input Context.
-func (s *FormatContext) AvformatCloseInput() {
+// Close closes an opened input Context.
+//
+// C-Function: avformat_close_input
+func (s *FormatContext) Close() {
 	C.avformat_close_input((**C.struct_AVFormatContext)(unsafe.Pointer(&s)))
 }
 
-//Allocate the stream private data and write the stream header to an output media file.
-func (s *FormatContext) AvformatWriteHeader(o **Dictionary) int {
+// WriteHeader allocates the stream private data and write the stream header to an output media file.
+//
+// C-Function: avformat_write_header
+func (s *FormatContext) WriteHeader(o **Dictionary) int {
 	return int(C.avformat_write_header((*C.struct_AVFormatContext)(s), (**C.struct_AVDictionary)(unsafe.Pointer(o))))
 }
 
-//Write a packet to an output media file.
-func (s *FormatContext) AvWriteFrame(pkt *Packet) int {
+// WriteFrame writes a packet to an output media file.
+//
+// C-Function: av_write_frame
+func (s *FormatContext) WriteFrame(pkt *Packet) int {
 	return int(C.av_write_frame((*C.struct_AVFormatContext)(s), (*C.struct_AVPacket)(pkt)))
 }
 
-//Write a packet to an output media file ensuring correct interleaving.
-func (s *FormatContext) AvInterleavedWriteFrame(pkt *Packet) int {
+// InterleavedWriteFrame writes a packet to an output media file ensuring correct interleaving.
+//
+// C-Function: av_interleaved_write_frame
+func (s *FormatContext) InterleavedWriteFrame(pkt *Packet) int {
 	return int(C.av_interleaved_write_frame((*C.struct_AVFormatContext)(s), (*C.struct_AVPacket)(pkt)))
 }
 
-//Write a uncoded frame to an output media file.
-func (s *FormatContext) AvWriteUncodedFrame(si int, f *Frame) int {
+// WriteUncodedFrame writes an uncoded frame to an output media file.
+//
+// C-Function: av_write_uncoded_frame
+func (s *FormatContext) WriteUncodedFrame(si int, f *Frame) int {
 	return int(C.av_write_uncoded_frame((*C.struct_AVFormatContext)(s), C.int(si), (*C.struct_AVFrame)(f)))
 }
 
-//Write a uncoded frame to an output media file.
-func (s *FormatContext) AvInterleavedWriteUncodedFrame(si int, f *Frame) int {
-	return int(C.av_interleaved_write_uncoded_frame((*C.struct_AVFormatContext)(s), C.int(si), (*C.struct_AVFrame)(f)))
+// InterleavedWriteUncodedFrame writes a uncoded frame to an output media file.
+//
+// C-Function: av_interleaved_write_uncoded_frame
+func (s *FormatContext) InterleavedWriteUncodedFrame(stream int, frame *Frame) int {
+	return int(C.av_interleaved_write_uncoded_frame((*C.struct_AVFormatContext)(s), C.int(stream), (*C.struct_AVFrame)(frame)))
 }
 
-//Test whether a muxer supports uncoded frame.
-func (s *FormatContext) AvWriteUncodedFrameQuery(si int) int {
-	return int(C.av_write_uncoded_frame_query((*C.struct_AVFormatContext)(s), C.int(si)))
+// WriteUncodedFrameQuery tests whether a muxer supports uncoded frame.
+//
+// C-Function: av_write_uncoded_frame_query
+func (s *FormatContext) WriteUncodedFrameQuery(stream int) int {
+	return int(C.av_write_uncoded_frame_query((*C.struct_AVFormatContext)(s), C.int(stream)))
 }
 
-//Write the stream trailer to an output media file and free the file private data.
-func (s *FormatContext) AvWriteTrailer() int {
+// WriteTrailer writes the stream trailer to an output media file and free the file private data.
+//
+// C-Function: av_write_trailer
+func (s *FormatContext) WriteTrailer() int {
 	return int(C.av_write_trailer((*C.struct_AVFormatContext)(s)))
 }
 
-//Get timing information for the data currently output.
-func (s *FormatContext) AvGetOutputTimestamp(st int, dts, wall *int) int {
-	return int(C.av_get_output_timestamp((*C.struct_AVFormatContext)(s), C.int(st), (*C.int64_t)(unsafe.Pointer(&dts)), (*C.int64_t)(unsafe.Pointer(&wall))))
+// OutputTimestamp returns timing information for the data currently output.
+//
+// C-Function: av_get_output_timestamp
+func (s *FormatContext) OutputTimestamp(stream int) (dts, wall int, err avutil.ReturnCode) {
+	err = avutil.NewReturnCode(int(C.av_get_output_timestamp((*C.struct_AVFormatContext)(s), C.int(stream), (*C.int64_t)(unsafe.Pointer(&dts)), (*C.int64_t)(unsafe.Pointer(&wall)))))
+	return
 }
 
-func (s *FormatContext) AvFindDefaultStreamIndex() int {
-	return int(C.av_find_default_stream_index((*C.struct_AVFormatContext)(s)))
+// FindDefaultStreamIndex returns the default stream index.
+//
+// C-Function: av_find_default_stream_index
+func (s *FormatContext) FindDefaultStreamIndex() avutil.ReturnCode {
+	return avutil.NewReturnCode(int(C.av_find_default_stream_index((*C.struct_AVFormatContext)(s))))
 }
 
-//Print detailed information about the input or output format, such as duration, bitrate, streams, container, programs, metadata, side data, codec and time base.
-func (s *FormatContext) AvDumpFormat(i int, url string, io int) {
-	C.av_dump_format((*C.struct_AVFormatContext)(unsafe.Pointer(s)), C.int(i), C.CString(url), C.int(io))
+// DumpFormat prints detailed information about the input or output format, such as duration, bitrate, streams, container, programs, metadata, side data, codec and time base.
+//
+// C-Function: av_dump_format
+func (s *FormatContext) DumpFormat(index int, url string, isOutput bool) {
+	io := 0
+	if isOutput {
+		io = 1
+	}
+	C.av_dump_format((*C.struct_AVFormatContext)(unsafe.Pointer(s)), C.int(index), C.CString(url), C.int(io))
 }
 
-//Guess the sample aspect ratio of a frame, based on both the stream and the frame aspect ratio.
-func (s *FormatContext) AvGuessSampleAspectRatio(st *Stream, fr *Frame) Rational {
+// GuessSampleAspectRatio guesses the sample aspect ratio of a frame, based on both the stream and the frame aspect ratio.
+//
+// C-Function: av_guess_sample_aspect_ratio
+func (s *FormatContext) GuessSampleAspectRatio(st *Stream, fr *Frame) Rational {
 	return (Rational)(C.av_guess_sample_aspect_ratio((*C.struct_AVFormatContext)(s), (*C.struct_AVStream)(st), (*C.struct_AVFrame)(fr)))
 }
 
-//Guess the frame rate, based on both the container and codec information.
-func (s *FormatContext) AvGuessFrameRate(st *Stream, fr *Frame) Rational {
+// GuessFrameRate guesses the frame rate, based on both the container and codec information.
+//
+// C-Function: av_guess_frame_rate
+func (s *FormatContext) GuessFrameRate(st *Stream, fr *Frame) Rational {
 	return (Rational)(C.av_guess_frame_rate((*C.struct_AVFormatContext)(s), (*C.struct_AVStream)(st), (*C.struct_AVFrame)(fr)))
 }
 
-//Check if the stream st contained in s is matched by the stream specifier spec.
-func (s *FormatContext) AvformatMatchStreamSpecifier(st *Stream, spec string) int {
+// MatchStreamSpecifier checks if the stream st contained in s is matched by the stream specifier spec.
+//
+// C-Function: avformat_match_stream_specifier
+func (s *FormatContext) MatchStreamSpecifier(st *Stream, spec string) int {
 	return int(C.avformat_match_stream_specifier((*C.struct_AVFormatContext)(s), (*C.struct_AVStream)(st), C.CString(spec)))
 }
 
-func (s *FormatContext) AvformatQueueAttachedPictures() int {
+// QueueAttachedPictures is undocumented.
+//
+// C-Function: avformat_queue_attached_pictures
+func (s *FormatContext) QueueAttachedPictures() int {
 	return int(C.avformat_queue_attached_pictures((*C.struct_AVFormatContext)(s)))
 }
 
 // //av_format_control_message av_format_get_control_message_cb (const Context *s)
+// //
+// C-Function: av_format_get_control_message_cb
 // func (s *FormatContext) AvFormatControlMessage() C.av_format_get_control_message_cb {
 // 	return C.av_format_get_control_message_cb((*C.struct_AVFormatContext)(s))
 // }
 
 // //void av_format_set_control_message_cb (Context *s, av_format_control_message callback)
+// //
+// C-Function: av_format_get_control_message_cb
 // func (s *FormatContext) AvFormatSetControlMessageCb(c AvFormatControlMessage) C.av_format_get_control_message_cb {
 // 	C.av_format_set_control_message_cb((*C.struct_AVFormatContext)(s), (C.struct_AVFormatControlMessage)(c))
 // }
 
 // //Codec * av_format_get_data_codec (const Context *s)
+// //
+// C-Function: av_format_get_data_codec
 // func (s *FormatContext)AvFormatGetDataCodec() *Codec {
 // 	return (*Codec)(C.av_format_get_data_codec((*C.struct_AVFormatContext)(s)))
 // }
 
 // //void av_format_set_data_codec (Context *s, Codec *c)
+// //
+// C-Function: av_format_set_data_codec
 // func (s *FormatContext)AvFormatSetDataCodec( c *Codec) {
 // 	C.av_format_set_data_codec((*C.struct_AVFormatContext)(s), (*C.struct_AVCodec)(c))
 // }
