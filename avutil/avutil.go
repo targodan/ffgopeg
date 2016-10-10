@@ -26,48 +26,66 @@ type (
 	File        C.FILE
 )
 
-//Return the LIBAvUTIL_VERSION_INT constant.
-func AvutilVersion() uint {
+// Version returns the LIBAVUTIL_VERSION_INT constant.
+//
+// C-Function: avutil_version
+func Version() uint {
 	return uint(C.avutil_version())
 }
 
-//Return the libavutil build-time configuration.
-func AvutilConfiguration() string {
+// Configuration returns the libavutil build-time configuration.
+//
+// C-Function: avutil_configuration
+func Configuration() string {
 	return C.GoString(C.avutil_configuration())
 }
 
-//Return the libavutil license.
-func AvutilLicense() string {
+// License returns the libavutil license.
+//
+// C-Function: avutil_license
+func License() string {
 	return C.GoString(C.avutil_license())
 }
 
-//Return a string describing the media_type enum, NULL if media_type is unknown.
-func AvGetMediaTypeString(mt MediaType) string {
+// MediaTypeString returns a string describing the media_type enum, NULL if media_type is unknown.
+//
+// C-Function: av_get_media_type_string
+func MediaTypeString(mt MediaType) string {
 	return C.GoString(C.av_get_media_type_string((C.enum_AVMediaType)(mt)))
 }
 
-//Return a single letter to describe the given picture type pict_type.
-func AvGetPictureTypeChar(pt PictureType) string {
+// PictureTypeChar returns a single letter to describe the given picture type pict_type.
+//
+// C-Function: av_get_picture_type_char
+func PictureTypeChar(pt PictureType) string {
 	return string(C.av_get_picture_type_char((C.enum_AVPictureType)(pt)))
 }
 
-//Return x default pointer in case p is NULL.
-func AvXIfNull(p, x int) {
+// XIfNull returns x default pointer in case p is NULL.
+//
+// C-Function: av_x_if_null
+func XIfNull(p, x int) {
 	C.av_x_if_null(unsafe.Pointer(&p), unsafe.Pointer(&x))
 }
 
-//Compute the length of an integer list.
-func AvIntListLengthForSize(e uint, l int, t uint64) uint {
+// IntListLengthForSize computes the length of an integer list.
+//
+// C-Function: av_int_list_length_for_size
+func IntListLengthForSize(e uint, l int, t uint64) uint {
 	return uint(C.av_int_list_length_for_size(C.uint(e), unsafe.Pointer(&l), (C.uint64_t)(t)))
 }
 
-//Open a file using a UTF-8 filename.
-func AvFopenUtf8(p, m string) *File {
+// FopenUtf8 opens a file using a UTF-8 filename.
+//
+// C-Function: av_fopen_utf8
+func FopenUtf8(p, m string) *File {
 	f := C.av_fopen_utf8(C.CString(p), C.CString(m))
 	return (*File)(f)
 }
 
-//Return the fractional representation of the internal time base.
-func AvGetTimeBaseQ() Rational {
+// TimeBaseQ returns the fractional representation of the internal time base.
+//
+// C-Function: av_get_time_base_q
+func TimeBaseQ() Rational {
 	return (Rational)(C.av_get_time_base_q())
 }

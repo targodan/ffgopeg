@@ -15,109 +15,141 @@ import (
 )
 
 type (
-	AvBuffer            C.struct_AVBuffer
-	AvBufferRef         C.struct_AVBufferRef
-	AvBufferPool        C.struct_AVBufferPool
-	Frame               C.struct_AVFrame
-	AvFrameSideData     C.struct_AVFrameSideData
-	AvFrameSideDataType C.enum_AVFrameSideDataType
+	Buffer            C.struct_AVBuffer
+	BufferRef         C.struct_AVBufferRef
+	BufferPool        C.struct_AVBufferPool
+	Frame             C.struct_AVFrame
+	FrameSideData     C.struct_AVFrameSideData
+	FrameSideDataType C.enum_AVFrameSideDataType
 )
 
-func AvprivFrameGetMetadatap(f *Frame) **Dictionary {
+//
+// C-Function: avpriv_frame_get_metadatap
+func (f *Frame) Metadatap() **Dictionary {
 	return (**Dictionary)(unsafe.Pointer(C.avpriv_frame_get_metadatap((*C.struct_AVFrame)(unsafe.Pointer(f)))))
 }
 
+//
+// C-Function: av_frame_set_qp_table
 func AvFrameSetQpTable(f *Frame, b *AvBufferRef, s, q int) int {
 	return int(C.av_frame_set_qp_table((*C.struct_AVFrame)(unsafe.Pointer(f)), (*C.struct_AVBufferRef)(unsafe.Pointer(b)), C.int(s), C.int(q)))
 }
 
+//
+// C-Function: av_frame_get_qp_table
 func AvFrameGetQpTable(f *Frame, s, t *int) int8 {
 	return int8(*C.av_frame_get_qp_table((*C.struct_AVFrame)(unsafe.Pointer(f)), (*C.int)(unsafe.Pointer(s)), (*C.int)(unsafe.Pointer(t))))
 }
 
-//Allocate an Frame and set its fields to default values.
-func AvFrameAlloc() *Frame {
+// NewFrame allocates a Frame and set its fields to default values.
+//
+// C-Function: av_frame_alloc
+func NewFrame() *Frame {
 	return (*Frame)(unsafe.Pointer(C.av_frame_alloc()))
 }
 
-//Free the frame and any dynamically allocated objects in it, e.g.
-func AvFrameFree(f *Frame) {
+// Free frees the frame and any dynamically allocated objects in it, e.g.
+//
+// C-Function: av_frame_free
+func (f *Frame) Free() {
 	C.av_frame_free((**C.struct_AVFrame)(unsafe.Pointer(&f)))
 }
 
-//Allocate new buffer(s) for audio or video data.
-func AvFrameGetBuffer(f *Frame, a int) int {
+// NewBuffer allocates new buffer(s) for audio or video data.
+//
+// C-Function: av_frame_get_buffer
+func (f *Frame) NewBuffer(a int) int {
 	return int(C.av_frame_get_buffer((*C.struct_AVFrame)(unsafe.Pointer(f)), C.int(a)))
 }
 
-//Setup a new reference to the data described by an given frame.
-func AvFrameRef(d, s *Frame) int {
+// FrameRef sets up a new reference to the data described by a given frame.
+//
+// C-Function: av_frame_ref
+func FrameRef(d, s *Frame) int {
 	return int(C.av_frame_ref((*C.struct_AVFrame)(unsafe.Pointer(d)), (*C.struct_AVFrame)(unsafe.Pointer(s))))
 }
 
-//Create a new frame that references the same data as src.
-func AvFrameClone(f *Frame) *Frame {
+// Clone creates a new frame that references the same data as src.
+//
+// C-Function: av_frame_clone
+func Clone(f *Frame) *Frame {
 	return (*Frame)(C.av_frame_clone((*C.struct_AVFrame)(unsafe.Pointer(f))))
 }
 
-//Unreference all the buffers referenced by frame and reset the frame fields.
-func AvFrameUnref(f *Frame) {
+// Unref unreferences all the buffers referenced by frame and reset the frame fields.
+//
+// C-Function: av_frame_unref
+func (f *Frame) Unref() {
 	cf := (*C.struct_AVFrame)(unsafe.Pointer(f))
 	C.av_frame_unref(cf)
 }
 
-//Move everythnig contained in src to dst and reset src.
-func AvFrameMoveRef(d, s *Frame) {
+// FrameMoveRef moves everythnig contained in src to dst and reset src.
+//
+// C-Function: av_frame_move_ref
+func FrameMoveRef(d, s *Frame) {
 	C.av_frame_move_ref((*C.struct_AVFrame)(unsafe.Pointer(d)), (*C.struct_AVFrame)(unsafe.Pointer(s)))
 }
 
-//Check if the frame data is writable.
-func AvFrameIsWritable(f *Frame) int {
-	return int(C.av_frame_is_writable((*C.struct_AVFrame)(unsafe.Pointer(f))))
+// IsWritable checks if the frame data is writable.
+//
+// C-Function: av_frame_is_writable
+func (f *Frame) IsWritable() bool {
+	return int(C.av_frame_is_writable((*C.struct_AVFrame)(unsafe.Pointer(f)))) != 0
 }
 
-//Ensure that the frame data is writable, avoiding data copy if possible.
-func AvFrameMakeWritable(f *Frame) int {
-	return int(C.av_frame_make_writable((*C.struct_AVFrame)(unsafe.Pointer(f))))
+// MakeWritable ensures that the frame data is writable, avoiding data copy if possible.
+//
+// C-Function: av_frame_make_writable
+func (f *Frame) MakeWritable() ReturnCode {
+	return NewReturnCode(int(C.av_frame_make_writable((*C.struct_AVFrame)(unsafe.Pointer(f)))))
 }
 
-//Copy only "metadata" fields from src to dst.
-func AvFrameCopyProps(d, s *Frame) int {
+// CopyProps copies only "metadata" fields from src to dst.
+//
+// C-Function: av_frame_copy_props
+func CopyProps(d, s *Frame) int {
 	return int(C.av_frame_copy_props((*C.struct_AVFrame)(unsafe.Pointer(d)), (*C.struct_AVFrame)(unsafe.Pointer(s))))
 }
 
-//Get the buffer reference a given data plane is stored in.
-func AvFrameGetPlaneBuffer(f *Frame, p int) *AvBufferRef {
-	return (*AvBufferRef)(C.av_frame_get_plane_buffer((*C.struct_AVFrame)(unsafe.Pointer(f)), C.int(p)))
+// PlaneBuffer gets the buffer reference a given data plane is stored in.
+//
+// C-Function: av_frame_get_plane_buffer
+func (f *Frame) PlaneBuffer(p int) *AvBufferRef {
+	return (*BufferRef)(C.av_frame_get_plane_buffer((*C.struct_AVFrame)(unsafe.Pointer(f)), C.int(p)))
 }
 
-//Add a new side data to a frame.
-func AvFrameNewSideData(f *Frame, d AvFrameSideDataType, s int) *AvFrameSideData {
-	return (*AvFrameSideData)(C.av_frame_new_side_data((*C.struct_AVFrame)(unsafe.Pointer(f)), (C.enum_AVFrameSideDataType)(d), C.int(s)))
+// NewSideData adds a new side data to a frame.
+//
+// C-Function: av_frame_new_side_data
+func (f *Frame) NewSideData(d AvFrameSideDataType, s int) *AvFrameSideData {
+	return (*FrameSideData)(C.av_frame_new_side_data((*C.struct_AVFrame)(unsafe.Pointer(f)), (C.enum_AVFrameSideDataType)(d), C.int(s)))
 }
 
-func AvFrameGetSideData(f *Frame, t AvFrameSideDataType) *AvFrameSideData {
-	return (*AvFrameSideData)(C.av_frame_get_side_data((*C.struct_AVFrame)(unsafe.Pointer(f)), (C.enum_AVFrameSideDataType)(t)))
+// SideData returns the frames sidedata.
+//
+// C-Function: av_frame_get_side_data
+func (f *Frame) SideData(t FrameSideDataType) *FrameSideData {
+	return (*FrameSideData)(C.av_frame_get_side_data((*C.struct_AVFrame)(unsafe.Pointer(f)), (C.enum_AVFrameSideDataType)(t)))
 }
 
-func Data(f *Frame) *uint8 {
+// Data returns the frames data.
+//
+// C-Variable: AVFrame::data
+func (f *Frame) Data() *uint8 {
 	return (*uint8)(unsafe.Pointer((*C.uint8_t)(unsafe.Pointer(&f.data))))
 }
-func Linesize(f *Frame) int {
-	return int(*(*C.int)(unsafe.Pointer(&f.linesize)))
+
+// ExtendedData returns the frames extended_data.
+//
+// C-Variable: AVFrame::data
+func (f *Frame) ExtendedData() *uint8 {
+	return (*uint8)(unsafe.Pointer((*C.uint8_t)(unsafe.Pointer(&f.extended_data))))
 }
 
-// //static int get_video_buffer (Frame *frame, int align)
-// func GetVideoBuffer(f *Frame, a int) int {
-// 	return int(C.get_video_buffer(f, C.int(a)))
-// }
-
-// //static int get_audio_buffer (Frame *frame, int align)
-// func GetAudioBuffer(f *Frame, a int) int {
-// 	return C.get_audio_buffer(f, C.int(a))
-// }
-
-// //static void get_frame_defaults (Frame *frame)
-// func GetFrameDefaults(f *Frame) {
-// 	C.get_frame_defaults(*C.struct_AVFrame(f))
-// }
+// Linesize returns the frames linesize.
+//
+// C-Variable: AVFrame::linesize
+func (f *Frame) Linesize() int {
+	return int(*(*C.int)(unsafe.Pointer(&f.linesize)))
+}
