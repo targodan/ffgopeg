@@ -23,22 +23,25 @@ type (
 	FrameSideDataType C.enum_AVFrameSideDataType
 )
 
+// Metadatap returns metadatap.
 //
 // C-Function: avpriv_frame_get_metadatap
 func (f *Frame) Metadatap() **Dictionary {
 	return (**Dictionary)(unsafe.Pointer(C.avpriv_frame_get_metadatap((*C.struct_AVFrame)(unsafe.Pointer(f)))))
 }
 
+// SetQpTable sets the qp table.
 //
 // C-Function: av_frame_set_qp_table
-func AvFrameSetQpTable(f *Frame, b *AvBufferRef, s, q int) int {
+func (f *Frame) SetQpTable(b *BufferRef, s, q int) int {
 	return int(C.av_frame_set_qp_table((*C.struct_AVFrame)(unsafe.Pointer(f)), (*C.struct_AVBufferRef)(unsafe.Pointer(b)), C.int(s), C.int(q)))
 }
 
+// QpTable returns the qp table.
 //
 // C-Function: av_frame_get_qp_table
-func AvFrameGetQpTable(f *Frame, s, t *int) int8 {
-	return int8(*C.av_frame_get_qp_table((*C.struct_AVFrame)(unsafe.Pointer(f)), (*C.int)(unsafe.Pointer(s)), (*C.int)(unsafe.Pointer(t))))
+func (f *Frame) QpTable(stride, t *int) int8 {
+	return int8(*C.av_frame_get_qp_table((*C.struct_AVFrame)(unsafe.Pointer(f)), (*C.int)(unsafe.Pointer(stride)), (*C.int)(unsafe.Pointer(t))))
 }
 
 // NewFrame allocates a Frame and set its fields to default values.
@@ -115,14 +118,14 @@ func CopyProps(d, s *Frame) int {
 // PlaneBuffer gets the buffer reference a given data plane is stored in.
 //
 // C-Function: av_frame_get_plane_buffer
-func (f *Frame) PlaneBuffer(p int) *AvBufferRef {
+func (f *Frame) PlaneBuffer(p int) *BufferRef {
 	return (*BufferRef)(C.av_frame_get_plane_buffer((*C.struct_AVFrame)(unsafe.Pointer(f)), C.int(p)))
 }
 
 // NewSideData adds a new side data to a frame.
 //
 // C-Function: av_frame_new_side_data
-func (f *Frame) NewSideData(d AvFrameSideDataType, s int) *AvFrameSideData {
+func (f *Frame) NewSideData(d FrameSideDataType, s int) *FrameSideData {
 	return (*FrameSideData)(C.av_frame_new_side_data((*C.struct_AVFrame)(unsafe.Pointer(f)), (C.enum_AVFrameSideDataType)(d), C.int(s)))
 }
 
