@@ -18,25 +18,37 @@ type (
 	SampleFormat C.enum_AVSampleFormat
 )
 
-//Get the Class for Context.
-func SwrGetClass() *Class {
+// GetClass gets the Class for Context.
+//
+// C-Function:
+func GetClass() *Class {
 	return (*Class)(C.swr_get_class())
 }
 
-//Context constructor functions.Allocate Context.
-func SwrAlloc() *Context {
+// NewContext allocates Context.
+//
+// C-Function: swr_alloc
+func NewContext() *Context {
 	return (*Context)(C.swr_alloc())
 }
 
-//Configuration accessors
-func SwresampleVersion() uint {
+// Version returns the swresample version.
+//
+// C-Function: swresample_version
+func Version() uint {
 	return uint(C.swresample_version())
 }
 
-func SwresampleConfiguration() string {
+// Configuration returns the build time configuration of swresample.
+//
+// C-Function: swresample_configuration
+func Configuration() string {
 	return C.GoString(C.swresample_configuration())
 }
 
-func SwresampleLicense() string {
+// License returns the swresample license.
+//
+// C-Function: swresample_license
+func License() string {
 	return C.GoString(C.swresample_license())
 }
