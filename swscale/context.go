@@ -10,27 +10,30 @@ import (
 	"unsafe"
 )
 
-//Allocate an empty Context.
-func SwsAllocContext() *Context {
+// NewContext allocates an empty Context.
+//
+// C-Function: sws_alloc_context
+func NewContext() *Context {
 	return (*Context)(C.sws_alloc_context())
 }
 
-//Initialize the swscaler context sws_context.
-func SwsInitContext(ctxt *Context, sf, df *Filter) int {
+// Init initializes the swscaler context sws_context.
+//
+// C-Function: sws_init_context
+func (ctxt *Context) Init(sf, df *Filter) int {
 	return int(C.sws_init_context((*C.struct_SwsContext)(ctxt), (*C.struct_SwsFilter)(sf), (*C.struct_SwsFilter)(df)))
 }
 
-//Free the swscaler context swsContext.
-func SwsFreecontext(ctxt *Context) {
+// Free frees the swscaler context swsContext.
+//
+// C-Function: sws_freeContext
+func (ctxt *Context) Free() {
 	C.sws_freeContext((*C.struct_SwsContext)(ctxt))
 }
 
-//Allocate and return an Context.
-func SwsGetcontext(sw, sh int, sf PixelFormat, dw, dh int, df PixelFormat, f int, sfl, dfl *Filter, p *int) *Context {
+// NewContextOpts allocates and returns an Context.
+//
+// C-Function: sws_getContext
+func NewContextOpts(sw, sh int, sf PixelFormat, dw, dh int, df PixelFormat, f int, sfl, dfl *Filter, p *int) *Context {
 	return (*Context)(C.sws_getContext(C.int(sw), C.int(sh), (C.enum_AVPixelFormat)(sf), C.int(dw), C.int(dh), (C.enum_AVPixelFormat)(df), C.int(f), (*C.struct_SwsFilter)(sfl), (*C.struct_SwsFilter)(dfl), (*C.double)(unsafe.Pointer(p))))
-}
-
-//Check if context can be reused, otherwise reallocate a new one.
-func SwsGetcachedcontext(ctxt *Context, sw, sh int, sf PixelFormat, dw, dh int, df PixelFormat, f int, sfl, dfl *Filter, p *float64) *Context {
-	return (*Context)(C.sws_getCachedContext((*C.struct_SwsContext)(ctxt), C.int(sw), C.int(sh), (C.enum_AVPixelFormat)(sf), C.int(dw), C.int(dh), (C.enum_AVPixelFormat)(df), C.int(f), (*C.struct_SwsFilter)(sfl), (*C.struct_SwsFilter)(dfl), (*C.double)(p)))
 }
