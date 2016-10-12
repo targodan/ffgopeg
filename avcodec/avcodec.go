@@ -54,7 +54,7 @@ type (
 	Discard                     C.enum_AVDiscard
 	FieldOrder                  C.enum_AVFieldOrder
 	PacketSideDataType          C.enum_AVPacketSideDataType
-	SampleFormat                C.enum_AVSampleFormat
+	// SampleFormat                C.enum_AVSampleFormat
 )
 
 // nextRegisteredCodec returns the codec registered after the given codec, or the first one if nil is given.
@@ -214,15 +214,8 @@ func GetCodecTagString(c uint) string {
 // FillAudioFrame fills the Frame audio data and linesize pointers.
 //
 // C-Function: avcodec_fill_audio_frame
-func (f *Frame) FillAudioFrame(c int, s SampleFormat, b *uint8, bs, a int) int {
+func (f *Frame) FillAudioFrame(c int, s avutil.SampleFormat, b *uint8, bs, a int) int {
 	return int(C.avcodec_fill_audio_frame((*C.struct_AVFrame)(f), C.int(c), (C.enum_AVSampleFormat)(s), (*C.uint8_t)(b), C.int(bs), C.int(a)))
-}
-
-// PcmCodec returns the PCM codec associated with the sample format.
-//
-// C-Function: av_get_pcm_codec
-func (f SampleFormat) PcmCodec(b int) CodecId {
-	return (CodecId)(C.av_get_pcm_codec((C.enum_AVSampleFormat)(f), C.int(b)))
 }
 
 // FastPaddedMallocz allocates a buffer, reusing the given one if large enough and initializes the data with 0.

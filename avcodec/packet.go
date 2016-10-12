@@ -14,8 +14,8 @@ import (
 // Init initializes optional fields of a packet with default values.
 //
 // C-Function: av_init_packet
-func (p *Packet) Init() {
-	C.av_init_packet((*C.struct_AVPacket)(p))
+func (p Packet) Init() {
+	C.av_init_packet((*C.struct_AVPacket)(&p))
 }
 
 // NewPacket allocates the payload of a packet and initialize its fields with default values.
@@ -62,10 +62,10 @@ func (p *Packet) CopyPacketSideData(src *Packet) int {
 
 }
 
-// Free wipes a packet.
+// Unref wipes a packet.
 //
 // C-Function: av_packet_unref
-func (p *Packet) Free() {
+func (p *Packet) Unref() {
 	C.av_packet_unref((*C.struct_AVPacket)(p))
 }
 

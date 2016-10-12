@@ -50,7 +50,7 @@ func (ctxt *FormatContext) Programs() **Program {
 // C-Variable: AVFormatContext::streams
 func (ctxt *FormatContext) Streams() []*Stream {
 	length := ctxt.NbStreams()
-	return (*[1 << 30]*Stream)(unsafe.Pointer(*ctxt.streams))[:length:length]
+	return (*[1 << 30]*Stream)(unsafe.Pointer(ctxt.streams))[:length:length]
 }
 
 //

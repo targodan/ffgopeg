@@ -10,6 +10,7 @@ import "C"
 import (
 	"unsafe"
 
+	"github.com/targodan/goav/avcodec"
 	"github.com/targodan/goav/avutil"
 )
 
@@ -76,19 +77,6 @@ func (s *FormatContext) SetMetadataHeaderPadding(c int) {
 	C.av_format_set_metadata_header_padding((*C.struct_AVFormatContext)(s), C.int(c))
 }
 
-// Opaque returns... opaqueness???
-//
-// C-Function: av_format_get_opaque
-// func (s *FormatContext) Opaque() *byte {
-// 	return (*byte)(unsafe.Pointer(C.av_format_get_opaque((*C.struct_AVFormatContext)(s))))
-// }
-//
-//
-// C-Function: av_format_set_opaque
-// func (s *FormatContext) AvFormatSetOpaque(o int) {
-// 	C.av_format_set_opaque((*C.struct_AVFormatContext)(s), unsafe.Pointer(&o))
-// }
-
 // InjectGlobalSideData will cause global side data to be injected in the next packet of each stream as well as after any subsequent seek.
 //
 // C-Function: av_format_inject_global_side_data
@@ -124,10 +112,10 @@ func (s *FormatContext) NewProgram(id int) *Program {
 	return (*Program)(C.av_new_program((*C.struct_AVFormatContext)(s), C.int(id)))
 }
 
-//Read packets of a media file to get stream information.
+// FindStreamInfo reads packets of a media file to get stream information.
 //
 // C-Function: avformat_find_stream_info
-func (s *FormatContext) AvformatFindStreamInfo(d **Dictionary) avutil.ReturnCode {
+func (s *FormatContext) FindStreamInfo(d **Dictionary) avutil.ReturnCode {
 	return avutil.NewReturnCode(int(C.avformat_find_stream_info((*C.struct_AVFormatContext)(s), (**C.struct_AVDictionary)(unsafe.Pointer(d)))))
 }
 
@@ -165,12 +153,12 @@ func FindBestStream(ic *FormatContext, t avutil.MediaType, ws, rs int, c **Codec
 	return int(C.av_find_best_stream((*C.struct_AVFormatContext)(ic), (C.enum_AVMediaType)(t), C.int(ws), C.int(rs), (**C.struct_AVCodec)(unsafe.Pointer(c)), C.int(f)))
 }
 
-// Return the next frame of a stream.
+// ReadFrame returns the next frame of a stream.
 //
-// C-Function: Packet
-// func (s *FormatContext) AvReadFrame(pkt *avcodec.Packet) int {
-// 	return int(C.av_read_frame((*C.struct_AVFormatContext)(unsafe.Pointer(s)), (*C.struct_AVPacket)(unsafe.Pointer(pkt))))
-// }
+// C-Function: av_read_frame
+func (s *FormatContext) ReadFrame(pkt *avcodec.Packet) avutil.ReturnCode {
+	return avutil.NewReturnCode(int(C.av_read_frame((*C.struct_AVFormatContext)(unsafe.Pointer(s)), (*C.struct_AVPacket)(unsafe.Pointer(pkt)))))
+}
 
 // SeekFrame seeks to the keyframe at timestamp.
 //
@@ -309,31 +297,3 @@ func (s *FormatContext) MatchStreamSpecifier(st *Stream, spec string) int {
 func (s *FormatContext) QueueAttachedPictures() int {
 	return int(C.avformat_queue_attached_pictures((*C.struct_AVFormatContext)(s)))
 }
-
-// //av_format_control_message av_format_get_control_message_cb (const Context *s)
-// //
-// C-Function: av_format_get_control_message_cb
-// func (s *FormatContext) AvFormatControlMessage() C.av_format_get_control_message_cb {
-// 	return C.av_format_get_control_message_cb((*C.struct_AVFormatContext)(s))
-// }
-
-// //void av_format_set_control_message_cb (Context *s, av_format_control_message callback)
-// //
-// C-Function: av_format_get_control_message_cb
-// func (s *FormatContext) AvFormatSetControlMessageCb(c AvFormatControlMessage) C.av_format_get_control_message_cb {
-// 	C.av_format_set_control_message_cb((*C.struct_AVFormatContext)(s), (C.struct_AVFormatControlMessage)(c))
-// }
-
-// //Codec * av_format_get_data_codec (const Context *s)
-// //
-// C-Function: av_format_get_data_codec
-// func (s *FormatContext)AvFormatGetDataCodec() *Codec {
-// 	return (*Codec)(C.av_format_get_data_codec((*C.struct_AVFormatContext)(s)))
-// }
-
-// //void av_format_set_data_codec (Context *s, Codec *c)
-// //
-// C-Function: av_format_set_data_codec
-// func (s *FormatContext)AvFormatSetDataCodec( c *Codec) {
-// 	C.av_format_set_data_codec((*C.struct_AVFormatContext)(s), (*C.struct_AVCodec)(c))
-// }

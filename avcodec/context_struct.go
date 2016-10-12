@@ -1366,28 +1366,28 @@ func (ctxt *CodecContext) SetPixFmt(v avutil.PixelFormat) {
 // RequestSampleFmt returns the desired sample format.
 //
 // C-Field: AVCodecContext::request_sample_fmt
-func (ctxt *CodecContext) RequestSampleFmt() SampleFormat {
-	return (SampleFormat)(ctxt.request_sample_fmt)
+func (ctxt *CodecContext) RequestSampleFmt() avutil.SampleFormat {
+	return (avutil.SampleFormat)(ctxt.request_sample_fmt)
 }
 
 // SetRequestSampleFmt sets the desired sample format.
 //
 // C-Field: AVCodecContext::request_sample_fmt
-func (ctxt *CodecContext) SetRequestSampleFmt(fmt SampleFormat) {
+func (ctxt *CodecContext) SetRequestSampleFmt(fmt avutil.SampleFormat) {
 	ctxt.request_sample_fmt = C.enum_AVSampleFormat(fmt)
 }
 
 // SampleFmt returns the audio sample format.
 //
 // C-Field: AVCodecContext::sample_fmt
-func (ctxt *CodecContext) SampleFmt() SampleFormat {
-	return (SampleFormat)(ctxt.sample_fmt)
+func (ctxt *CodecContext) SampleFmt() avutil.SampleFormat {
+	return (avutil.SampleFormat)(ctxt.sample_fmt)
 }
 
 // SetSampleFmt sets the audio sample format.
 //
 // C-Field: AVCodecContext::sample_fmt
-func (ctxt *CodecContext) SetSampleFmt(v SampleFormat) {
+func (ctxt *CodecContext) SetSampleFmt(v avutil.SampleFormat) {
 	ctxt.sample_fmt = C.enum_AVSampleFormat(v)
 }
 

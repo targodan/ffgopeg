@@ -8,11 +8,17 @@ package avutil
 	#cgo pkg-config: libavutil
 	#include <libavutil/frame.h>
 	#include <stdlib.h>
+
+    int MACRO_NUM_DATA_POINTERS() {
+        return AV_NUM_DATA_POINTERS;
+    }
+
+    unsigned ComparePointers(void* a, void* b) {
+        return (unsigned)(a-b);
+    }
 */
 import "C"
-import (
-	"unsafe"
-)
+import "unsafe"
 
 type (
 	Buffer            C.struct_AVBuffer
@@ -22,6 +28,14 @@ type (
 	FrameSideData     C.struct_AVFrameSideData
 	FrameSideDataType C.enum_AVFrameSideDataType
 )
+
+func comparePointers(a, b unsafe.Pointer) uintptr {
+	return uintptr(C.ComparePointers(a, b))
+}
+
+func MACRO_NUM_DATA_POINTERS() int {
+	return int(C.MACRO_NUM_DATA_POINTERS())
+}
 
 // Metadatap returns metadatap.
 //
@@ -139,20 +153,35 @@ func (f *Frame) SideData(t FrameSideDataType) *FrameSideData {
 // Data returns the frames data.
 //
 // C-Variable: AVFrame::data
-func (f *Frame) Data() *uint8 {
-	return (*uint8)(unsafe.Pointer((*C.uint8_t)(unsafe.Pointer(&f.data))))
+func (f *Frame) Data(i int) []byte {
+	len := f.Linesize(i)
+	return (*[1 << 30]byte)(unsafe.Pointer(f.data[i]))[:len:len]
 }
 
 // ExtendedData returns the frames extended_data.
 //
 // C-Variable: AVFrame::data
-func (f *Frame) ExtendedData() *uint8 {
-	return (*uint8)(unsafe.Pointer((*C.uint8_t)(unsafe.Pointer(&f.extended_data))))
+func (f *Frame) ExtendedData(i int) []byte {
+	// From the documentation
+	// > For video, this should simply point to data[].
+	if comparePointers(unsafe.Pointer(&f.data[0]), unsafe.Pointer(f.extended_data)) == 0 {
+		return f.Data(i)
+	}
+	len := f.Linesize(i)
+	arr := (*[1 << 30]*C.uint8_t)(unsafe.Pointer(f.extended_data))
+	return (*[1 << 30]byte)(unsafe.Pointer(arr[i]))[:len:len]
 }
 
 // Linesize returns the frames linesize.
 //
 // C-Variable: AVFrame::linesize
-func (f *Frame) Linesize() int {
-	return int(*(*C.int)(unsafe.Pointer(&f.linesize)))
+func (f *Frame) Linesize(i int) int {
+	return int(f.linesize[i])
+}
+
+// NbSamples returns the number of samples.
+//
+// C-Variable: AVFrame::nb_frames
+func (f *Frame) NbSamples() int {
+	return int(f.nb_samples)
 }

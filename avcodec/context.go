@@ -84,7 +84,7 @@ func (ctxt *CodecContext) SetChromaIntraMatrix(t *uint16) {
 // Free frees the codec context and everything associated with it.
 // C-Function: avcodec_free_context
 func (ctxt *CodecContext) Free() {
-	C.avcodec_free_context((**C.struct_AVCodecContext)(unsafe.Pointer(ctxt)))
+	C.avcodec_free_context((**C.struct_AVCodecContext)(unsafe.Pointer(&ctxt)))
 }
 
 // Close closes a given Context and free all the data associated with it (but not the Context itself).
@@ -115,14 +115,14 @@ func (ctxt *CodecContext) SendPacket(pkt *Packet) avutil.ReturnCode {
 
 // ReceiveFrame receives a frame as output from the decoder.
 // C-Function: avcodec_receive_frame
-func (ctxt *CodecContext) ReceiveFrame(frame *Frame) avutil.ReturnCode {
-	return avutil.NewReturnCode(int(C.avcodec_receive_frame((*C.struct_AVCodecContext)(ctxt), (*C.struct_AVFrame)(frame))))
+func (ctxt *CodecContext) ReceiveFrame(frame *avutil.Frame) avutil.ReturnCode {
+	return avutil.NewReturnCode(int(C.avcodec_receive_frame((*C.struct_AVCodecContext)(ctxt), (*C.struct_AVFrame)(unsafe.Pointer(frame)))))
 }
 
 // SendFrame sends a frame as input to the encoder.
 // C-Function: avcodec_send_frame
-func (ctxt *CodecContext) SendFrame(frame *Frame) avutil.ReturnCode {
-	return avutil.NewReturnCode(int(C.avcodec_send_frame((*C.struct_AVCodecContext)(ctxt), (*C.struct_AVFrame)(frame))))
+func (ctxt *CodecContext) SendFrame(frame *avutil.Frame) avutil.ReturnCode {
+	return avutil.NewReturnCode(int(C.avcodec_send_frame((*C.struct_AVCodecContext)(ctxt), (*C.struct_AVFrame)(unsafe.Pointer(frame)))))
 }
 
 // ReceivePacket receives a packet as output from the decoder.

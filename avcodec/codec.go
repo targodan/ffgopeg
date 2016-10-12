@@ -7,6 +7,11 @@ package avcodec
 //#cgo pkg-config: libavcodec
 //#include <libavcodec/avcodec.h>
 import "C"
+import (
+	"unsafe"
+
+	"github.com/targodan/goav/avutil"
+)
 
 // NewCodecContext allocates a Context and set its fields to default values.
 //
@@ -58,21 +63,40 @@ func (c *Codec) ProfileName(p int) string {
 }
 
 // IsEncoder returns true if the codec is an encoder.
+//
+// C-Function: av_codec_is_encoder
 func (c *Codec) IsEncoder() bool {
 	return int(C.av_codec_is_encoder((*C.struct_AVCodec)(c))) != 0
 }
 
 // IsDecoder returns true if the codec is an decoder.
+//
+// C-Function: av_codec_is_decoder
 func (c *Codec) IsDecoder() bool {
 	return int(C.av_codec_is_decoder((*C.struct_AVCodec)(c))) != 0
 }
 
 // Name returns the name of the codec.
+//
+// C-Variable: AVCodec::name
 func (c *Codec) Name() string {
 	return C.GoString(c.name)
 }
 
 // LongName returns the long, descriptive name of the codec.
+//
+// C-Variable: AVCodec::long_name
 func (c *Codec) LongName() string {
 	return C.GoString(c.long_name)
+}
+
+// SampleFmts returns the suppoted sample formats.
+//
+// C-Variable: AVCodec::sample_fmts
+func (c *Codec) SampleFmts() []avutil.SampleFormat {
+	arr := (*[1 << 30]avutil.SampleFormat)(unsafe.Pointer(c.sample_fmts))
+	var len int
+	for len = 0; arr[len] != -1; len++ {
+	}
+	return arr[:len:len]
 }
