@@ -153,21 +153,16 @@ func (f *Frame) SideData(t FrameSideDataType) *FrameSideData {
 // Data returns the frames data.
 //
 // C-Variable: AVFrame::data
-func (f *Frame) Data(i int) []byte {
-	len := f.Linesize(i)
+func (f *Frame) Data(i int, len int) []byte {
 	return (*[1 << 30]byte)(unsafe.Pointer(f.data[i]))[:len:len]
 }
 
 // ExtendedData returns the frames extended_data.
 //
 // C-Variable: AVFrame::data
-func (f *Frame) ExtendedData(i int) []byte {
+func (f *Frame) ExtendedData(i int, len int) []byte {
 	// From the documentation
 	// > For video, this should simply point to data[].
-	if comparePointers(unsafe.Pointer(&f.data[0]), unsafe.Pointer(f.extended_data)) == 0 {
-		return f.Data(i)
-	}
-	len := f.Linesize(i)
 	arr := (*[1 << 30]*C.uint8_t)(unsafe.Pointer(f.extended_data))
 	return (*[1 << 30]byte)(unsafe.Pointer(arr[i]))[:len:len]
 }

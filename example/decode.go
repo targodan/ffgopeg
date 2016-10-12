@@ -79,12 +79,13 @@ func receiveAndHandle(codecCtxt *avcodec.CodecContext, frame *avutil.Frame, out 
 }
 
 func handleFrame(codecCtxt *avcodec.CodecContext, frame *avutil.Frame, out io.Writer) {
+	fmt.Printf("Samples: %d\n", frame.NbSamples())
 	if codecCtxt.SampleFmt().IsPlanar() {
 		// This means that the data of each channel is in its own buffer.
 		// => frame->extended_data[i] contains data for the i-th channel.
 		for s := 0; s < frame.NbSamples(); s++ {
 			for c := 0; c < codecCtxt.Channels(); c++ {
-				sample := getSample(codecCtxt, frame.ExtendedData(c), s)
+				sample := getSample(codecCtxt, frame.ExtendedData(c, frame.Linesize(0)), s)
 				binary.Write(out, binary.LittleEndian, sample)
 			}
 		}
@@ -92,11 +93,11 @@ func handleFrame(codecCtxt *avcodec.CodecContext, frame *avutil.Frame, out io.Wr
 		// This means that the data of each channel is in the same buffer.
 		// => frame->extended_data[0] contains data of all channels.
 		if rawOutOnPlanar {
-			out.Write(frame.ExtendedData(0))
+			out.Write(frame.ExtendedData(0, frame.Linesize(0)))
 		} else {
 			for s := 0; s < frame.NbSamples(); s++ {
 				for c := 0; c < codecCtxt.Channels(); c++ {
-					sample := getSample(codecCtxt, frame.ExtendedData(0), s*codecCtxt.Channels()+c)
+					sample := getSample(codecCtxt, frame.ExtendedData(0, frame.Linesize(0)), s*codecCtxt.Channels()+c)
 					binary.Write(out, binary.LittleEndian, sample)
 				}
 			}
@@ -107,6 +108,7 @@ func handleFrame(codecCtxt *avcodec.CodecContext, frame *avutil.Frame, out io.Wr
 func getSample(codecCtxt *avcodec.CodecContext, buffer []byte, sampleIndex int) float32 {
 	sampleSize := codecCtxt.SampleFmt().BytesPerSample()
 	byteIndex := sampleSize * sampleIndex
+	fmt.Printf("byteIndex: %d / size: %d\n", byteIndex, len(buffer))
 	var val int64
 	switch sampleSize {
 	case 1:
@@ -114,13 +116,13 @@ func getSample(codecCtxt *avcodec.CodecContext, buffer []byte, sampleIndex int) 
 		val = int64(buffer[byteIndex]) - 127
 
 	case 2:
-		val = int64(int16(native.ByteOrder.Uint16(buffer[byteIndex:])))
+		val = int64(int16(native.ByteOrder.Uint16(buffer[byteIndex : byteIndex+sampleSize])))
 
 	case 4:
-		val = int64(int32(native.ByteOrder.Uint32(buffer[byteIndex:])))
+		val = int64(int32(native.ByteOrder.Uint32(buffer[byteIndex : byteIndex+sampleSize])))
 
 	case 8:
-		val = int64(native.ByteOrder.Uint64(buffer[byteIndex:]))
+		val = int64(native.ByteOrder.Uint64(buffer[byteIndex : byteIndex+sampleSize]))
 
 	default:
 		panic(fmt.Sprintf("Invalid sample size %d.", sampleSize))
@@ -154,6 +156,8 @@ func getSample(codecCtxt *avcodec.CodecContext, buffer []byte, sampleIndex int) 
 	default:
 		panic(fmt.Sprintf("Invalid sample format %s.", codecCtxt.SampleFmt().Name()))
 	}
+
+	fmt.Printf("%f\n", ret)
 
 	return ret
 }
