@@ -79,7 +79,6 @@ func receiveAndHandle(codecCtxt *avcodec.CodecContext, frame *avutil.Frame, out 
 }
 
 func handleFrame(codecCtxt *avcodec.CodecContext, frame *avutil.Frame, out io.Writer) {
-	fmt.Printf("Samples: %d\n", frame.NbSamples())
 	if codecCtxt.SampleFmt().IsPlanar() {
 		// This means that the data of each channel is in its own buffer.
 		// => frame->extended_data[i] contains data for the i-th channel.
