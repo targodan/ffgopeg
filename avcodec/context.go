@@ -10,7 +10,7 @@ import "C"
 import (
 	"unsafe"
 
-	"gopkg.in/targodan/ffgopeg.v0/avutil"
+	"gopkg.in/targodan/ffgopeg.v1/avutil"
 )
 
 // Open initializes the CodecContext to use the given Codec.
