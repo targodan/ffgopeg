@@ -1,7 +1,8 @@
-# goav
+# ffgopeg
 
 This go library provides bindings for ffmpeg.
-This is a permanent fork of [giorgisio/goav](https://github.com/giorgisio/goav) and will differ in the following ways.
+Its main goal is to make the ffmpeg library accessable in a way that feels natural in the go language.
+This library is based on [giorgisio/goav](https://github.com/giorgisio/goav) and will differ in the following ways.
 
 - Target ffmpeg version: 3.1.n
 - No deprecated functions.
@@ -11,16 +12,31 @@ This is a permanent fork of [giorgisio/goav](https://github.com/giorgisio/goav) 
 
 ## Current state
 
-The master branch for now is on the same level as the original repo (except this readme file).
-There are some feature branches from when I opened pull requests.
-The delvelop branch is under heavy development.
+TL; DR: *not stable*
+
+The renaming of funcitons is mostly complete.
+Although I have released version 1 I wouldn't call it stable yet.
+It is largely untested and many functions may not work as intended (meaning propable segmentation faults).
+If you discover any errors and/or have functions that are missing feel free to [contribute](#contribute)! :simple_smile:
 
 ## Usage
 
-**Don't use it yet.**
+Installing or updating.
 
-As it is under massive development and anything not only can but *will* change at any moment, I would advise to not use it yet.
-Stay tuned though, I'll give my best to release a 1.0 ASAP.
+```
+go get -u gopkg.in/targodan/ffgopeg.v1
+```
+
+This will install the latest version 1.n.m release.
+See [Versioning](#versioning).
+
+The ffmpeg libraries are in theire own packages.
+If you know which ffmpeg function you want to use you can use [this little webtool](https://targodan.github.io/ffgopeg)
+
+## Versioning
+
+This project follows the [semantic versioning scheme](http://semver.org/).
+That means if you use the `gopkg.in` link from above using `go get -u` should be safe and not break anything.
 
 ## Mapping ffmpeg function names to go
 
@@ -37,9 +53,9 @@ In the future I will provide a little tool wich lets you search for the go-repre
 
 ## Contribute
 
-Until I released version 1.0 and defined where exactly I want to go with this project, please don't send any pull requests or open any issues.
+If you get any errors using this library or some functions are missing please open an issue and/or fork, branch and file a pull request.
 
-There is one point where I could use some help though:
+Also I could use some help with these things:
 If anyone has a good idea how to test the bindings I would be glad to hear it!
 I don't think it makes sense to test the behaviour of simple C calls as I assume these functions are already tested by ffmpeg.
 I don't know how I could test if the binding was successful without testing the behaviour though.
@@ -47,7 +63,7 @@ Apart from that in order to test the behaviour I would need to dive way way way 
 
 ## My TODO list
 
-- [ ] Do the actual renames
+- [x] Do the actual renames
 - [ ] Document the whole thing
 - [ ] Implement the replacements for deprecated functions
 - [ ] Setup TravisCI
