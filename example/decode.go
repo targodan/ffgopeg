@@ -75,7 +75,7 @@ func receiveAndHandle(codecCtxt *avcodec.CodecContext, frame *avutil.Frame, out 
 		frame.Unref()
 		err = codecCtxt.ReceiveFrame(frame)
 	}
-	return avutil.NewReturnCode(0)
+	return
 }
 
 func handleFrame(codecCtxt *avcodec.CodecContext, frame *avutil.Frame, out io.Writer) {
@@ -107,7 +107,6 @@ func handleFrame(codecCtxt *avcodec.CodecContext, frame *avutil.Frame, out io.Wr
 func getSample(codecCtxt *avcodec.CodecContext, buffer []byte, sampleIndex int) float32 {
 	sampleSize := codecCtxt.SampleFmt().BytesPerSample()
 	byteIndex := sampleSize * sampleIndex
-	fmt.Printf("byteIndex: %d / size: %d\n", byteIndex, len(buffer))
 	var val int64
 	switch sampleSize {
 	case 1:
@@ -155,8 +154,6 @@ func getSample(codecCtxt *avcodec.CodecContext, buffer []byte, sampleIndex int) 
 	default:
 		panic(fmt.Sprintf("Invalid sample format %s.", codecCtxt.SampleFmt().Name()))
 	}
-
-	fmt.Printf("%f\n", ret)
 
 	return ret
 }
@@ -248,8 +245,12 @@ func main() {
 	var packet avcodec.Packet
 	packet.Init()
 
-	code = formatCtx.ReadFrame(&packet)
-	for !code.IsOneOf(avutil.AVERROR_EOF()) {
+	for {
+		// Read next frame
+		code = formatCtx.ReadFrame(&packet)
+		if code.IsOneOf(avutil.AVERROR_EOF()) {
+			break
+		}
 		panicOnCode(code)
 
 		// Does the packet belong to the correct stream?
@@ -269,19 +270,16 @@ func main() {
 			// Something went wrong.
 			// EAGAIN is technically no error here but if it occurs we would need to buffer
 			// the packet and send it again after receiving more frames. Thus we handle it as an error here.
-			panic(err)
+			panic(code)
 		}
 
 		// Receive and handle frames.
 		// EAGAIN means we need to send before receiving again. So thats not an error.
 		code = receiveAndHandle(codecCtxt, frame, bufFile)
-		if !code.Ok() && !code.IsOneOf(avutil.AVERROR_EAGAIN()) {
+		if !code.IsOneOf(avutil.AVERROR_EAGAIN()) {
 			// Not EAGAIN => Something went wrong.
-			panic(err)
+			panic(code)
 		}
-
-		// Read next frame
-		code = formatCtx.ReadFrame(&packet)
 	}
 
 	// Drain the decoder.
