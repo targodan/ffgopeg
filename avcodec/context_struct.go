@@ -8,7 +8,7 @@ package avcodec
 //#include <libavcodec/avcodec.h>
 import "C"
 import (
-	"gopkg.in/targodan/ffgopeg.v0/avutil"
+	"gopkg.in/targodan/ffgopeg.v1/avutil"
 )
 
 // ActiveThreadType returns which multithreading methods are used by the codec.
