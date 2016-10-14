@@ -11,9 +11,9 @@ import (
 
 	"github.com/targodan/native"
 
-	"github.com/targodan/goav/avcodec"
-	"github.com/targodan/goav/avformat"
-	"github.com/targodan/goav/avutil"
+	"gopkg.in/targodan/ffgopeg.v0/avcodec"
+	"gopkg.in/targodan/ffgopeg.v0/avformat"
+	"gopkg.in/targodan/ffgopeg.v0/avutil"
 )
 
 const rawOutOnPlanar = true

@@ -9,7 +9,7 @@ package avfilter
 	#include <libavfilter/avfilter.h>
 */
 import "C"
-import "github.com/targodan/goav/avutil"
+import "gopkg.in/targodan/ffgopeg.v0/avutil"
 
 // GetFilterByName gets a filter definition matching the given name.
 //
