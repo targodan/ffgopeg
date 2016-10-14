@@ -7,7 +7,7 @@ package avcodec
 //#cgo pkg-config: libavcodec
 //#include <libavcodec/avcodec.h>
 import "C"
-import "gopkg.in/targodan/ffgopeg.v0/avutil"
+import "gopkg.in/targodan/ffgopeg.v1/avutil"
 
 // BitsPerSample returns codec bits per sample.
 //
