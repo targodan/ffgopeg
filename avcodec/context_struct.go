@@ -1005,6 +1005,13 @@ func (ctxt *CodecContext) SampleRate() int {
 	return int(ctxt.sample_rate)
 }
 
+// SetSampleRate sets the number of samples per second.
+//
+// C-Field: AVCodecContext::sample_rate
+func (ctxt *CodecContext) SetSampleRate(sr int) {
+	ctxt.sample_rate = C.int(sr)
+}
+
 // SkipBottom returns the number of macroblocks rows at the bottom which are skipped.
 //
 // C-Field: AVCodecContext::skip_bottom
