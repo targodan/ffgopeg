@@ -17,7 +17,7 @@ before_install:
     - curl https://www.targodan.de/downloads/builds/ffmpeg-3.1.4_x86_64-precise-pangolin.tar.gz -o ffmpeg.tar.gz
     - tar -xf ffmpeg.tar.gz
     - cd ffmpeg-3.1.4/
-    - sudo make install
+    - make install
     - popd
 
 install:
