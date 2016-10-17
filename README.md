@@ -17,7 +17,11 @@ TL; DR: *not stable*
 The renaming of funcitons is mostly complete.
 Although I have released version 1 I wouldn't call it stable yet.
 It is largely untested and many functions may not work as intended (meaning propable segmentation faults).
-If you discover any errors and/or have functions that are missing feel free to [contribute](#contribute)! :simple_smile:
+If you discover any errors and/or have functions that are missing feel free to [contribute](#contribute)! :grinning:
+
+If you just want to decode audio files into `float32` samples [this project of mine](https://github.com/targodan/goad) could be for you.
+It provides a high level API for just that usecase, based on the ffgopeg library.
+A first version is going to come soon but feel free to checkout the develop-branch in the meantime ("checkout"... get it? :laughing:).
 
 ## Usage
 
