@@ -12,12 +12,9 @@ go:
 # On master branch
 go_import_path: gopkg.in/targodan/ffgopeg.v1
 
-# Possible dependencies:
-# yasm(?), pkg-config(?)
-
 before_install:
     - pushd /tmp
-    - wget https://www.targodan.de/downloads/builds/ffmpeg-3.1.4_x86_64-precise-pangolin.tar.gz
+    - wget -4 https://www.targodan.de/downloads/builds/ffmpeg-3.1.4_x86_64-precise-pangolin.tar.gz
     - tar -xf ffmpeg-3.1.4_x86_64-precise-pangolin.tar.gz
     - cd ffmpeg-3.1.4/
     - make install
