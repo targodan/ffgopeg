@@ -7,16 +7,23 @@ go:
     - 1.7
     - tip
 
+# On develop branch
 #go_import_path: github.com/targodan/ffgopeg
+# On master branch
 go_import_path: gopkg.in/targodan/ffgopeg.v1
 
 sudo: required
-dist: trusty
+
+# Possible dependencies:
+# yasm(?), pkg-config(?)
 
 before_install:
-    - sudo add-apt-repository -y ppa:mc3man/trusty-media
-    - sudo apt-get -qq update
-    - sudo apt-get install -y libavcodec-dev libavdevice-dev libavfilter-dev libavformat-dev libavutil-dev libswresample-dev libswscale-dev
+    - pushd /tmp
+    - wget https://www.targodan.de/downloads/builds/ffmpeg-3.1.4_x86_64-precise-pangolin.tar.gz
+    - tar -xf ffmpeg-3.1.4_x86_64-precise-pangolin.tar.gz
+    - cd ffmpeg-3.1.4/
+    - sudo make install
+    - popd
 
 install:
     - go get -t -v ./...
