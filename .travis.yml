@@ -1,0 +1,22 @@
+language: go
+
+go:
+    - 1.4
+    - 1.5
+    - 1.6
+    - 1.7
+    - tip
+
+#go_import_path: github.com/targodan/ffgopeg
+go_import_path: gopkg.in/targodan/ffgopeg.v1
+
+before_install:
+    - apt-get -qq update
+    - apt-get install -y libavcodec-dev libavdevice-dev libavfilter-dev libavformat-dev libavutil-dev libswresample-dev libswscale-dev
+
+install:
+    - go get -t -v ./...
+
+script:
+    - go build -v
+    - go test -v -cover -race ./...
