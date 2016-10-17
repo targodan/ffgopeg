@@ -10,8 +10,8 @@ import "C"
 import (
 	"unsafe"
 
-	"gopkg.in/targodan/ffgopeg.v1/avcodec"
-	"gopkg.in/targodan/ffgopeg.v1/avutil"
+	"github.com/targodan/ffgopeg/avcodec"
+	"github.com/targodan/ffgopeg/avutil"
 )
 
 // ProbeScore returns the probe score.
