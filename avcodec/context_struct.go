@@ -1190,6 +1190,56 @@ func (ctxt *CodecContext) SetThreadType(v int) {
 	ctxt.thread_type = C.int(v)
 }
 
+// TimeBase returns the unit of time (in seconds).
+//
+// This is the fundamental unit of time (in seconds) in terms
+// of which frame timestamps are represented. For fixed-fps content,
+// timebase should be 1/framerate and timestamp increments should be
+// identically 1.
+// This often, but not always is the inverse of the frame rate or field rate
+// for video. 1/time_base is not the average frame rate if the frame rate is not
+// constant.
+//
+// Like containers, elementary streams also can store timestamps, 1/time_base
+// is the unit in which these timestamps are specified.
+// As example of such codec time base see ISO/IEC 14496-2:2001(E)
+// vop_time_increment_resolution and fixed_vop_rate
+// (fixed_vop_rate == 0 implies that it is different from the framerate)
+//
+//  - encoding: MUST be set by user.
+// - decoding: the use of this field for decoding is deprecated.
+//            Use framerate instead.
+//
+// C-Field: AVCodecContext::time_base
+func (ctxt *CodecContext) TimeBase() Rational {
+	return (Rational)(ctxt.time_base)
+}
+
+// SetTimeBase sets the unit of time (in seconds).
+//
+// This is the fundamental unit of time (in seconds) in terms
+// of which frame timestamps are represented. For fixed-fps content,
+// timebase should be 1/framerate and timestamp increments should be
+// identically 1.
+// This often, but not always is the inverse of the frame rate or field rate
+// for video. 1/time_base is not the average frame rate if the frame rate is not
+// constant.
+//
+// Like containers, elementary streams also can store timestamps, 1/time_base
+// is the unit in which these timestamps are specified.
+// As example of such codec time base see ISO/IEC 14496-2:2001(E)
+// vop_time_increment_resolution and fixed_vop_rate
+// (fixed_vop_rate == 0 implies that it is different from the framerate)
+//
+//  - encoding: MUST be set by user.
+// - decoding: the use of this field for decoding is deprecated.
+//            Use framerate instead.
+//
+// C-Field: AVCodecContext::time_base
+func (ctxt *CodecContext) SetTimeBase(v Rational) {
+	ctxt.time_base = (C.struct_AVRational)(v)
+}
+
 // TicksPerFrame returns the ticks per frame.
 //
 // For some codecs, the time base is closer to the field rate than the frame rate.
