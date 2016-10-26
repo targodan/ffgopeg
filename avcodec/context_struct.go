@@ -134,6 +134,13 @@ func (ctxt *CodecContext) Channels() int {
 	return int(ctxt.channels)
 }
 
+// SetChannels sets the number of audio channels.
+//
+// C-Field: AVCodecContext::channels
+func (ctxt *CodecContext) SetChannels(c int) {
+	ctxt.channels = C.int(c)
+}
+
 // CodedHeight returns the bitstream height.
 //
 // C-Field: AVCodecContext::coded_height
