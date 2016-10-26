@@ -141,6 +141,20 @@ func (ctxt *CodecContext) SetChannels(c int) {
 	ctxt.channels = C.int(c)
 }
 
+// ChannelLayout returns the audio channel layout.
+//
+// C-Field: AVCodecContext::channel_layout
+func (ctxt *CodecContext) ChannelLayout() uint64 {
+	return uint64(ctxt.channel_layout)
+}
+
+// SetChannelLayout sets the audio channel layout.
+//
+// C-Field: AVCodecContext::channel_layout
+func (ctxt *CodecContext) SetChannelLayout(c uint64) {
+	ctxt.channel_layout = C.uint64_t(c)
+}
+
 // CodedHeight returns the bitstream height.
 //
 // C-Field: AVCodecContext::coded_height
