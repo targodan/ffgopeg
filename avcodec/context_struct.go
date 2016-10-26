@@ -1384,6 +1384,28 @@ func (ctxt *CodecContext) SetRequestSampleFmt(fmt avutil.SampleFormat) {
 	ctxt.request_sample_fmt = C.enum_AVSampleFormat(fmt)
 }
 
+// SampleAspectRatio returns the sample aspect ratio.
+//
+// sample aspect ratio (0 if unknown) That is the width of a pixel divided by the height of the pixel.
+//
+// Numerator and denominator must be relatively prime and smaller than 256 for some video standards.
+//
+// C-Field: AVCodecContext::sample_aspect_ratio
+func (ctxt *CodecContext) SampleAspectRatio() Rational {
+	return (Rational)(ctxt.sample_aspect_ratio)
+}
+
+// SetSampleAspectRatio sets the sample aspect ratio.
+//
+// sample aspect ratio (0 if unknown) That is the width of a pixel divided by the height of the pixel.
+//
+// Numerator and denominator must be relatively prime and smaller than 256 for some video standards.
+//
+// C-Field: AVCodecContext::sample_aspect_ratio
+func (ctxt *CodecContext) SetSampleAspectRatio(v Rational) {
+	ctxt.sample_aspect_ratio = (C.struct_AVRational)(v)
+}
+
 // SampleFmt returns the audio sample format.
 //
 // C-Field: AVCodecContext::sample_fmt
