@@ -27,3 +27,5 @@ _testmain.go
 *.out
 
 *.h.gch
+
+deployKey
