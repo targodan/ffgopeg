@@ -1,25 +1,48 @@
 language: go
+#sudo: required
 
 go:
-    - 1.4
-    - 1.5
-    - 1.6
     - 1.7
+    - 1.6
+    - 1.5
+    - 1.4
     - tip
 
-# On develop branch
-#go_import_path: github.com/targodan/ffgopeg
-# On master branch
-go_import_path: gopkg.in/targodan/ffgopeg.v1
+env:
+    - ffmpeg=3.1.5
+    - ffmpeg=3.2
+    - ffmpeg=snapshot
 
-sudo: required
+matrix:
+    fast_finish: true
+    allow_failures:
+        - go: tip
+        - env: ffmpeg=snapshot
+
+addons:
+  apt:
+    packages:
+      - yasm
+      - diffutils
+
+# On develop branch
+go_import_path: github.com/targodan/ffgopeg
+# On master branch
+#go_import_path: gopkg.in/targodan/ffgopeg.v1
 
 before_install:
-    - pushd /tmp
-    - curl https://www.targodan.de/downloads/builds/ffmpeg-3.1.4_x86_64-precise-pangolin.tar.gz -o ffmpeg.tar.gz
-    - tar -xf ffmpeg.tar.gz
-    - cd ffmpeg-3.1.4/
-    - sudo make install
+    - pushd $HOME
+    - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/lib
+    - export LIBRARY_PATH=$LIBRARY_PATH:$HOME/lib
+    - export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$HOME/lib/pkgconfig
+    - curl https://ffmpeg.org/releases/ffmpeg-${ffmpeg}.tar.bz2 -o ffmpeg.tar.bz2
+    - tar -vxf ffmpeg.tar.bz2
+    - mkdir -p ffmpeg
+    - mv ffmpeg-${ffmpeg}/* ffmpeg/ || true
+    - cd ffmpeg/
+    - ./configure --disable-programs --prefix=$HOME
+    - make -j8
+    - make install
     - popd
 
 install:
