@@ -10,7 +10,7 @@ import "C"
 import (
 	"unsafe"
 
-	"gopkg.in/targodan/ffgopeg.v1/avcodec"
+	"github.com/colek42/ffgopeg/avcodec"
 )
 
 //
