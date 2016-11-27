@@ -9,7 +9,7 @@ fi
 
 from=
 to=
-if [[ "$branch" == "master" ]]; then
+if [[ "$branch" == "master" || "$branch" == "release"* ]]; then
     from='"github\.com\/targodan\/ffgopeg\/([^"]+)"'
     to='"gopkg\.in\/targodan\/ffgopeg.v1\/\1"'
 else

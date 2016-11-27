@@ -12,7 +12,7 @@ import "C"
 import (
 	"unsafe"
 
-	"github.com/targodan/ffgopeg/avutil"
+	"gopkg.in/targodan/ffgopeg.v1/avutil"
 )
 
 // NewFilterGraph allocates a filter graph.
