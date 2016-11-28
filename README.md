@@ -1,4 +1,4 @@
-# ffgopeg [![Build Status](https://travis-ci.org/targodan/ffgopeg.svg?branch=master)](https://travis-ci.org/targodan/ffgopeg)
+# ffgopeg [![Build Status](https://travis-ci.org/targodan/ffgopeg.svg?branch=develop)](https://travis-ci.org/targodan/ffgopeg)
 
 This go library provides bindings for ffmpeg.
 Its main goal is to make the ffmpeg library accessable in a way that feels natural in the go language.

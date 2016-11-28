@@ -238,6 +238,15 @@ func RegisterCodecParser(p *CodecParser) {
 }
 
 // FromParameters fills the previously initializes CodecContext with the given parameters.
+// C-Function: avcodec_parameters_to_context
 func (ctxt *CodecContext) FromParameters(par *CodecParameters) avutil.ReturnCode {
 	return avutil.NewReturnCode(int(C.avcodec_parameters_to_context((*C.AVCodecContext)(ctxt), (*C.AVCodecParameters)(par))))
+}
+
+// ToParameters returns a CodecParameters instance from a CodecContext
+// C-Function: avcodec_parameters_from_contex
+func (ctxt *CodecContext) ToParameters() (*CodecParameters, avutil.ReturnCode) {
+	par := &CodecParameters{}
+	ret := int(C.avcodec_parameters_from_context((*C.AVCodecParameters)(par), (*C.AVCodecContext)(ctxt)))
+	return par, avutil.NewReturnCode(ret)
 }

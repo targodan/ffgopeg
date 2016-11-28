@@ -134,6 +134,27 @@ func (ctxt *CodecContext) Channels() int {
 	return int(ctxt.channels)
 }
 
+// SetChannels sets the number of audio channels.
+//
+// C-Field: AVCodecContext::channels
+func (ctxt *CodecContext) SetChannels(c int) {
+	ctxt.channels = C.int(c)
+}
+
+// ChannelLayout returns the audio channel layout.
+//
+// C-Field: AVCodecContext::channel_layout
+func (ctxt *CodecContext) ChannelLayout() uint64 {
+	return uint64(ctxt.channel_layout)
+}
+
+// SetChannelLayout sets the audio channel layout.
+//
+// C-Field: AVCodecContext::channel_layout
+func (ctxt *CodecContext) SetChannelLayout(c uint64) {
+	ctxt.channel_layout = C.uint64_t(c)
+}
+
 // CodedHeight returns the bitstream height.
 //
 // C-Field: AVCodecContext::coded_height
@@ -1190,6 +1211,56 @@ func (ctxt *CodecContext) SetThreadType(v int) {
 	ctxt.thread_type = C.int(v)
 }
 
+// TimeBase returns the unit of time (in seconds).
+//
+// This is the fundamental unit of time (in seconds) in terms
+// of which frame timestamps are represented. For fixed-fps content,
+// timebase should be 1/framerate and timestamp increments should be
+// identically 1.
+// This often, but not always is the inverse of the frame rate or field rate
+// for video. 1/time_base is not the average frame rate if the frame rate is not
+// constant.
+//
+// Like containers, elementary streams also can store timestamps, 1/time_base
+// is the unit in which these timestamps are specified.
+// As example of such codec time base see ISO/IEC 14496-2:2001(E)
+// vop_time_increment_resolution and fixed_vop_rate
+// (fixed_vop_rate == 0 implies that it is different from the framerate)
+//
+//  - encoding: MUST be set by user.
+// - decoding: the use of this field for decoding is deprecated.
+//            Use framerate instead.
+//
+// C-Field: AVCodecContext::time_base
+func (ctxt *CodecContext) TimeBase() Rational {
+	return (Rational)(ctxt.time_base)
+}
+
+// SetTimeBase sets the unit of time (in seconds).
+//
+// This is the fundamental unit of time (in seconds) in terms
+// of which frame timestamps are represented. For fixed-fps content,
+// timebase should be 1/framerate and timestamp increments should be
+// identically 1.
+// This often, but not always is the inverse of the frame rate or field rate
+// for video. 1/time_base is not the average frame rate if the frame rate is not
+// constant.
+//
+// Like containers, elementary streams also can store timestamps, 1/time_base
+// is the unit in which these timestamps are specified.
+// As example of such codec time base see ISO/IEC 14496-2:2001(E)
+// vop_time_increment_resolution and fixed_vop_rate
+// (fixed_vop_rate == 0 implies that it is different from the framerate)
+//
+//  - encoding: MUST be set by user.
+// - decoding: the use of this field for decoding is deprecated.
+//            Use framerate instead.
+//
+// C-Field: AVCodecContext::time_base
+func (ctxt *CodecContext) SetTimeBase(v Rational) {
+	ctxt.time_base = (C.struct_AVRational)(v)
+}
+
 // TicksPerFrame returns the ticks per frame.
 //
 // For some codecs, the time base is closer to the field rate than the frame rate.
@@ -1382,6 +1453,28 @@ func (ctxt *CodecContext) RequestSampleFmt() avutil.SampleFormat {
 // C-Field: AVCodecContext::request_sample_fmt
 func (ctxt *CodecContext) SetRequestSampleFmt(fmt avutil.SampleFormat) {
 	ctxt.request_sample_fmt = C.enum_AVSampleFormat(fmt)
+}
+
+// SampleAspectRatio returns the sample aspect ratio.
+//
+// sample aspect ratio (0 if unknown) That is the width of a pixel divided by the height of the pixel.
+//
+// Numerator and denominator must be relatively prime and smaller than 256 for some video standards.
+//
+// C-Field: AVCodecContext::sample_aspect_ratio
+func (ctxt *CodecContext) SampleAspectRatio() Rational {
+	return (Rational)(ctxt.sample_aspect_ratio)
+}
+
+// SetSampleAspectRatio sets the sample aspect ratio.
+//
+// sample aspect ratio (0 if unknown) That is the width of a pixel divided by the height of the pixel.
+//
+// Numerator and denominator must be relatively prime and smaller than 256 for some video standards.
+//
+// C-Field: AVCodecContext::sample_aspect_ratio
+func (ctxt *CodecContext) SetSampleAspectRatio(v Rational) {
+	ctxt.sample_aspect_ratio = (C.struct_AVRational)(v)
 }
 
 // SampleFmt returns the audio sample format.
