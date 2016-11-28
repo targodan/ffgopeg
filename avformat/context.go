@@ -160,6 +160,24 @@ func (s *FormatContext) ReadFrame(pkt *avcodec.Packet) avutil.ReturnCode {
 	return avutil.NewReturnCode(int(C.av_read_frame((*C.struct_AVFormatContext)(unsafe.Pointer(s)), (*C.struct_AVPacket)(unsafe.Pointer(pkt)))))
 }
 
+func (s *FormatContext) GetNewPackets() chan *avcodec.Packet {
+	packetChan := make(chan *Packet)
+	ret := int(0)
+
+	go func() {
+		for {
+			pkt := &avcodec.Packet{}
+			ret = int(C.av_read_frame((*C.struct_AVFormatContext)(unsafe.Pointer(s)), (*C.struct_AVPacket)(unsafe.Pointer(pkt))))
+			if ret < 0 {
+				break
+			}
+			packetChan <- pkt
+		}
+		close(packetChan)
+	}()
+	return packetChan
+}
+
 // SeekFrame seeks to the keyframe at timestamp.
 //
 // C-Function: av_seek_frame
