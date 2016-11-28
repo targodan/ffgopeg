@@ -4,6 +4,12 @@
 
 package avcodec
 
+import "C"
+
+import (
+	"unsafe"
+)
+
 // Buf returns a reference to the reference-counted buffer where the packet data is stored.
 // May be nil, then the packet data is not reference-counted.
 //
@@ -83,4 +89,8 @@ func (p *Packet) Data() *uint8 {
 // C-Field: AVPacket::
 func (p *Packet) SideData() *PacketSideData {
 	return (*PacketSideData)(p.side_data)
+}
+
+func (p *Packet) GetData() []byte {
+	return C.GoBytes(unsafe.Pointer(p.data), C.int(p.size))
 }
