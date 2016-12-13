@@ -59,7 +59,7 @@ In the future I will provide a little tool wich lets you search for the go-repre
 
 If you get any errors using this library or some functions are missing please open an issue and/or fork, branch and file a pull request.
 Please only file pull requests on the develop branch.
-This project losely followes the (git-flow)[http://danielkummer.github.io/git-flow-cheatsheet/] workflow.
+This project losely followes the [git-flow](http://danielkummer.github.io/git-flow-cheatsheet/) workflow.
 
 After opening the pull request travis ci should start compiling and testing it.
 I won't react to your pull request untill travis *successfully* builds the request.
