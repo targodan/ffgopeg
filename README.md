@@ -46,11 +46,11 @@ That means if you use the `gopkg.in` link from above using `go get -u` should be
 
 The ffmpeg C-Functions are renamed following these rules:
 
-- Everything will be camel case: `foo_bar` ➡️ `FooBar`
+- Everything will be camel case: `foo_bar`  `FooBar`
 - Library-level functions like `avcodec_register_all` are going to be package level functions with the prefix removed: `avcodec.RegisterAll`
 - Functions that return something which is technically a `bool` will now return a go `bool`: `see next example`
-- Functions that modify or access a struct in a sort-of-OOP way will become methods: `int av_codec_is_encoder(const AVCodec* codec)` ➡️ `func (codec *Codec) IsEncoder() bool`
-- Allocating functions that are used as a constructor are going to be called `NewXxx`: `avcodec_alloc_context3` ➡️ `func NewContext() *CodecContext`
+- Functions that modify or access a struct in a sort-of-OOP way will become methods: `int av_codec_is_encoder(const AVCodec* codec)`  `func (codec *Codec) IsEncoder() bool`
+- Allocating functions that are used as a constructor are going to be called `NewXxx`: `avcodec_alloc_context3`  `func NewContext() *CodecContext`
 - Instead of `int` return codes go `error`s will be returned containing an error description (as returned by `av_strerror`) and the code.
 
 In the future I will provide a little tool wich lets you search for the go-representation of a given ffmpeg C-function.
@@ -58,6 +58,14 @@ In the future I will provide a little tool wich lets you search for the go-repre
 ## Contribute
 
 If you get any errors using this library or some functions are missing please open an issue and/or fork, branch and file a pull request.
+Please only file pull requests on the develop branch.
+This project losely followes the (git-flow)[http://danielkummer.github.io/git-flow-cheatsheet/] workflow.
+
+After opening the pull request travis ci should start compiling and testing it.
+I won't react to your pull request untill travis *successfully* builds the request.
+If travis errors just add commits to your fork that will fix it.
+Travis will then rebuild the request.
+If your git history becomes messy by wildly trying to fix the build, please do a `git rebase -i HEAD~n` (with n as number of commits) and clean up your history.
 
 Also I could use some help with these things:
 If anyone has a good idea how to test the bindings I would be glad to hear it!
