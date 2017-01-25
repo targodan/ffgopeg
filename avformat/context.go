@@ -10,8 +10,8 @@ import "C"
 import (
 	"unsafe"
 
-	"gopkg.in/targodan/ffgopeg.v1/avcodec"
-	"gopkg.in/targodan/ffgopeg.v1/avutil"
+	"github.com/colek42/ffgopeg/avcodec"
+	"github.com/colek42/ffgopeg/avutil"
 )
 
 // ProbeScore returns the probe score.
@@ -158,6 +158,24 @@ func FindBestStream(ic *FormatContext, t avutil.MediaType, ws, rs int, c **Codec
 // C-Function: av_read_frame
 func (s *FormatContext) ReadFrame(pkt *avcodec.Packet) avutil.ReturnCode {
 	return avutil.NewReturnCode(int(C.av_read_frame((*C.struct_AVFormatContext)(unsafe.Pointer(s)), (*C.struct_AVPacket)(unsafe.Pointer(pkt)))))
+}
+
+func (s *FormatContext) GetNewPackets() chan *avcodec.Packet {
+	packetChan := make(chan *Packet)
+	ret := int(0)
+
+	go func() {
+		for {
+			pkt := &avcodec.Packet{}
+			ret = int(C.av_read_frame((*C.struct_AVFormatContext)(unsafe.Pointer(s)), (*C.struct_AVPacket)(unsafe.Pointer(pkt))))
+			if ret < 0 {
+				break
+			}
+			packetChan <- pkt
+		}
+		close(packetChan)
+	}()
+	return packetChan
 }
 
 // SeekFrame seeks to the keyframe at timestamp.

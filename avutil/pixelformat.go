@@ -191,8 +191,6 @@ const (
 	AV_PIX_FMT_P010BE          = PixelFormat(C.AV_PIX_FMT_P010BE)
 	AV_PIX_FMT_GBRAP12BE       = PixelFormat(C.AV_PIX_FMT_GBRAP12BE)
 	AV_PIX_FMT_GBRAP12LE       = PixelFormat(C.AV_PIX_FMT_GBRAP12LE)
-	AV_PIX_FMT_GBRAP10BE       = PixelFormat(C.AV_PIX_FMT_GBRAP10BE)
-	AV_PIX_FMT_GBRAP10LE       = PixelFormat(C.AV_PIX_FMT_GBRAP10LE)
 	AV_PIX_FMT_NB              = PixelFormat(C.AV_PIX_FMT_NB)
 )
 
