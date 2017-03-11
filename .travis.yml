@@ -55,6 +55,8 @@ install:
 script:
     - go build -v
     - go test -v -cover -race ./...
+    - go run example/versions/versions.go
+    - go run example/decodeAudio/decodeAudio.go example/sample.mp4
 
 after_success:
     - ./deploy.sh
