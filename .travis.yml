@@ -1,5 +1,4 @@
 language: go
-#sudo: required
 
 go:
     - 1.7
@@ -14,8 +13,8 @@ env:
         - DEPLOY_GIT_EMAIL=tavisci@noreply.corbatto.de
         - DEPLOY_COMMIT_MSG='Automatically updated function searcher for COMMIT_SHA on branch BRANCH.'
     matrix:
-        - ffmpeg=3.1.5
-        - ffmpeg=3.2
+        - ffmpeg=3.1.7
+        - ffmpeg=3.2.4
         - ffmpeg=snapshot
 
 matrix:
