@@ -25,6 +25,18 @@ func (d *Dictionary) Get(key string) *DictionaryEntry {
 	return entry
 }
 
+// Next returns the entry in the dictionary that follows the provided entry.
+func (d *Dictionary) Next(prev *DictionaryEntry) *DictionaryEntry {
+	return (*DictionaryEntry)(C.av_dict_get((*C.struct_AVDictionary)(d), C.CString(""), (*C.struct_AVDictionaryEntry)(prev), C.AV_DICT_IGNORE_SUFFIX))
+}
+
+// Key returns the entry key.
+//
+// C-Variable: AVDictionaryEntry::key
+func (de *DictionaryEntry) Key() string {
+	return C.GoString(de.key)
+}
+
 // Value returns the entry value.
 //
 // C-Variable: AVDictionaryEntry::value
